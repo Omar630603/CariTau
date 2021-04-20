@@ -17,14 +17,8 @@
 
                             <div class="col-md-6">
                                 <input id="login" type="text"
-                                    class="form-control{{ $errors->has('username') || $errors->has('email') ? ' is-invalid' : '' }}"
-                                    name="login" value="{{ old('username') ?: old('email') }}" required autofocus>
-
-                                @if ($errors->has('username') || $errors->has('email'))
-                                <span class="invalid-feedback">
-                                    <strong>{{ $errors->first('username') ?: $errors->first('email') }}</strong>
-                                </span>
-                                @endif
+                                    class="form-control @error('WrongCredentials') is-invalid @enderror" name=" login"
+                                    value="{{ old('username') ?: old('email') }}" required autofocus>
                             </div>
                         </div>
 
@@ -34,10 +28,9 @@
 
                             <div class="col-md-6">
                                 <input id="password" type="password"
-                                    class="form-control @error('password') is-invalid @enderror" name="password"
-                                    required autocomplete="current-password">
-
-                                @error('password')
+                                    class="form-control @error('WrongCredentials') is-invalid @enderror" name="password"
+                                    value="" required autocomplete="current-password">
+                                @error('WrongCredentials')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
