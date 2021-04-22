@@ -74,6 +74,7 @@ class LoginController extends Controller
         ]);
         $admin = Admin::all();
         $isAdmin = False;
+        $userAdmin = new Admin;
         $lecturer = Lecturer::all();
         $isLecturer = False;
         $errors = new MessageBag;
@@ -81,6 +82,7 @@ class LoginController extends Controller
             for ($i = 0; $i < count($admin); $i++) {
                 if (auth()->user()->ID_user == $admin[$i]->ID_user) {
                     $isAdmin = True;
+                    $userAdmin = $admin[$i];
                     break;
                 }
             }
@@ -91,7 +93,7 @@ class LoginController extends Controller
                 }
             }
             if ($isAdmin) {
-                return redirect()->route('admin.home');
+                return redirect()->route('admin.home', ['userAdmin' => $userAdmin]);
             } elseif ($isLecturer) {
                 return redirect()->route('lecturer.home');
             } else {

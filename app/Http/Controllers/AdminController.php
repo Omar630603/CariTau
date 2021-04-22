@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 
 class AdminController extends Controller
 {
@@ -12,9 +13,9 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Admin $userAdmin)
     {
-        return view('admin.index');
+        return view('admin.index', ['userAdmin' => $userAdmin]);
     }
 
     /**
@@ -81,5 +82,18 @@ class AdminController extends Controller
     public function destroy(Admin $admin)
     {
         //
+    }
+    public function authAdmin(Request $request, Admin $userAdmin)
+    {
+        $this->validate($request, [
+            'privateKey' => 'required',
+        ]);
+        $errors = new MessageBag;
+        if ($userAdmin->privateKey == $request->privateKey) {
+            return view('admin.dashboard');
+        } else {
+            $errors = new MessageBag(['WrongCredentials' => ['These credentials do not match our records.']]);
+            return redirect()->back()->withErrors($errors);
+        }
     }
 }
