@@ -12,7 +12,7 @@
                         {{ session('status') }}
                     </div>
                     @endif
-                    {{ __('You are in Admin Dashboard!') }}
+                    {{ __('comments!') }}
                 </div>
             </div>
         </div>

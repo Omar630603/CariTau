@@ -9,7 +9,7 @@ use App\Models\Admin;
 use App\Models\Lecturer;
 use Illuminate\Support\MessageBag;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -42,16 +42,12 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-        $this->username = $this->findUsername();
     }
     public function findUsername()
     {
         $login = request()->input('login');
-
         $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-
         request()->merge([$fieldType => $login]);
-
         return $fieldType;
     }
 
@@ -74,15 +70,13 @@ class LoginController extends Controller
         ]);
         $admin = Admin::all();
         $isAdmin = False;
-        $userAdmin = new Admin;
         $lecturer = Lecturer::all();
         $isLecturer = False;
         $errors = new MessageBag;
-        if (auth()->attempt(array($this->username = $this->findUsername() => $input['login'], 'password' => $input['password']))) {
+        if (Auth::attempt(array($this->username = $this->findUsername() => $input['login'], 'password' => $input['password']))) {
             for ($i = 0; $i < count($admin); $i++) {
                 if (auth()->user()->ID_user == $admin[$i]->ID_user) {
                     $isAdmin = True;
-                    $userAdmin = $admin[$i];
                     break;
                 }
             }
@@ -93,7 +87,7 @@ class LoginController extends Controller
                 }
             }
             if ($isAdmin) {
-                return redirect()->route('admin.home', ['userAdmin' => $userAdmin]);
+                return redirect()->route('admin.home');
             } elseif ($isLecturer) {
                 return redirect()->route('lecturer.home');
             } else {

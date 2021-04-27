@@ -26,7 +26,7 @@
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav style="display: flex;" class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img align="center" height="30" width="80" src="{{ asset('storage/images/ICON2.png') }}" alt="">
@@ -36,13 +36,24 @@
                     aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-                    </ul>
-                    <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                    </ul>
+                    <!-- Middle Side Of Navbar -->
+                    <nav class="shift">
+                        <ul class="navbar-nav md-auto">
+                            <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                            <li><a href="{{ route('admin.users') }}">Users</a></li>
+                            <li><a href="{{ route('admin.lecturers') }}">Lecturers</a></li>
+                            <li><a href="{{ route('admin.majors') }}">Majors</a></li>
+                            <li><a href="{{ route('admin.comments') }}">Comments</a></li>
+                            <li><a href="{{ route('admin.others') }}">Others</a></li>
+                        </ul>
+                    </nav>
+
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav mr-auto">
                         <!-- Authentication Links -->
                         @guest
                         @if (Route::has('login'))
@@ -62,6 +73,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->username }}
                             </a>
+
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
