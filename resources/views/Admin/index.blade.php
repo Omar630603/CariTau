@@ -21,7 +21,6 @@
                                 <input id="privateKey" type="password"
                                     class="form-control @error('WrongCredentials') is-invalid @enderror"
                                     name="privateKey" required autocomplete="current-privateKey">
-                                <p>{{auth()->user()->ID_user}}</p>
                                 @error('WrongCredentials')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
