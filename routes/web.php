@@ -28,6 +28,10 @@ Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->na
 Route::post('/admin', [App\Http\Controllers\AdminController::class, 'authAdmin'])->name('admin.auth')->middleware('AdminAccess');
 Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboardAdmin'])->name('admin.dashboard')->middleware('AdminAccess');
 Route::get('/admin/users', [App\Http\Controllers\AdminController::class, 'usersAdmin'])->name('admin.users')->middleware('AdminAccess');
+Route::post('/admin/student', [App\Http\Controllers\AdminController::class, 'registerUserAdmin'])->name('register.userAdmin')->middleware('AdminAccess');
+Route::post('/admin/lecturer', [App\Http\Controllers\AdminController::class, 'registerLecturerAdmin'])->name('register.lecturerAdmin')->middleware('AdminAccess');
+Route::post('/admin/admin', [App\Http\Controllers\AdminController::class, 'registerAdminAdmin'])->name('register.adminAdmin')->middleware('AdminAccess');
+
 Route::get('/admin/lecturers', [App\Http\Controllers\AdminController::class, 'lecturesAdmin'])->name('admin.lecturers')->middleware('AdminAccess');
 Route::get('/admin/majors', [App\Http\Controllers\AdminController::class, 'majorsAdmin'])->name('admin.majors')->middleware('AdminAccess');
 Route::get('/admin/comments', [App\Http\Controllers\AdminController::class, 'commentsAdmin'])->name('admin.comments')->middleware('AdminAccess');
