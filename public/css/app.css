@@ -10437,7 +10437,7 @@ nav.shift ul li a {
     padding: 10px;
     text-decoration: none;
     color: rgb(0, 0, 0);
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
     margin: 0 10px;
 }
@@ -10514,7 +10514,7 @@ nav.shift ul li a:hover:after {
     text-transform: uppercase;
 }
 .users-table a {
-    color: rgb(0, 0, 0);
+    color: rgb(21, 74, 172);
     font-size: 0.85em;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -10620,7 +10620,7 @@ nav.shift ul li a:hover:after {
 }
 .navAdmin a {
     text-decoration: none;
-    font-weight: 1000;
+    font-weight: 600;
     font-size: 15px;
     text-transform: uppercase;
     color: rgb(21, 74, 172);

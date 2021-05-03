@@ -33,7 +33,7 @@
             <div class="row">
                 <div class="col-lg-12 margin-tb">
                     <div class="float-left my-2">
-                        <form method="get" action="/" id="myForm">@csrf
+                        <form method="get" action="{{ route('admin.search') }}" id="myForm">@csrf
                             <div style="display: flex; justify-content: space-between" class="form-group">
                                 <input style="margin-right: 5px;" type="text" name="search" class="form-control"
                                     id="search" ariadescribedby="search" placeholder="Search">
@@ -111,7 +111,7 @@
                 </div>
             </div>
             <table>
-                <caption>Users Table</caption>
+                <caption>Students Table</caption>
                 <thead>
                     <tr>
                         <th scope="col">Full Name</th>
@@ -124,7 +124,8 @@
                 <tbody>
                     @foreach ($users as $user)
                     <tr>
-                        <td data-label="Full Name"><a href="">{{$user->name}}</a></td>
+                        <td data-label="Full Name"><a href="{{ route('admin.userDetails', $user) }}">{{$user->name}}</a>
+                        </td>
                         <td data-label="User Name">{{$user->username}}</td>
                         <td data-label="E-Mail">{{$user->email}}</a></td>
                         <td data-label="Phone">{{$user->phone}}</a></td>
@@ -148,7 +149,7 @@
             <div class="row">
                 <div class="col-lg-12 margin-tb">
                     <div class="float-left my-2">
-                        <form method="get" action="/" id="myForm">@csrf
+                        <form method="get" action="{{ route('admin.search') }}" id="myForm">@csrf
                             <div style="display: flex; justify-content: space-between" class="form-group">
                                 <input style="margin-right: 5px;" type="text" name="search" class="form-control"
                                     id="search" ariadescribedby="search" placeholder="Search">
@@ -248,7 +249,8 @@
                 <tbody>
                     @foreach ($lecturers as $lecturer)
                     <tr>
-                        <td data-label="Full Name"><a href="">{{$lecturer->name}}</a></td>
+                        <td data-label="Full Name"><a
+                                href="{{ route('admin.userDetails', $lecturer->ID_user) }}">{{$lecturer->name}}</a></td>
                         <td data-label="User Name">{{$lecturer->username}}</td>
                         <td data-label="E-Mail">{{$lecturer->email}}</a></td>
                         <td data-label="Phone">{{$lecturer->phone}}</a></td>
@@ -272,7 +274,7 @@
             <div class="row">
                 <div class="col-lg-12 margin-tb">
                     <div class="float-left my-2">
-                        <form method="get" action="/" id="myForm">@csrf
+                        <form method="get" action="{{ route('admin.search') }}" id="myForm">@csrf
                             <div style="display: flex; justify-content: space-between" class="form-group">
                                 <input style="margin-right: 5px;" type="text" name="search" class="form-control"
                                     id="search" ariadescribedby="search" placeholder="Search">
@@ -369,7 +371,8 @@
                 <tbody>
                     @foreach ($admins as $admin)
                     <tr>
-                        <td data-label="Full Name"><a href="">{{$admin->name}}</a></td>
+                        <td data-label="Full Name"><a
+                                href="{{ route('admin.userDetails', $admin->ID_user) }}">{{$admin->name}}</a></td>
                         <td data-label="User Name">{{$admin->username}}</td>
                         <td data-label="E-Mail">{{$admin->email}}</a></td>
                         <td data-label="Phone">{{$admin->phone}}</a></td>

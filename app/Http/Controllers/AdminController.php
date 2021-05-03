@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\Course;
+use App\Models\Enrollment;
 use App\Models\Lecturer;
 use App\Models\User;
 use Exception;
@@ -106,7 +107,7 @@ class AdminController extends Controller
     }
     public function dashboardAdmin()
     {
-        return view('admin.dashboard');
+        return view('Admin.dashboard');
     }
     public function usersAdmin()
     {
@@ -116,7 +117,7 @@ class AdminController extends Controller
         $admin = Admin::pluck('ID_user')->all();
         $lecturer = Lecturer::pluck('ID_user')->all();
         $adminLecturer = array_merge($admin, $lecturer);
-        $users = User::whereNotIn('ID_user', $adminLecturer)->select('name', 'username', 'email', 'phone', 'address')->paginate(10);
+        $users = User::whereNotIn('ID_user', $adminLecturer)->paginate(10);
         $admins = Admin::Join('user', 'admin.ID_user', '=', 'user.ID_user', 'left outer')->paginate(10);
         $lecturers = Lecturer::Join('user', 'lecturer.ID_user', '=', 'user.ID_user', 'left outer')->paginate(10);
         $courses = Course::all();
@@ -217,20 +218,42 @@ class AdminController extends Controller
         $message = 'Added Successfully';
         return redirect()->route('admin.users')->with('success', $message);
     }
+    public function search()
+    {
+        $admins = Admin::pluck('ID_user')->all();
+        $lecturers = Lecturer::pluck('ID_user')->all();
+        $adminLecturers = array_merge($admins, $lecturers);
+        $name = $_GET['search'];
+        $searchResults = User::search(['name', 'username', 'email', 'phone', 'address'], $name)->get();
+        return view('Admin.searchResults', compact('searchResults', 'admins', 'lecturers', 'adminLecturers'));
+    }
+    public function showUser(User $user)
+    {
+        $admins = Admin::pluck('ID_user')->all();
+        $lecturers = Lecturer::pluck('ID_user')->all();
+        $adminLecturers = array_merge($admins, $lecturers);
+        $userCourse = User::find($user->ID_user)->course()->get();
+        $lecturerID = Lecturer::where('ID_user', '=', $user->ID_user)->pluck('ID_lecturer');
+        $lecturerCourse = new Lecturer;
+        if (!$lecturerID->isEmpty()) {
+            $lecturerCourse = Lecturer::find($lecturerID)->first()->course()->get();
+        }
+        return view('Admin.userDetails', compact('user', 'admins', 'lecturers', 'adminLecturers', 'userCourse', 'lecturerCourse'));
+    }
     public function lecturesAdmin()
     {
-        return view('admin.lecturers');
+        return view('Admin.lecturers');
     }
     public function majorsAdmin()
     {
-        return view('admin.majors');
+        return view('Admin.majors');
     }
     public function commentsAdmin()
     {
-        return view('admin.comments');
+        return view('Admin.comments');
     }
     public function othersAdmin()
     {
-        return view('admin.others');
+        return view('Admin.others');
     }
 }

@@ -31,6 +31,8 @@ Route::get('/admin/users', [App\Http\Controllers\AdminController::class, 'usersA
 Route::post('/admin/student', [App\Http\Controllers\AdminController::class, 'registerUserAdmin'])->name('register.userAdmin')->middleware('AdminAccess');
 Route::post('/admin/lecturer', [App\Http\Controllers\AdminController::class, 'registerLecturerAdmin'])->name('register.lecturerAdmin')->middleware('AdminAccess');
 Route::post('/admin/admin', [App\Http\Controllers\AdminController::class, 'registerAdminAdmin'])->name('register.adminAdmin')->middleware('AdminAccess');
+Route::get('/admin/search', [App\Http\Controllers\AdminController::class, 'search'])->name('admin.search')->middleware('AdminAccess');
+Route::get('/admin/users/{user}', [App\Http\Controllers\AdminController::class, 'showUser'])->name('admin.userDetails')->middleware('AdminAccess');
 
 Route::get('/admin/lecturers', [App\Http\Controllers\AdminController::class, 'lecturesAdmin'])->name('admin.lecturers')->middleware('AdminAccess');
 Route::get('/admin/majors', [App\Http\Controllers\AdminController::class, 'majorsAdmin'])->name('admin.majors')->middleware('AdminAccess');
