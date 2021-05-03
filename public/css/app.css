@@ -49,6 +49,7 @@ html {
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    scroll-behavior: smooth;
 }
 
 article,
@@ -10436,7 +10437,7 @@ nav.shift ul li a {
     padding: 10px;
     text-decoration: none;
     color: rgb(0, 0, 0);
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
     margin: 0 10px;
 }
@@ -10488,7 +10489,7 @@ nav.shift ul li a:hover:after {
 }
 
 .users-table table caption {
-    font-size: 1.5em;
+    font-size: 1em;
     margin: 0.5em 0 0.75em;
 }
 
@@ -10555,8 +10556,112 @@ nav.shift ul li a:hover:after {
     .users-table table td:last-child {
         border-bottom: 0;
     }
+<<<<<<< HEAD
     
     /*rivaldo add*/
+=======
+    .navAdmin nav ul li a {
+        display: block;
+    }
+}
+.AddUserTable table {
+    border: 0;
+}
+.AddUserTable table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+.AddUserTable table tr {
+    border-bottom: 2px solid #ddd;
+    display: block;
+    margin-bottom: 0.625em;
+}
+.AddUserTable table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    font-size: 0.8em;
+    text-align: right;
+}
+.AddUserTable table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.AddUserTable table td:last-child {
+    border-bottom: 0;
+}
+@keyframes drop {
+    0% {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+.navAdmin {
+    text-align: center;
+    margin: 1em;
+}
+.navAdmin ul {
+    list-style: none;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+.navAdmin li {
+    display: inline;
+    padding: 1em;
+    margin: 1em;
+}
+.navAdmin a {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    text-transform: uppercase;
+    color: rgb(21, 74, 172);
+    letter-spacing: 0.2em;
+    padding: 0.7rem;
+    padding-bottom: 0;
+}
+.navAdmin ul li :hover {
+    color: rgb(0, 0, 0);
+    border-bottom: 10px solid rgba(21, 74, 172, 0.733);
+    width: 100%;
+}
+.navAdmin nav ul li a,
+.navAdmin nav ul li:after,
+.navAdmin nav ul li:before {
+    transition: all 0.5s;
+}
+.navAdmin nav ul li:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 100%;
+    height: 1px;
+    content: ".";
+    color: transparent;
+    visibility: none;
+    opacity: 0;
+    z-index: -1;
+}
+.navAdmin nav ul li:hover:after {
+    opacity: 1;
+    visibility: visible;
+    height: 100%;
+>>>>>>> 89905f0ff82c1a6a7b4cb9c110d7e6f8338320ed
 }
 .center{
         display: flex;

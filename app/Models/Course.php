@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Lecturer;
+use App\Models\User;
 
 class Course extends Model
 {
@@ -16,4 +18,12 @@ class Course extends Model
         'description',
         'price',
     ];
+    public function lecturer()
+    {
+        return $this->hasOne(Lecturer::class, 'ID_user');
+    }
+    public function user()
+    {
+        return $this->belongsToMany(User::class, 'enrollment', 'ID_user', 'ID_course')->withTimestamps()->withPivot('status');;
+    }
 }
