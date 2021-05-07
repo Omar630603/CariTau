@@ -24,72 +24,6 @@ class AdminController extends Controller
         $userAdmin = Admin::find(auth()->user()->ID_user);
         return view('admin.index', ['userAdmin' => $userAdmin]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Admin  $admin
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Admin  $admin
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Admin  $admin
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Admin  $admin
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Admin $admin)
-    {
-        //
-    }
     public function authAdmin(Request $request)
     {
         $this->validate($request, [
@@ -239,6 +173,43 @@ class AdminController extends Controller
             $lecturerCourse = Lecturer::find($lecturerID)->first()->course()->get();
         }
         return view('Admin.userDetails', compact('user', 'admins', 'lecturers', 'adminLecturers', 'userCourse', 'lecturerCourse'));
+    }
+    public function editUser(Request $request, User $user)
+    {
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required',
+            'email' => 'required',
+            'address' => 'required',
+            'phone' => 'required',
+        ]);
+        $user->name = $request->get('name');
+        $user->username = $request->get('username');
+        $user->email = $request->get('email');
+        $user->address = $request->get('address');
+        $user->phone = $request->get('phone');
+        $user->save();
+        return redirect()->route('admin.userDetails', $user);
+    }
+    public function editUserImage(Request $request, User $user)
+    {
+        if ($request->file('image')) {
+            $image_name = $request->file('image')->store('User_images', 'public');
+        }
+        $user->image = $image_name;
+        $user->save();
+        return redirect()->route('admin.userDetails', $user);
+    }
+    public function editUserImageDefult(User $user)
+    {
+        $user->image = 'User_images/default.png';
+        $user->save();
+        return redirect()->route('admin.userDetails', $user);
+    }
+    public function deleteUser(User $user)
+    {
+        $user->delete();
+        return redirect()->route('admin.users');
     }
     public function lecturesAdmin()
     {

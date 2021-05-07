@@ -20,6 +20,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Icon -->
     <link rel="icon" href="{{ asset('storage/images/ICON.png') }}">
@@ -70,20 +71,24 @@
                         @endif
                         @else
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ Auth::user()->username }}
-                            </a>
-
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                            <div style="display: flex">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->username }}
                                 </a>
+                                <a href="{{ route('admin.userDetails', Auth::user()->ID_user) }}"><img width="35px"
+                                        height="35px" style="border-radius: 50%"
+                                        src="{{asset('storage/'.Auth::user()->image)}}"></a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
                             </div>
                         </li>
                         @endguest

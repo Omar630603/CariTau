@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\LecturerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,22 +25,26 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/user/home', [App\Http\Controllers\UserController::class, 'index'])->name('user.home');
+Route::get('/user/home', [UserController::class, 'index'])->name('user.home');
 
-Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.home')->middleware('AdminAccess');
-Route::post('/admin', [App\Http\Controllers\AdminController::class, 'authAdmin'])->name('admin.auth')->middleware('AdminAccess');
-Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboardAdmin'])->name('admin.dashboard')->middleware('AdminAccess');
-Route::get('/admin/users', [App\Http\Controllers\AdminController::class, 'usersAdmin'])->name('admin.users')->middleware('AdminAccess');
-Route::post('/admin/student', [App\Http\Controllers\AdminController::class, 'registerUserAdmin'])->name('register.userAdmin')->middleware('AdminAccess');
-Route::post('/admin/lecturer', [App\Http\Controllers\AdminController::class, 'registerLecturerAdmin'])->name('register.lecturerAdmin')->middleware('AdminAccess');
-Route::post('/admin/admin', [App\Http\Controllers\AdminController::class, 'registerAdminAdmin'])->name('register.adminAdmin')->middleware('AdminAccess');
-Route::get('/admin/search', [App\Http\Controllers\AdminController::class, 'search'])->name('admin.search')->middleware('AdminAccess');
-Route::get('/admin/users/{user}', [App\Http\Controllers\AdminController::class, 'showUser'])->name('admin.userDetails')->middleware('AdminAccess');
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.home')->middleware('AdminAccess');
+Route::post('/admin', [AdminController::class, 'authAdmin'])->name('admin.auth')->middleware('AdminAccess');
+Route::get('/admin/dashboard', [AdminController::class, 'dashboardAdmin'])->name('admin.dashboard')->middleware('AdminAccess');
+Route::get('/admin/users', [AdminController::class, 'usersAdmin'])->name('admin.users')->middleware('AdminAccess');
+Route::post('/admin/student', [AdminController::class, 'registerUserAdmin'])->name('register.userAdmin')->middleware('AdminAccess');
+Route::post('/admin/lecturer', [AdminController::class, 'registerLecturerAdmin'])->name('register.lecturerAdmin')->middleware('AdminAccess');
+Route::post('/admin/admin', [AdminController::class, 'registerAdminAdmin'])->name('register.adminAdmin')->middleware('AdminAccess');
+Route::get('/admin/search', [AdminController::class, 'search'])->name('admin.search')->middleware('AdminAccess');
+Route::get('/admin/users/{user}', [AdminController::class, 'showUser'])->name('admin.userDetails')->middleware('AdminAccess');
+Route::post('/admin/users/edit/{user}', [AdminController::class, 'editUser'])->name('userAdmin.update')->middleware('AdminAccess');
+Route::put('/admin/users/editImage/{user}', [AdminController::class, 'editUserImage'])->name('userAdmin.updateImage')->middleware('AdminAccess');
+Route::post('/admin/users/restoreImage/{user}', [AdminController::class, 'editUserImageDefult'])->name('userAdmin.restoreImage')->middleware('AdminAccess');
+Route::delete('/admin/users/delete/{user}', [AdminController::class, 'deleteUser'])->name('userAdmin.delete')->middleware('AdminAccess');
 
-Route::get('/admin/lecturers', [App\Http\Controllers\AdminController::class, 'lecturesAdmin'])->name('admin.lecturers')->middleware('AdminAccess');
-Route::get('/admin/majors', [App\Http\Controllers\AdminController::class, 'majorsAdmin'])->name('admin.majors')->middleware('AdminAccess');
-Route::get('/admin/comments', [App\Http\Controllers\AdminController::class, 'commentsAdmin'])->name('admin.comments')->middleware('AdminAccess');
-Route::get('/admin/others', [App\Http\Controllers\AdminController::class, 'othersAdmin'])->name('admin.others')->middleware('AdminAccess');
+Route::get('/admin/lecturers', [AdminController::class, 'lecturesAdmin'])->name('admin.lecturers')->middleware('AdminAccess');
+Route::get('/admin/majors', [AdminController::class, 'majorsAdmin'])->name('admin.majors')->middleware('AdminAccess');
+Route::get('/admin/comments', [AdminController::class, 'commentsAdmin'])->name('admin.comments')->middleware('AdminAccess');
+Route::get('/admin/others', [AdminController::class, 'othersAdmin'])->name('admin.others')->middleware('AdminAccess');
 
 
-Route::get('/lecturer/home', [App\Http\Controllers\LecturerController::class, 'index'])->name('lecturer.home')->middleware('LecturerAccess');
+Route::get('/lecturer/home', [LecturerController::class, 'index'])->name('lecturer.home')->middleware('LecturerAccess');

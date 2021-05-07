@@ -10607,6 +10607,16 @@ nav.shift ul li a:hover:after {
         transform: translateY(0px);
     }
 }
+@keyframes slideL2R {
+    0% {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
 .navAdmin {
     text-align: center;
     margin: 1em;
@@ -10752,4 +10762,8 @@ nav.shift ul li a:hover:after {
 }
 .left_container .icons i:hover {
     color: #2c5364;
+}
+.bio-data {
+    display: flex;
+    justify-content: space-between;
 }
