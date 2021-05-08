@@ -42,6 +42,7 @@ Route::post('/admin/users/restoreImage/{user}', [AdminController::class, 'editUs
 Route::delete('/admin/users/delete/{user}', [AdminController::class, 'deleteUser'])->name('userAdmin.delete')->middleware('AdminAccess');
 Route::post('/admin/users/addCourse/{user}', [AdminController::class, 'addCourseUser'])->name('userAdmin.addStudentCourse')->middleware('AdminAccess');
 Route::delete('/admin/users/deleteCourse/{user}/{Course}', [AdminController::class, 'deleteCourseUser'])->name('userAdmin.deleteStudentCourse')->middleware('AdminAccess');
+Route::put('/admin/users/editCourse/{user}/{course}', [AdminController::class, 'editCourseUser'])->name('userAdmin.editStudentCourse')->middleware('AdminAccess');
 
 
 Route::get('/admin/lecturers', [AdminController::class, 'lecturesAdmin'])->name('admin.lecturers')->middleware('AdminAccess');

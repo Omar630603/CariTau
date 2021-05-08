@@ -89,6 +89,9 @@
         <a class="btn btn-success" href="" onclick="addUser(1); return false;">Add Course</a>
     </div>
     <div class="AddUserTable" style="display: none" id="addForm1">
+        <div id="alertStudent" style="margin-top: 10px; display: none" class="alert alert-info">
+            <p>There are no available courses because all the courses has been taken by the student: {{$user->name}}</p>
+        </div>
         <form method="POST" action="{{ route('userAdmin.addStudentCourse', $user) }}">
             @csrf
             <table style="width: 100%">
@@ -101,14 +104,16 @@
                 <tbody>
                     <tr>
                         <td data-label="Course">
-                            <select name="course" class="form-control">
+                            <select id="courseStudent" name="course" class="form-control">
                                 @foreach ($courses as $course)
+                                @if(!in_array($course->ID_course, $availableCourses))
                                 <option value="{{$course->ID_course}}">{{$course->course_name}}</option>
+                                @endif
                                 @endforeach
                             </select>
                         </td>
                         <td data-label="Full Name">
-                            <select name="status" class="form-control">
+                            <select id="courseStudentStatus" name="status" class="form-control">
                                 <option value="0">Preview</option>
                                 <option value="1">Full</option>
                             </select>
@@ -116,7 +121,7 @@
                     </tr>
                     <tr style="align-content: center">
                         <td>
-                            <button
+                            <button id="courseStudentBtn"
                                 style="width: 100%; background-color: rgb(21, 74, 172); font-weight: 800; color: white; border:0"
                                 type="submit" class="btn btn-primary">Add
                             </button>
@@ -139,23 +144,45 @@
             <tbody>
                 @foreach ($userCourse as $Course)
                 <tr>
-                    <td data-label="Course Name">{{$Course->course_name}}</td>
+                    <td data-label="Course Name"><a href="">{{$Course->course_name}}</a></td>
                     @if ($Course->pivot->status)
                     <td data-label="Course Status">Full</a></td>
                     @else
                     <td data-label="Course Status">Preview</a></td>
                     @endif
                     <td style="display: flex; justify-content: space-around">
-                        <a style="color: white; background-color: rgb(21, 74, 172)" class="btn btn-info"
-                            href="">Edit</a>
+                        <a style="color: white; background-color: rgb(21, 74, 172)" class="btn btn-info" href=""
+                            onclick="$('#editStudentCourseStatus{{$Course->ID_course}}').show(); return false;">Edit</a>
                         <a style="color: white" class="btn btn-danger" href=""
-                            onclick="document.getElementById('deleteCourse').click();return false;">Delete</a>
+                            onclick="document.getElementById('deleteCourse{{$Course->ID_course}}').click();return false;">Delete</a>
                         <form style="display: none"
                             action="{{ route('userAdmin.deleteStudentCourse', ['Course'=>$Course,'user'=>$user]) }}"
                             method="POST">
                             @csrf
                             @method('DELETE')
-                            <button id="deleteCourse" type="submit"></button>
+                            <button id="deleteCourse{{$Course->ID_course}}" type="submit"></button>
+                        </form>
+                    </td>
+                </tr>
+                <tr id="editStudentCourseStatus{{$Course->ID_course}}" style="display: none">
+                    <td>Change This course: {{$Course->course_name}} status
+                        <form method="post"
+                            action="{{ route('userAdmin.editStudentCourse', ['course'=>$Course->pivot->ID_course,'user'=>$user]) }}"
+                            enctype="multipart/form-data" style="display: flex">
+                            @csrf
+                            @method('PUT')
+                            <select style="margin-top: 5px" name="status" class="form-control">
+                                <option value="" disabled selected>Select your option</option>
+                                <option value="0">Preview</option>
+                                <option value="1">Full</option>
+                            </select>
+                            <div style="margin-top: 5px; margin-left: 10px">
+                                <button type="submit" class="btn btn-primary">Done</button>
+                            </div>
+                            <i class="fa fa-close"
+                                style="margin-top: 10px; margin-left: 10px; font-size:24px; cursor: pointer;"
+                                onclick="$('#editStudentCourseStatus{{$Course->ID_course}}').hide();return false;">
+                            </i>
                         </form>
                     </td>
                 </tr>
@@ -256,17 +283,12 @@
                 <tr>
                     <th scope="col">Course Name</th>
                     <th scope="col">Course Price/Student</th>
-                    <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td data-label="Course Name">{{$lecturerCourse[0]->course_name}}</td>
+                    <td data-label="Course Name"><a href="">{{$lecturerCourse[0]->course_name}}</a></td>
                     <td data-label="Course Price/Student">{{$lecturerCourse[0]->price}}</td>
-                    <td style="display: flex; justify-content: space-around">
-                        <a style="color: white; background-color: rgb(21, 74, 172)" class="btn btn-info"
-                            href="">Edit</a>
-                    </td>
                 </tr>
             </tbody>
         </table>
@@ -368,6 +390,16 @@
     } else {
         x.style.display = "none";
     }
+    }
+    var s = document.getElementById("courseStudent");
+    var ss = document.getElementById("courseStudentStatus");
+    var sb = document.getElementById("courseStudentBtn");
+    var sa = document.getElementById("alertStudent");
+    if (s.length == 0) {
+        s.disabled = true
+        ss.disabled = true
+        sb.disabled = true
+        sa.style.display = "";
     }
 </script>
 @endsection

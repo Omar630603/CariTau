@@ -167,13 +167,15 @@ class AdminController extends Controller
         $lecturers = Lecturer::pluck('ID_user')->all();
         $adminLecturers = array_merge($admins, $lecturers);
         $userCourse = User::find($user->ID_user)->course()->get();
+        $availableCourse = User::find($user->ID_user)->course()->pluck('course.ID_course');
+        $availableCourses = json_decode(json_encode($availableCourse), true);
         $lecturerID = Lecturer::where('ID_user', '=', $user->ID_user)->pluck('ID_lecturer');
         $lecturerCourse = new Lecturer;
         $courses = Course::all();
         if (!$lecturerID->isEmpty()) {
             $lecturerCourse = Lecturer::find($lecturerID)->first()->course()->get();
         }
-        return view('Admin.userDetails', compact('user', 'admins', 'lecturers', 'adminLecturers', 'userCourse', 'lecturerCourse', 'courses'));
+        return view('Admin.userDetails', compact('user', 'admins', 'lecturers', 'adminLecturers', 'userCourse', 'lecturerCourse', 'courses', 'availableCourses'));
     }
     public function editUser(Request $request, User $user)
     {
@@ -223,6 +225,15 @@ class AdminController extends Controller
     public function deleteCourseUser(User $user, Course $Course)
     {
         $user->course()->detach($Course);
+        return redirect()->route('admin.userDetails', $user);
+    }
+    public function editCourseUser(Request $request, User $user, Course $Course)
+    {
+        if ($request->get('status') != null) {
+            $enrollment = Enrollment::where('ID_user', '=', $user->ID_user)->where('ID_course', '=', $Course->ID_course)->first();
+            $enrollment->status = $request->get('status');
+            $enrollment->save();
+        }
         return redirect()->route('admin.userDetails', $user);
     }
     public function lecturesAdmin()
