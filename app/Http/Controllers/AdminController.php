@@ -169,10 +169,11 @@ class AdminController extends Controller
         $userCourse = User::find($user->ID_user)->course()->get();
         $lecturerID = Lecturer::where('ID_user', '=', $user->ID_user)->pluck('ID_lecturer');
         $lecturerCourse = new Lecturer;
+        $courses = Course::all();
         if (!$lecturerID->isEmpty()) {
             $lecturerCourse = Lecturer::find($lecturerID)->first()->course()->get();
         }
-        return view('Admin.userDetails', compact('user', 'admins', 'lecturers', 'adminLecturers', 'userCourse', 'lecturerCourse'));
+        return view('Admin.userDetails', compact('user', 'admins', 'lecturers', 'adminLecturers', 'userCourse', 'lecturerCourse', 'courses'));
     }
     public function editUser(Request $request, User $user)
     {
@@ -210,6 +211,19 @@ class AdminController extends Controller
     {
         $user->delete();
         return redirect()->route('admin.users');
+    }
+    public function addCourseUser(Request $request, User $user)
+    {
+        $course = new Course;
+        $course->ID_course = $request->get('course');
+        $status = $request->get('status');
+        $user->course()->attach($course, ['status' => $status]);
+        return redirect()->route('admin.userDetails', $user);
+    }
+    public function deleteCourseUser(User $user, Course $Course)
+    {
+        $user->course()->detach($Course);
+        return redirect()->route('admin.userDetails', $user);
     }
     public function lecturesAdmin()
     {
