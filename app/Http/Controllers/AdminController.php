@@ -238,7 +238,9 @@ class AdminController extends Controller
     }
     public function lecturesAdmin()
     {
-        return view('Admin.lecturers');
+        $lecturers = Lecturer::Join('user', 'lecturer.ID_user', '=', 'user.ID_user', 'left outer')->get();
+        $courses = Course::all();
+        return view('Admin.lecturers', compact('lecturers', 'courses'));
     }
     public function majorsAdmin()
     {
