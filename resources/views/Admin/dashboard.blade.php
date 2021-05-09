@@ -1,6 +1,8 @@
 @extends('layouts.adminApp')
 
 @section('content')
+<h3 id="greetings" style="margin: 20px"><b>Admin:</b> <a href="{{ route('admin.userDetails', Auth::user()->ID_user) }}"
+        style="text-decoration: none">{{Auth::user()->username }}</a><br></h3>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -18,4 +20,17 @@
         </div>
     </div>
 </div>
+<script>
+    var myDate = new Date();
+    var hrs = myDate.getHours();
+    var greet;
+    if (hrs < 12)
+        greet = 'Good Morning';
+    else if (hrs >= 12 && hrs <= 17)
+        greet = 'Good Afternoon';
+    else if (hrs >= 17 && hrs <= 24)
+        greet = 'Good Evening';
+    document.getElementById('greetings').innerHTML +=
+        '<b>' + greet + '!</b> Welcome to CariTau dashboard.';
+</script>
 @endsection

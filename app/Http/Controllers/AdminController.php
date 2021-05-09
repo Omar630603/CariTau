@@ -31,7 +31,6 @@ class AdminController extends Controller
         ]);
         $errors = new MessageBag;
         $userAdmin = Admin::where('ID_user', 'like', '%' . auth()->user()->ID_user . '%')->first();
-        echo $userAdmin;
         if ($userAdmin->privateKey == $request->privateKey) {
             return redirect()->route('admin.dashboard');
         } else {
@@ -55,9 +54,11 @@ class AdminController extends Controller
         $admins = Admin::Join('user', 'admin.ID_user', '=', 'user.ID_user', 'left outer')->paginate(10);
         $lecturers = Lecturer::Join('user', 'lecturer.ID_user', '=', 'user.ID_user', 'left outer')->paginate(10);
         $courses = Course::all();
+        $lecturerCourses = Lecturer::pluck('ID_course')->all();
+        $availableCourses = json_decode(json_encode($lecturerCourses), true);;
         return view('admin.users', [
             'users' => $users, 'admins' => $admins, 'lecturers' => $lecturers, 'courses' => $courses,
-            'countS' => $countStudents, 'countL' => $countLecturers, 'countA' => $countAdmins
+            'countS' => $countStudents, 'countL' => $countLecturers, 'countA' => $countAdmins, 'availableCourses' => $availableCourses
         ]);
     }
     public function registerUserAdmin(Request $request)

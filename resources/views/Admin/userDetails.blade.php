@@ -90,7 +90,8 @@
     </div>
     <div class="AddUserTable" style="display: none" id="addForm1">
         <div id="alertStudent" style="margin-top: 10px; display: none" class="alert alert-info">
-            <p>There are no available courses because all the courses has been taken by the student: {{$user->name}}</p>
+            <p>There are no available courses because all the courses have been taken by the student: {{$user->name}}
+            </p>
         </div>
         <form method="POST" action="{{ route('userAdmin.addStudentCourse', $user) }}">
             @csrf

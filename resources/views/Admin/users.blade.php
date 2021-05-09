@@ -165,7 +165,14 @@
                             class="btn btn-primary" onclick="addUser(2)">Create New Lecturer</a>
                     </div>
                     <div class="AddUserTable" style="display: none" id="addForm2">
-                        <form method="POST" action="{{ route('register.lecturerAdmin') }}">
+                        <div id="alertCourse" style="display: none; text-align: left; margin-top: 60px"
+                            class="alert alert-info">
+                            <p style="text-align: left;">You can't add new lecturer because all the courses have been
+                                taken<br><a href="">Add new
+                                    course to assign it to new lecturer</a>
+                            </p>
+                        </div>
+                        <form method=" POST" action="{{ route('register.lecturerAdmin') }}">
                             @csrf
                             <table>
                                 <thead>
@@ -214,16 +221,19 @@
                                                 name="password" required autocomplete="new-password">
                                         </td>
                                         <td data-label="Course">
-                                            <select name="course" class="form-control">
+                                            <select id="courseLecturer" name="course" class="form-control">
                                                 @foreach ($courses as $course)
-                                                <option value="{{$course->ID_course}}">{{$course->course_name}}</option>
+                                                @if(!in_array($course->ID_course, $availableCourses))
+                                                <option value="{{$course->ID_course}}">{{$course->course_name}}
+                                                </option>
+                                                @endif
                                                 @endforeach
                                             </select>
                                         </td>
                                     </tr>
                                     <tr style="align-content: center">
                                         <td>
-                                            <button
+                                            <button id="courseLecturerBtn"
                                                 style="width: 100%; background-color: rgb(21, 74, 172); font-weight: 800; color: white; border:0"
                                                 type="submit" class="btn btn-primary">Create
                                             </button>
@@ -250,7 +260,8 @@
                     @foreach ($lecturers as $lecturer)
                     <tr>
                         <td data-label="Full Name"><a
-                                href="{{ route('admin.userDetails', $lecturer->ID_user) }}">{{$lecturer->name}}</a></td>
+                                href="{{ route('admin.userDetails', $lecturer->ID_user) }}">{{$lecturer->name}}</a>
+                        </td>
                         <td data-label="User Name">{{$lecturer->username}}</td>
                         <td data-label="E-Mail">{{$lecturer->email}}</a></td>
                         <td data-label="Phone">{{$lecturer->phone}}</a></td>
@@ -400,6 +411,14 @@
     } else {
         x.style.display = "none";
     }
+    }
+    var s = document.getElementById("courseLecturer");
+    var sb = document.getElementById("courseLecturerBtn");
+    var sa = document.getElementById("alertCourse");
+    if (s.length == 0) {
+        s.disabled = true
+        sb.disabled = true
+        sa.style.display = "";
     }
 </script>
 @endsection

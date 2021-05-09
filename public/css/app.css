@@ -1,5 +1,5 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);
 @charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Nunito);
 /*!
  * Bootstrap v4.6.0 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
@@ -10674,11 +10674,9 @@ nav.shift ul li a:hover:after {
 }
 .center {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-}
-.main {
-    height: 100hv;
 }
 .box {
     width: 250px;
@@ -10687,15 +10685,16 @@ nav.shift ul li a:hover:after {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 200);
     background: linear-gradient(
         to right,
-        rgb(46, 86, 160),
-        rgb(26, 75, 165),
-        rgb(11, 68, 175)
+        rgb(98, 122, 170),
+        rgb(61, 92, 170),
+        rgb(16, 49, 148)
     );
     border-radius: 23px;
     flex-direction: column;
     color: white;
     position: relative;
     overflow: hidden;
+    justify-content: center;
 }
 .box img {
     width: 100px;
@@ -10705,6 +10704,7 @@ nav.shift ul li a:hover:after {
 .user_name {
     margin-bottom: 5px;
     font-size: 2rem;
+    text-align: center;
 }
 .skill {
     color: rgba(255, 255, 255, 0.555);
@@ -10723,6 +10723,7 @@ nav.shift ul li a:hover:after {
     font-size: 1.6 rem;
     cursor: pointer;
     transition: all 0.4s;
+    justify-content: center;
 }
 .arr_container i {
     transform: rotate(45deg);

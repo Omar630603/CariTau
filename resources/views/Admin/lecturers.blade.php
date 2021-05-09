@@ -1,8 +1,7 @@
 @extends('layouts.adminApp')
-
 @section('content')
 <div class="container">
-
+    <h3 style="margin: 20px">Lecturers in CariTau: {{count($lecturers)}}</h3>
     <div class="main center">
         @foreach ($lecturers as $lecturer)
         <div class="box center">
