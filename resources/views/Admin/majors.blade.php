@@ -1,11 +1,10 @@
 @extends('layouts.adminApp')
-
 @section('content')
 <div class="container">
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         @foreach ($majors as $major)
         <div class="panel panel-default">
-            <div class="panel-heading" role="tab" id="headingTwo">
+            <div class="panel-heading" role="tab" id="heading{{$major->ID_major}}">
                 <h4 class="panel-title">
                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
                         href="#collapse{{$major->ID_major}}" aria-expanded="false"
@@ -18,7 +17,8 @@
                 aria-labelledby="heading{{$major->ID_major}}">
                 <div class="panel-body">
                     <div class="control-major action-major">
-                        <a style="color: white; background-color: rgb(21, 74, 172);" class="btn btn-info" href="">Edit
+                        <a style="color: white; background-color: rgb(21, 74, 172);" class="btn btn-info"
+                            href="{{route('admin.major', $major)}}">Edit
                             Major Data</a>
                         <img width="50px" height="50px" style="margin-top: 10px; border-radius: 10%;"
                             src="{{asset('storage/'.$major->image)}}">

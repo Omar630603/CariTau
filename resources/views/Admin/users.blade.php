@@ -172,7 +172,7 @@
                                     course to assign it to new lecturer</a>
                             </p>
                         </div>
-                        <form method=" POST" action="{{ route('register.lecturerAdmin') }}">
+                        <form method="POST" action="{{ route('register.lecturerAdmin') }}">
                             @csrf
                             <table>
                                 <thead>

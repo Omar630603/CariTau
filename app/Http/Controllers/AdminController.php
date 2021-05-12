@@ -242,20 +242,25 @@ class AdminController extends Controller
     {
         $lecturers = Lecturer::Join('user', 'lecturer.ID_user', '=', 'user.ID_user', 'left outer')->get();
         $courses = Course::all();
-        return view('Admin.lecturers', compact('lecturers', 'courses'));
+        return view('admin.lecturers', compact('lecturers', 'courses'));
     }
     public function majorsAdmin()
     {
         $majors = Major::all();
         $courses = Course::all();
-        return view('Admin.majors', compact('majors', 'courses'));
+        return view('admin.majors', compact('majors', 'courses'));
+    }
+    public function majorAdmin(Major $major)
+    {
+        $courses = Course::Join('major', 'course.ID_major', '=', 'major.ID_major', 'left outer')->where('course.ID_major', '=', $major->ID_major)->get();
+        return view('admin.majorEdit', compact('major', 'courses'));
     }
     public function commentsAdmin()
     {
-        return view('Admin.comments');
+        return view('admin.comments');
     }
     public function othersAdmin()
     {
-        return view('Admin.others');
+        return view('admin.others');
     }
 }
