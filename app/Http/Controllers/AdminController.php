@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Lecturer;
+use App\Models\Major;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -245,7 +246,9 @@ class AdminController extends Controller
     }
     public function majorsAdmin()
     {
-        return view('Admin.majors');
+        $majors = Major::all();
+        $courses = Course::all();
+        return view('Admin.majors', compact('majors', 'courses'));
     }
     public function commentsAdmin()
     {
