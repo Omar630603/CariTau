@@ -68,6 +68,16 @@
                             Course Data</a>
                     </div>
                     <div class="control-major">
+                        <b>Lecturer:
+                            @foreach ($lecturers as $lecturer)
+                            @if ($lecturer->ID_course == $course->ID_course)
+                            <a href="{{ route('admin.userDetails', $lecturer->ID_user) }}">
+                                {{$lecturer->name}}
+                            </a></b>
+                        @endif
+                        @endforeach
+                    </div>
+                    <div class="control-major">
                         <b>Description</b>:<br>{{$course->description}}<br>
                     </div>
                     <div class="control-major">
@@ -77,6 +87,9 @@
             </div>
         </div>
         @endforeach
+    </div>
+    <div class="form-group float-right">
+        <a class="btn btn-danger">Delete {{$major->major_name}}</a>
     </div>
 </div>
 @endsection

@@ -45,7 +45,7 @@ Route::delete('/admin/users/deleteCourse/{user}/{Course}', [AdminController::cla
 Route::put('/admin/users/editCourse/{user}/{course}', [AdminController::class, 'editCourseUser'])->name('userAdmin.editStudentCourse')->middleware('AdminAccess');
 
 
-Route::get('/admin/alLecturers', [AdminController::class, 'lecturesAdmin'])->name('admin.lecturers')->middleware('AdminAccess');
+Route::get('/admin/Lecturers', [AdminController::class, 'lecturesAdmin'])->name('admin.lecturers')->middleware('AdminAccess');
 Route::get('/admin/majors', [AdminController::class, 'majorsAdmin'])->name('admin.majors')->middleware('AdminAccess');
 Route::get('/admin/major/{major}', [AdminController::class, 'majorAdmin'])->name('admin.major')->middleware('AdminAccess');
 Route::get('/admin/comments', [AdminController::class, 'commentsAdmin'])->name('admin.comments')->middleware('AdminAccess');

@@ -1,6 +1,9 @@
 @extends('layouts.adminApp')
 @section('content')
 <div class="container">
+    <div class="form-group">
+        <a class="btn btn-success">Add New Major</a>
+    </div>
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         @foreach ($majors as $major)
         <div class="panel panel-default">
@@ -28,9 +31,21 @@
                     </div>
                     <div class="control-major">
                         <b>Courses</b>:<br>
+                        @php $no = 1; @endphp
                         @foreach ($courses as $course)
                         @if ($course->ID_major==$major->ID_major)
-                        <a href="">{{$course->course_name}}</a><br>
+                        <b>{{$no ++}}-
+                            <a href="">{{$course->course_name}}</a></b> <br>
+                        <div class="control-major">
+                            <b>Lecturer:
+                                @foreach ($lecturers as $lecturer)
+                                @if ($lecturer->ID_course == $course->ID_course)
+                                <a href="{{ route('admin.userDetails', $lecturer->ID_user) }}">
+                                    {{$lecturer->name}}
+                                </a></b>
+                            @endif
+                            @endforeach
+                        </div>
                         @endif
                         @endforeach
                     </div>

@@ -56,7 +56,7 @@ class AdminController extends Controller
         $lecturers = Lecturer::Join('user', 'lecturer.ID_user', '=', 'user.ID_user', 'left outer')->paginate(10);
         $courses = Course::all();
         $lecturerCourses = Lecturer::pluck('ID_course')->all();
-        $availableCourses = json_decode(json_encode($lecturerCourses), true);;
+        $availableCourses = json_decode(json_encode($lecturerCourses), true);
         return view('admin.users', [
             'users' => $users, 'admins' => $admins, 'lecturers' => $lecturers, 'courses' => $courses,
             'countS' => $countStudents, 'countL' => $countLecturers, 'countA' => $countAdmins, 'availableCourses' => $availableCourses
@@ -242,18 +242,22 @@ class AdminController extends Controller
     {
         $lecturers = Lecturer::Join('user', 'lecturer.ID_user', '=', 'user.ID_user', 'left outer')->get();
         $courses = Course::all();
-        return view('admin.lecturers', compact('lecturers', 'courses'));
+        $lecturerCourses = Lecturer::pluck('ID_course')->all();
+        $availableCourses = json_decode(json_encode($lecturerCourses), true);
+        return view('admin.lecturers', compact('lecturers', 'courses', 'availableCourses'));
     }
     public function majorsAdmin()
     {
         $majors = Major::all();
         $courses = Course::all();
-        return view('admin.majors', compact('majors', 'courses'));
+        $lecturers = Lecturer::Join('user', 'lecturer.ID_user', '=', 'user.ID_user', 'left outer')->get();
+        return view('admin.majors', compact('majors', 'courses', 'lecturers'));
     }
     public function majorAdmin(Major $major)
     {
         $courses = Course::Join('major', 'course.ID_major', '=', 'major.ID_major', 'left outer')->where('course.ID_major', '=', $major->ID_major)->get();
-        return view('admin.majorEdit', compact('major', 'courses'));
+        $lecturers = Lecturer::Join('user', 'lecturer.ID_user', '=', 'user.ID_user', 'left outer')->get();
+        return view('admin.majorEdit', compact('major', 'courses', 'lecturers'));
     }
     public function commentsAdmin()
     {
