@@ -288,7 +288,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td data-label="Course Name"><a href="">{{$lecturerCourse[0]->course_name}}</a></td>
+                    <td data-label="Course Name"><a
+                            href="{{ route('admin.courseDetails', $lecturerCourse[0]) }}">{{$lecturerCourse[0]->course_name}}</a>
+                    </td>
                     <td data-label="Course Price/Student">{{$lecturerCourse[0]->price}}</td>
                 </tr>
             </tbody>
@@ -389,7 +391,7 @@
         x.style.display = "";
         x.style="animation: drop 0.5s ease; margin-top: 20px;";
     } else {
-        x.style.display = "none";
+        $('#addForm'+id).slideUp();
     }
     }
     var s = document.getElementById("courseStudent");

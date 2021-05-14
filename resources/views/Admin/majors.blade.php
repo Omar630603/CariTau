@@ -10,18 +10,16 @@
         <div class="alert alert-success">
             <p>{{ $message }}</p>
         </div>
+        @elseif ($message = Session::get('add'))
+        <div class="alert alert-info">
+            <p>{{ $message }}</p>
+        </div>
         @endif
     </div>
     <div class="form-group">
         <a onclick="addUser()" class="btn btn-success">Add New Major</a>
     </div>
     <div class="AddUserTable" style="display: none; width: 100%" id="addForm">
-        <div id="alertCourse" style="display: none; text-align: left;" class="alert alert-info">
-            <p style="text-align: left;">You can't add new lecturer because all the courses have been
-                taken<br><a href="">Add new
-                    course to assign it to new lecturer</a>
-            </p>
-        </div>
         <form method="POST" action="{{ route('admin.majorAdd') }}">
             @csrf
             <table style="width: 100%">
@@ -64,7 +62,7 @@
                     </a>
                 </h4>
             </div>
-            <div id="collapse{{$major->ID_major}}" class="panel-collapse collapse" role="tabpanel"
+            <div id="collapse{{$major->ID_major}}" class="panel-collapse collapse show" role="tabpanel"
                 aria-labelledby="heading{{$major->ID_major}}">
                 <div class="panel-body">
                     <div class="control-major action-major">
@@ -84,7 +82,7 @@
                         @foreach ($courses as $course)
                         @if ($course->ID_major==$major->ID_major)
                         <b>{{$no ++}}-
-                            <a href="">{{$course->course_name}}</a></b> <br>
+                            <a href="{{ route('admin.courseDetails', $course) }}">{{$course->course_name}}</a></b> <br>
                         <div class="control-major">
                             <b>Lecturer:</b>
                             @foreach ($lecturers as $lecturer)
@@ -112,7 +110,7 @@
             x.style.display = "";
             x.style="animation: drop 0.5s ease;";
         } else {
-            x.style.display = "none";
+            $('#addForm').slideUp();
         }
     }
 </script>

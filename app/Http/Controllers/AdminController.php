@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Lecturer;
 use App\Models\Major;
+use App\Models\Material;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -257,7 +258,8 @@ class AdminController extends Controller
     {
         $courses = Course::Join('major', 'course.ID_major', '=', 'major.ID_major', 'left outer')->where('course.ID_major', '=', $major->ID_major)->get();
         $lecturers = Lecturer::Join('user', 'lecturer.ID_user', '=', 'user.ID_user', 'left outer')->get();
-        return view('admin.majorEdit', compact('major', 'courses', 'lecturers'));
+        $materials = Material::all();
+        return view('admin.majorEdit', compact('major', 'courses', 'lecturers', 'materials'));
     }
     public function addMajorAdmin(Request $request)
     {
@@ -328,6 +330,19 @@ class AdminController extends Controller
         }
         $message = 'Added Successfully';
         return redirect()->route('admin.major', $major)->with('success', $message);
+    }
+    public function noCourseMajorsAdmin()
+    {
+        $message = 'You have to add the course in the right major or create a new one';
+        return redirect()->route('admin.majors')->with('add', $message);
+    }
+    public function showCourse(Course $course)
+    {
+        $majors = Major::all();
+        $materials = Material::all();
+        $lecturerID = Lecturer::where('ID_course', '=', $course->ID_course)->get();
+        $lecturer = User::where('ID_user', '=', $lecturerID[0]->ID_user)->get();
+        return view('admin.courseEdit', compact('course', 'lecturer', 'materials', 'majors'));
     }
     public function commentsAdmin()
     {

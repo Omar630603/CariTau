@@ -7,7 +7,7 @@
     <div class="AddUserTable" style="display: none; width: 100%" id="addForm">
         <div id="alertCourse" style="display: none; text-align: left;" class="alert alert-info">
             <p style="text-align: left;">You can't add new lecturer because all the courses have been
-                taken<br><a href="">Add new
+                taken<br><a href="{{route('admin.noCourse')}}">Add new
                     course to assign it to new lecturer</a>
             </p>
         </div>
@@ -87,7 +87,9 @@
                 <p class="user_name">{{$lecturer->name}}</p>
                 @foreach ($courses as $course)
                 @if ($lecturer->ID_course == $course->ID_course)
-                <p class="skill">{{$course->course_name}}</p>
+                <a style="text-decoration: none; text-align: center" href="{{ route('admin.courseDetails', $course) }}">
+                    <p class="skill">{{$course->course_name}}</p>
+                </a>
                 @endif
                 @endforeach
             </div>
@@ -132,7 +134,7 @@
         x.style.display = "";
         x.style="animation: drop 0.5s ease;";
     } else {
-        x.style.display = "none";
+        $('#addForm').slideUp();
     }
     }
     var s = document.getElementById("courseLecturer");

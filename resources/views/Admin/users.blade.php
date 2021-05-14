@@ -5,13 +5,14 @@
     <header>
         <nav>
             <ul>
-                <li><a href="" onclick="$('#lecturer').hide(); $('#admin').hide(); $('#student').show()">Students</a>
+                <li><a href=""
+                        onclick="$('#lecturer').hide(); $('#admin').hide(); $('#student').slideToggle('slow')">Students</a>
                 </li>
                 <li><a href=""
-                        onclick="$('#student').hide(); $('#admin').hide(); $('#lecturer').show();return false;">Lecturers</a>
+                        onclick="$('#student').hide(); $('#admin').hide(); $('#lecturer').slideToggle('slow');return false;">Lecturers</a>
                 </li>
                 <li><a href=""
-                        onclick="$('#student').hide(); $('#lecturer').hide(); $('#admin').show();return false;">Admins</a>
+                        onclick="$('#student').hide(); $('#lecturer').hide(); $('#admin').slideToggle('slow');return false;">Admins</a>
                 </li>
             </ul>
         </nav>
@@ -168,7 +169,8 @@
                         <div id="alertCourse" style="display: none; text-align: left; margin-top: 60px"
                             class="alert alert-info">
                             <p style="text-align: left;">You can't add new lecturer because all the courses have been
-                                taken<br><a href="">Add new
+                                taken<br><a href="{{route('admin.noCourse')}}">Add
+                                    new
                                     course to assign it to new lecturer</a>
                             </p>
                         </div>
@@ -409,7 +411,7 @@
         x.style.display = "";
         x.style="animation: drop 0.5s ease;";
     } else {
-        x.style.display = "none";
+        $('#addForm'+id).slideUp();
     }
     }
     var s = document.getElementById("courseLecturer");
