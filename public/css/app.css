@@ -10683,12 +10683,7 @@ nav.shift ul li a:hover:after {
     height: 250px;
     margin: 10px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 200);
-    background: linear-gradient(
-        to right,
-        rgb(98, 122, 170),
-        rgb(61, 92, 170),
-        rgb(16, 49, 148)
-    );
+    background: #0f2027;
     border-radius: 23px;
     flex-direction: column;
     color: white;
@@ -10733,7 +10728,12 @@ nav.shift ul li a:hover:after {
 }
 .left_container {
     position: absolute;
-    background: #0f2027;
+    background: linear-gradient(
+        to right,
+        rgb(16, 49, 148),
+        rgb(61, 92, 170),
+        rgb(98, 122, 170)
+    );
     width: 100%;
     height: 100%;
     border-radius: 23px;
@@ -10825,8 +10825,7 @@ nav.shift ul li a:hover:after {
     margin: 10px;
 }
 .action-major {
-    float: right;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: space-between;
 }

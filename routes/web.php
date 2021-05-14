@@ -33,6 +33,7 @@ Route::get('/admin/dashboard', [AdminController::class, 'dashboardAdmin'])->name
 Route::get('/admin/users', [AdminController::class, 'usersAdmin'])->name('admin.users')->middleware('AdminAccess');
 Route::post('/admin/student', [AdminController::class, 'registerUserAdmin'])->name('register.userAdmin')->middleware('AdminAccess');
 Route::post('/admin/lecturer', [AdminController::class, 'registerLecturerAdmin'])->name('register.lecturerAdmin')->middleware('AdminAccess');
+Route::get('/admin/Lecturers', [AdminController::class, 'lecturesAdmin'])->name('admin.lecturers')->middleware('AdminAccess');
 Route::post('/admin/admin', [AdminController::class, 'registerAdminAdmin'])->name('register.adminAdmin')->middleware('AdminAccess');
 Route::get('/admin/search', [AdminController::class, 'search'])->name('admin.search')->middleware('AdminAccess');
 Route::get('/admin/users/{user}', [AdminController::class, 'showUser'])->name('admin.userDetails')->middleware('AdminAccess');
@@ -44,10 +45,15 @@ Route::post('/admin/users/addCourse/{user}', [AdminController::class, 'addCourse
 Route::delete('/admin/users/deleteCourse/{user}/{Course}', [AdminController::class, 'deleteCourseUser'])->name('userAdmin.deleteStudentCourse')->middleware('AdminAccess');
 Route::put('/admin/users/editCourse/{user}/{course}', [AdminController::class, 'editCourseUser'])->name('userAdmin.editStudentCourse')->middleware('AdminAccess');
 
-
-Route::get('/admin/Lecturers', [AdminController::class, 'lecturesAdmin'])->name('admin.lecturers')->middleware('AdminAccess');
 Route::get('/admin/majors', [AdminController::class, 'majorsAdmin'])->name('admin.majors')->middleware('AdminAccess');
 Route::get('/admin/major/{major}', [AdminController::class, 'majorAdmin'])->name('admin.major')->middleware('AdminAccess');
+Route::post('/admin/major/add', [AdminController::class, 'addMajorAdmin'])->name('admin.majorAdd')->middleware('AdminAccess');
+Route::put('/admin/major/editImage/{major}', [AdminController::class, 'editMajorImage'])->name('majorAdmin.updateImage')->middleware('AdminAccess');
+Route::post('/admin/major/restoreImage/{major}', [AdminController::class, 'editMajorImageDefult'])->name('majorAdmin.restoreImage')->middleware('AdminAccess');
+Route::post('/admin/major/edit/{major}', [AdminController::class, 'editMajor'])->name('majorAdmin.update')->middleware('AdminAccess');
+Route::delete('/admin/major/delete/{major}', [AdminController::class, 'deleteMajor'])->name('majorAdmin.delete')->middleware('AdminAccess');
+Route::post('/admin/major/add/course/{major}', [AdminController::class, 'addMajorCourseAdmin'])->name('admin.majorAddCourse')->middleware('AdminAccess');
+
 Route::get('/admin/comments', [AdminController::class, 'commentsAdmin'])->name('admin.comments')->middleware('AdminAccess');
 Route::get('/admin/others', [AdminController::class, 'othersAdmin'])->name('admin.others')->middleware('AdminAccess');
 

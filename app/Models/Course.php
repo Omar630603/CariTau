@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Lecturer;
 use App\Models\User;
+use App\Models\Major;
 
 class Course extends Model
 {
@@ -25,5 +26,9 @@ class Course extends Model
     public function user()
     {
         return $this->belongsToMany(User::class, 'enrollment', 'ID_user', 'ID_course')->withTimestamps()->withPivot('status');;
+    }
+    public function major()
+    {
+        return $this->belongsTo(Major::class, 'ID_major');
     }
 }

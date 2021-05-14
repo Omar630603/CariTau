@@ -259,6 +259,76 @@ class AdminController extends Controller
         $lecturers = Lecturer::Join('user', 'lecturer.ID_user', '=', 'user.ID_user', 'left outer')->get();
         return view('admin.majorEdit', compact('major', 'courses', 'lecturers'));
     }
+    public function addMajorAdmin(Request $request)
+    {
+        try {
+            $request->validate([
+                'major_name' => 'required',
+                'description' => 'required',
+            ]);
+            $major = new Major;
+            $major->major_name = $request->get('major_name');
+            $major->description = $request->get('description');
+            $major->save();
+        } catch (Exception  $e) {
+            $message = 'There was Something Wrong. Please, Try again';
+            return redirect()->route('admin.majors')->with('fail', $message);
+        }
+        $message = 'Added Successfully';
+        return redirect()->route('admin.majors')->with('success', $message);
+    }
+    public function editMajor(Request $request, Major $major)
+    {
+        $request->validate([
+            'major_name' => 'required',
+            'description' => 'required',
+        ]);
+        $major->major_name = $request->get('major_name');
+        $major->description = $request->get('description');
+        $major->save();
+        return redirect()->route('admin.major', $major);
+    }
+    public function editMajorImage(Request $request, Major $major)
+    {
+        if ($request->file('image')) {
+            $image_name = $request->file('image')->store('Major_images', 'public');
+        }
+        $major->image = $image_name;
+        $major->save();
+        return redirect()->route('admin.major', $major);
+    }
+    public function editMajorImageDefult(Major $major)
+    {
+        $major->image = 'Major_images/default.png';
+        $major->save();
+        return redirect()->route('admin.major', $major);
+    }
+    public function deleteMajor(Major $major)
+    {
+        $major->delete();
+        return redirect()->route('admin.majors');
+    }
+    public function addMajorCourseAdmin(Request $request, Major $major)
+    {
+        try {
+            $request->validate([
+                'course_name' => 'required',
+                'description' => 'required',
+                'price' => 'required',
+            ]);
+            $course = new Course;
+            $course->major()->associate($major);
+            $course->course_name = $request->get('course_name');
+            $course->description = $request->get('description');
+            $course->price = $request->get('price');
+            $course->save();
+        } catch (Exception  $e) {
+            $message = 'There was Something Wrong. Please, Try again';
+            return redirect()->route('admin.major', $major)->with('fail', $message);
+        }
+        $message = 'Added Successfully';
+        return redirect()->route('admin.major', $major)->with('success', $message);
+    }
     public function commentsAdmin()
     {
         return view('admin.comments');
