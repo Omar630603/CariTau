@@ -18,6 +18,7 @@ class Course extends Model
         'course_name',
         'description',
         'price',
+        'image',
     ];
     public function lecturer()
     {
@@ -30,5 +31,9 @@ class Course extends Model
     public function major()
     {
         return $this->belongsTo(Major::class, 'ID_major');
+    }
+    public function material()
+    {
+        return $this->hasMany(Material::class, 'ID_course');
     }
 }

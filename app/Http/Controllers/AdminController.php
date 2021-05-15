@@ -256,7 +256,7 @@ class AdminController extends Controller
     }
     public function majorAdmin(Major $major)
     {
-        $courses = Course::Join('major', 'course.ID_major', '=', 'major.ID_major', 'left outer')->where('course.ID_major', '=', $major->ID_major)->get();
+        $courses = Course::select('*', 'course.description', 'course.image')->Join('major', 'course.ID_major', '=', 'major.ID_major', 'left outer')->where('course.ID_major', '=', $major->ID_major)->get();
         $lecturers = Lecturer::Join('user', 'lecturer.ID_user', '=', 'user.ID_user', 'left outer')->get();
         $materials = Material::all();
         return view('admin.majorEdit', compact('major', 'courses', 'lecturers', 'materials'));
@@ -341,8 +341,70 @@ class AdminController extends Controller
         $majors = Major::all();
         $materials = Material::all();
         $lecturerID = Lecturer::where('ID_course', '=', $course->ID_course)->get();
-        $lecturer = User::where('ID_user', '=', $lecturerID[0]->ID_user)->get();
-        return view('admin.courseEdit', compact('course', 'lecturer', 'materials', 'majors'));
+        if ($lecturerID->first()) {
+            $lecturer = User::where('ID_user', '=', $lecturerID[0]->ID_user)->get();
+            return view('admin.courseEdit', compact('course', 'lecturer', 'materials', 'majors'));
+        } else {
+            $lecturer = 'no lecturer';
+            return view('admin.courseEdit', compact('course', 'lecturer', 'materials', 'majors'));
+        }
+    }
+    public function editCourse(Request $request, Course $course)
+    {
+
+        $request->validate([
+            'major' => 'required',
+            'course_name' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+        ]);
+        $course->ID_major = $request->get('major');
+        $course->course_name = $request->get('course_name');
+        if ($request->get('description')) {
+            $course->description = $request->get('description');
+        }
+        $course->price = $request->get('price');
+        $course->save();
+        return redirect()->route('admin.courseDetails', $course);
+    }
+    public function editCourseImage(Request $request, Course $course)
+    {
+        if ($request->file('image')) {
+            $image_name = $request->file('image')->store('Course_images', 'public');
+        }
+        $course->image = $image_name;
+        $course->save();
+        return redirect()->route('admin.courseDetails', $course);
+    }
+    public function editCourseImageDefult(Course $course)
+    {
+        $course->image = 'Course_images/default.png';
+        $course->save();
+        return redirect()->route('admin.courseDetails', $course);
+    }
+    public function deleteCourse(Course $course, Major $major)
+    {
+        $course->delete();
+        return redirect()->route('admin.major', $major);
+    }
+    public function addMaterialCourseAdmin(Request $request, Course $course)
+    {
+        try {
+            $request->validate([
+                'material_name' => 'required',
+                'description' => 'required',
+            ]);
+            $material = new Material;
+            $material->course()->associate($course);
+            $material->material_name = $request->get('material_name');
+            $material->description = $request->get('description');
+            $material->save();
+        } catch (Exception  $e) {
+            $message = 'There was Something Wrong. Please, Try again';
+            return redirect()->route('admin.courseDetails', $course)->with('fail', $message);
+        }
+        $message = 'Added Successfully';
+        return redirect()->route('admin.courseDetails', $course)->with('success', $message);
     }
     public function commentsAdmin()
     {

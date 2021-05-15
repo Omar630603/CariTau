@@ -49,8 +49,13 @@
                         placeholder="{{$major->major_name}}" value="{{$major->major_name}}">
                 </div>
                 <div class="form-group row">
-                    <label style="margin-bottom: 0" for="description">Major Description:</label>
-                    <textarea rows="9" class="form-control" name="description" type="text"
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <label style="margin-bottom: 0" for="description">Major Description:</label>
+                        <div id="copy-icon" data-toggle="tooltip" title="Copy">
+                            <i style="cursor: pointer;" onclick="copyToClipboard()" class="fa fa-copy"></i>
+                        </div>
+                    </div>
+                    <textarea id="description-copy" rows="9" class="form-control" name="description" type="text"
                         placeholder="{{$major->description}}" value="{{$major->description}}"></textarea>
                 </div>
                 <div class="form-group">
@@ -126,6 +131,9 @@
                     <div class="control-major action-major">
                         <a style="color: white; background-color: rgb(21, 74, 172);" class="btn btn-info"
                             href="{{ route('admin.courseDetails', $course) }}">Edit Course Data</a>
+                        <a href="{{route('admin.courseDetails', $course)}}"><img width="50px" height="50px"
+                                style="margin-top: 10px; border-radius: 10%;"
+                                src="{{asset('storage/'.$course->image)}}"></a>
                     </div>
                     <div class="control-major">
                         <b>Lecturer:
@@ -163,6 +171,18 @@
         } else {
             $('#addForm').slideUp();
         }
+    }
+    function copyToClipboard() {
+    const str = document.getElementById('description-copy').placeholder ;
+    const el = document.createElement('textarea');
+    el.value = str;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
     }
 </script>
 @endsection

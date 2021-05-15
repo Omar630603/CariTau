@@ -62,7 +62,7 @@
                     </a>
                 </h4>
             </div>
-            <div id="collapse{{$major->ID_major}}" class="panel-collapse collapse show" role="tabpanel"
+            <div id="collapse{{$major->ID_major}}" class="panel-collapse collapse" role="tabpanel"
                 aria-labelledby="heading{{$major->ID_major}}">
                 <div class="panel-body">
                     <div class="control-major action-major">

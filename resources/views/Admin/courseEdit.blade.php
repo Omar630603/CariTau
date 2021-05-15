@@ -17,19 +17,19 @@
             <div style="margin-left: 40px; display: flex; flex-direction: column" class="float-right my-2">
                 <div style="margin-top: 14px; text-align: center">
                     <img width="220px" height="220px" style="border-radius: 10%;"
-                        src="{{asset('storage/Course_images/default.png')}}">
+                        src="{{asset('storage/'.$course->image)}}">
                 </div>
                 <a style="margin-top: 10px; color: white; background-color: rgb(21, 74, 172);" class="btn btn-info"
                     href="" onclick="$('#imageInput').show(); return false;">Change Picture</a>
-                <form method="POST" action="">
+                <form method="POST" action="{{route('courseAdmin.restoreImage', $course)}}">
                     @csrf
                     <button type="submit"
                         style="width: 100%; margin-top: 10px; color: white; background-color: rgb(21, 74, 172);"
                         class="btn btn-info">Restore
                         Default</button>
                 </form>
-                <form method="post" style="display: none; margin-top: 10px" id="imageInput" action=""
-                    enctype="multipart/form-data">
+                <form method="post" style="display: none; margin-top: 10px" id="imageInput"
+                    action="{{route('courseAdmin.updateImage', $course)}}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <input style="border: none" onchange="document.getElementById('upload').click();" type="file"
@@ -40,7 +40,8 @@
                     </i>
                 </form>
             </div>
-            <form method="post" action="" enctype="multipart/form-data" class="card-body" style="padding: 0;">
+            <form method="post" action="{{route('courseAdmin.update',$course)}}" enctype="multipart/form-data"
+                class="card-body" style="padding: 0;">
                 @csrf
                 <div class="form-group">
                     <label style="margin-bottom: 0" for="major">Change Course Major:</label>
@@ -71,9 +72,14 @@
                         value="{{$course->course_name}}">
                 </div>
                 <div class="form-group row">
-                    <label style="margin-bottom: 0" for="description">Course Description:</label>
-                    <textarea style="" rows="3" class="form-control" name="description" type="text"
-                        placeholder="{{$course->description}}" value="{{$course->description}}"></textarea>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <label style="margin-bottom: 0" for="description">Course Description:</label>
+                        <div id="copy-icon" data-toggle="tooltip" title="Copy">
+                            <i style="cursor: pointer;" onclick="copyToClipboard()" class="fa fa-copy"></i>
+                        </div>
+                    </div>
+                    <textarea id="description-copy" style="" rows="3" class="form-control" name="description"
+                        type="text" placeholder="{{$course->description}}" value="{{$course->description}}"></textarea>
                 </div>
                 <div class="form-group row">
                     <label style="margin-bottom: 0" for="price">Course price:</label>
@@ -84,11 +90,16 @@
                     <button type="submit" class="btn btn-primary">Done</button>
                 </div>
             </form>
-            <form style="display: none" action="" method="POST">
+            @foreach ($majors as $major)
+            @if ($major->ID_major == $course->ID_major)
+            <form style="display: none" action="{{route('courseAdmin.delete', ['course'=>$course,'major'=>$major])}}"
+                method="POST">
                 @csrf
                 @method('DELETE')
                 <button id="delete" type="submit"></button>
             </form>
+            @endif
+            @endforeach
         </div>
     </div>
     <div class="form-group">
@@ -102,30 +113,33 @@
             {{$course->course_name}}</a>
     </div>
     <div style="display: flex; justify-content: flex-end">
+        @if (is_object($lecturer))
         <h5>This Course has <a href="{{ route('admin.userDetails', $lecturer[0]->ID_user) }}">{{$lecturer[0]->name}}</a>
             as a Lecturer</h5>
+        @else
+        <h5 data-toggle="tooltip" title="Click to add a Lecturer for this course">This Course has <a
+                href="{{ route('admin.lecturers') }}">{{$lecturer}}</a>
+            as a Lecturer</h5>
+        @endif
+
     </div>
     <div class="AddUserTable" style="display: none; width: 100%" id="addForm">
-        <form method="POST" action="">
+        <form method="POST" action="{{route('admin.courseAddMaterial', $course)}}">
             @csrf
             <table style="width: 100%">
                 <thead>
                     <tr>
-                        <th scope="col">Course Name</th>
+                        <th scope="col">Material Name</th>
                         <th scope="col">Description</th>
-                        <th scope="col">price</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td data-label="Course Name">
-                            <input id="course_name" type="text" class="form-control" name="course_name">
+                        <td data-label="Material Name">
+                            <input id="course_name" type="text" class="form-control" name="material_name">
                         </td>
                         <td data-label="Description">
                             <textarea rows="5" id="description" class="form-control" name="description"></textarea>
-                        </td>
-                        <td data-label="price">
-                            <input id="price" type="text" class="form-control" name="price">
                         </td>
                     </tr>
                     <tr style="align-content: center">
@@ -191,6 +205,18 @@
     checkboxes.forEach((item) => {
         if (item !== checkbox) item.checked = false
     })
+    }
+    function copyToClipboard() {
+    const str = document.getElementById('description-copy').placeholder ;
+    const el = document.createElement('textarea');
+    el.value = str;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
     }
 </script>
 @endsection

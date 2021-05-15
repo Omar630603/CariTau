@@ -15,4 +15,8 @@ class Material extends Model
         'material_name',
         'description',
     ];
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'ID_course');
+    }
 }

@@ -14,6 +14,7 @@ class Major extends Model
     protected $fillable = [
         'major_name',
         'description',
+        'image'
     ];
     public function course()
     {
