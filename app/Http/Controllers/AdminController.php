@@ -12,6 +12,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\MessageBag;
 
 class AdminController extends Controller
@@ -199,22 +200,40 @@ class AdminController extends Controller
     }
     public function editUserImage(Request $request, User $user)
     {
-        if ($request->file('image')) {
-            $image_name = $request->file('image')->store('User_images', 'public');
+        if ($user->image == "User_images/default.png") {
+            if ($request->file('image')) {
+                $image_name = $request->file('image')->store('User_images', 'public');
+            }
+            $user->image = $image_name;
+        } else {
+            Storage::delete('public/' . $user->image);
+            if ($request->file('image')) {
+                $image_name = $request->file('image')->store('User_images', 'public');
+            }
+            $user->image = $image_name;
         }
-        $user->image = $image_name;
         $user->save();
         return redirect()->route('admin.userDetails', $user);
     }
     public function editUserImageDefult(User $user)
     {
-        $user->image = 'User_images/default.png';
+        if ($user->image == "User_images/default.png") {
+            $user->image = 'User_images/default.png';
+        } else {
+            Storage::delete('public/' . $user->image);
+            $user->image = 'User_images/default.png';
+        }
         $user->save();
         return redirect()->route('admin.userDetails', $user);
     }
     public function deleteUser(User $user)
     {
-        $user->delete();
+        if ($user->image == "User_images/default.png") {
+            $user->delete();
+        } else {
+            Storage::delete('public/' . $user->image);
+            $user->delete();
+        }
         return redirect()->route('admin.users');
     }
     public function addCourseUser(Request $request, User $user)
@@ -292,22 +311,40 @@ class AdminController extends Controller
     }
     public function editMajorImage(Request $request, Major $major)
     {
-        if ($request->file('image')) {
-            $image_name = $request->file('image')->store('Major_images', 'public');
+        if ($major->image == "Major_images/default.png") {
+            if ($request->file('image')) {
+                $image_name = $request->file('image')->store('Major_images', 'public');
+            }
+            $major->image = $image_name;
+        } else {
+            Storage::delete('public/' . $major->image);
+            if ($request->file('image')) {
+                $image_name = $request->file('image')->store('Major_images', 'public');
+            }
+            $major->image = $image_name;
         }
-        $major->image = $image_name;
         $major->save();
         return redirect()->route('admin.major', $major);
     }
     public function editMajorImageDefult(Major $major)
     {
-        $major->image = 'Major_images/default.png';
+        if ($major->image == "Major_images/default.png") {
+            $major->image = 'Major_images/default.png';
+        } else {
+            Storage::delete('public/' . $major->image);
+            $major->image = 'Major_images/default.png';
+        }
         $major->save();
         return redirect()->route('admin.major', $major);
     }
     public function deleteMajor(Major $major)
     {
-        $major->delete();
+        if ($major->image == "Major_images/default.png") {
+            $major->delete();
+        } else {
+            Storage::delete('public/' . $major->image);
+            $major->delete();
+        }
         return redirect()->route('admin.majors');
     }
     public function addMajorCourseAdmin(Request $request, Major $major)
@@ -369,22 +406,40 @@ class AdminController extends Controller
     }
     public function editCourseImage(Request $request, Course $course)
     {
-        if ($request->file('image')) {
-            $image_name = $request->file('image')->store('Course_images', 'public');
+        if ($course->image == "Course_images/default.png") {
+            if ($request->file('image')) {
+                $image_name = $request->file('image')->store('Course_images', 'public');
+            }
+            $course->image = $image_name;
+        } else {
+            Storage::delete('public/' . $course->image);
+            if ($request->file('image')) {
+                $image_name = $request->file('image')->store('Course_images', 'public');
+            }
+            $course->image = $image_name;
         }
-        $course->image = $image_name;
         $course->save();
         return redirect()->route('admin.courseDetails', $course);
     }
     public function editCourseImageDefult(Course $course)
     {
-        $course->image = 'Course_images/default.png';
+        if ($course->image == "Course_images/default.png") {
+            $course->image = 'Course_images/default.png';
+        } else {
+            Storage::delete('public/' . $course->image);
+            $course->image = 'Course_images/default.png';
+        }
         $course->save();
         return redirect()->route('admin.courseDetails', $course);
     }
     public function deleteCourse(Course $course, Major $major)
     {
-        $course->delete();
+        if ($course->image == "Course_images/default.png") {
+            $course->delete();
+        } else {
+            Storage::delete('public/' . $course->image);
+            $course->delete();
+        }
         return redirect()->route('admin.major', $major);
     }
     public function addMaterialCourseAdmin(Request $request, Course $course)

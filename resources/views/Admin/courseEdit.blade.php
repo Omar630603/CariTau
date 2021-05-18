@@ -175,13 +175,19 @@
                             Material Data</a>
                     </div>
                     <div class="control-major">
-
+                        <b>Description</b> : {{$material->description}}<br>
                     </div>
                     <div class="control-major">
-
+                        <b>Files</b> :
                     </div>
                     <div class="control-major">
-
+                        <b>Video</b> :
+                    </div>
+                    <div class="control-major">
+                        <b>Quiz</b> :
+                    </div>
+                    <div class="control-major">
+                        <b>Form</b> :
                     </div>
                 </div>
             </div>
