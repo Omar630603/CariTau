@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Admin;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminAccess
 {
@@ -19,16 +20,20 @@ class AdminAccess
     {
         $admin = Admin::all();
         $isAdmin = False;
-        for ($i = 0; $i < count($admin); $i++) {
-            if (auth()->user()->ID_user == $admin[$i]->ID_user) {
-                $isAdmin = True;
-                break;
+        if (Auth::check()) {
+            for ($i = 0; $i < count($admin); $i++) {
+                if (auth()->user()->ID_user == $admin[$i]->ID_user) {
+                    $isAdmin = True;
+                    break;
+                }
             }
-        }
-        if ($isAdmin) {
-            return $next($request);
+            if ($isAdmin) {
+                return $next($request);
+            } else {
+                return redirect('home')->with('error', "You don't have admin access.");
+            }
         } else {
-            return redirect('home')->with('error', "You don't have admin access.");
+            return redirect()->back();
         }
     }
 }

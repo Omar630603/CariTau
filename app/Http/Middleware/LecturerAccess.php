@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use App\Models\Lecturer;
-
+use Illuminate\Support\Facades\Auth;
 
 class LecturerAccess
 {
@@ -20,16 +20,20 @@ class LecturerAccess
     {
         $lecturer = Lecturer::all();
         $isLecturer = False;
-        for ($i = 0; $i < count($lecturer); $i++) {
-            if (auth()->user()->ID_user == $lecturer[$i]->ID_user) {
-                $isLecturer = True;
-                break;
+        if (Auth::check()) {
+            for ($i = 0; $i < count($lecturer); $i++) {
+                if (auth()->user()->ID_user == $lecturer[$i]->ID_user) {
+                    $isLecturer = True;
+                    break;
+                }
             }
-        }
-        if ($isLecturer) {
-            return $next($request);
+            if ($isLecturer) {
+                return $next($request);
+            } else {
+                return redirect('home')->with('error', "You don't have admin access.");
+            }
         } else {
-            return redirect('home')->with('error', "You don't have admin access.");
+            return redirect()->back();
         }
     }
 }

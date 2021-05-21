@@ -25,7 +25,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/user/home', [UserController::class, 'index'])->name('user.home');
+Route::get('/user/home', [UserController::class, 'index'])->name('user.home')->middleware('StudentAccess');
 
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.home')->middleware('AdminAccess');
 Route::post('/admin', [AdminController::class, 'authAdmin'])->name('admin.auth')->middleware('AdminAccess');
