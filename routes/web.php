@@ -62,6 +62,12 @@ Route::post('/admin/major/course/edit/{course}', [AdminController::class, 'editC
 Route::delete('/admin/major/course/delete/{course}/{major}', [AdminController::class, 'deleteCourse'])->name('courseAdmin.delete')->middleware('AdminAccess');
 Route::post('/admin/major/add/course/material/{course}', [AdminController::class, 'addMaterialCourseAdmin'])->name('admin.courseAddMaterial')->middleware('AdminAccess');
 
+Route::get('/admin/major/course/material/{material}', [AdminController::class, 'showMaterial'])->name('admin.materialDetails')->middleware('AdminAccess');
+Route::put('/admin/major/course/material/editImage/{material}', [AdminController::class, 'editMaterialImage'])->name('materialAdmin.updateImage')->middleware('AdminAccess');
+Route::post('/admin/major/course/material/restoreImage/{material}', [AdminController::class, 'editMaterialImageDefult'])->name('materialAdmin.restoreImage')->middleware('AdminAccess');
+Route::post('/admin/major/course/material/edit/{material}', [AdminController::class, 'editMaterial'])->name('materialAdmin.update')->middleware('AdminAccess');
+Route::delete('/admin/major/course/material/delete/{material}/{course}', [AdminController::class, 'deleteMaterial'])->name('materialAdmin.delete')->middleware('AdminAccess');
+
 Route::get('/admin/comments', [AdminController::class, 'commentsAdmin'])->name('admin.comments')->middleware('AdminAccess');
 Route::get('/admin/others', [AdminController::class, 'othersAdmin'])->name('admin.others')->middleware('AdminAccess');
 

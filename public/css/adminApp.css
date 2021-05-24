@@ -142,6 +142,13 @@ nav.shift ul li a:hover:after {
         display: flex;
         justify-content: space-between;
     }
+    .centerMaterial {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .profile-logo {
+        margin: 0 10px;
+    }
 }
 .AddUserTable table {
     border: 0;

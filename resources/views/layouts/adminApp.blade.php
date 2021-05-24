@@ -31,10 +31,10 @@
     <div id="app">
         <nav style="display: flex;" class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand profile-logo" href="{{ url('/') }}">
                     <img align="center" height="30" width="80" src="{{ asset('storage/images/ICON2.png') }}" alt="">
                 </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                <button class="navbar-toggler profile-logo" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -72,7 +72,7 @@
                         @endif
                         @else
                         <li class="nav-item dropdown">
-                            <div style="display: flex; justify-content: space-between; margin:0 10px;">
+                            <div class="profile-logo" style="display: flex; justify-content: space-between;">
                                 <div style="display: flex; flex-direction: column;">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

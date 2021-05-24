@@ -78,8 +78,8 @@
                             <i style="cursor: pointer;" onclick="copyToClipboard()" class="fa fa-copy"></i>
                         </div>
                     </div>
-                    <textarea id="description-copy" style="" rows="3" class="form-control" name="description"
-                        type="text" placeholder="{{$course->description}}" value="{{$course->description}}"></textarea>
+                    <textarea id="description-copy" rows="3" class="form-control" name="description" type="text"
+                        placeholder="{{$course->description}}" value="{{$course->description}}"></textarea>
                 </div>
                 <div class="form-group row">
                     <label style="margin-bottom: 0" for="price">Course price:</label>
@@ -171,7 +171,8 @@
                 aria-labelledby="heading{{$material->ID_material}}">
                 <div class="panel-body">
                     <div class="control-major action-major">
-                        <a style="color: white; background-color: rgb(21, 74, 172);" class="btn btn-info" href="">Edit
+                        <a style="color: white; background-color: rgb(21, 74, 172);" class="btn btn-info"
+                            href="{{route('admin.materialDetails', $material)}}">Edit
                             Material Data</a>
                     </div>
                     <div class="control-major">

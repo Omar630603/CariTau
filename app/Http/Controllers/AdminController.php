@@ -302,10 +302,11 @@ class AdminController extends Controller
     {
         $request->validate([
             'major_name' => 'required',
-            'description' => 'required',
         ]);
+        if ($request->get('description')) {
+            $major->description = $request->get('description');
+        }
         $major->major_name = $request->get('major_name');
-        $major->description = $request->get('description');
         $major->save();
         return redirect()->route('admin.major', $major);
     }
@@ -392,7 +393,6 @@ class AdminController extends Controller
         $request->validate([
             'major' => 'required',
             'course_name' => 'required',
-            'description' => 'required',
             'price' => 'required',
         ]);
         $course->ID_major = $request->get('major');
@@ -460,6 +460,72 @@ class AdminController extends Controller
         }
         $message = 'Added Successfully';
         return redirect()->route('admin.courseDetails', $course)->with('success', $message);
+    }
+    public function showMaterial(Material $material)
+    {
+        $courses = Course::all();
+        $course = Course::where('ID_course', '=', $material->ID_course)->first();
+        $lecturerID = Lecturer::where('ID_course', '=', $course->ID_course)->get();
+        if ($lecturerID->first()) {
+            $lecturer = User::where('ID_user', '=', $lecturerID[0]->ID_user)->get();
+            return view('admin.materialEdit', compact('material', 'lecturer', 'courses'));
+        } else {
+            $lecturer = 'no lecturer';
+            return view('admin.materialEdit', compact('material', 'lecturer', 'courses'));
+        }
+    }
+    public function editMaterial(Request $request, Material $material)
+    {
+
+        $request->validate([
+            'course' => 'required',
+            'material_name' => 'required',
+        ]);
+        $material->ID_course = $request->get('course');
+        $material->material_name = $request->get('material_name');
+        if ($request->get('description')) {
+            $material->description = $request->get('description');
+        }
+        $material->save();
+        return redirect()->route('admin.materialDetails', $material);
+    }
+    public function editMaterialImage(Request $request, Material $material)
+    {
+        if ($material->image == "Material_images/default.png") {
+            if ($request->file('image')) {
+                $image_name = $request->file('image')->store('Material_images', 'public');
+            }
+            $material->image = $image_name;
+        } else {
+            Storage::delete('public/' . $material->image);
+            if ($request->file('image')) {
+                $image_name = $request->file('image')->store('Material_images', 'public');
+            }
+            $material->image = $image_name;
+        }
+        $material->save();
+        return redirect()->route('admin.materialDetails', $material);
+    }
+    public function editMaterialImageDefult(Material $material)
+    {
+        if ($material->image == "Material_images/default.png") {
+            $material->image = 'Material_images/default.png';
+        } else {
+            Storage::delete('public/' . $material->image);
+            $material->image = 'Material_images/default.png';
+        }
+        $material->save();
+        return redirect()->route('admin.materialDetails', $material);
+    }
+    public function deleteMaterial(Material $material, Course $course)
+    {
+        if ($material->image == "Material_images/default.png") {
+            $material->delete();
+        } else {
+            Storage::delete('public/' . $material->image);
+            $material->delete();
+        }
+        return redirect()->route('admin.courseDetails', $course);
     }
     public function commentsAdmin()
     {
