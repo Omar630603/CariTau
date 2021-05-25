@@ -67,6 +67,7 @@ Route::put('/admin/major/course/material/editImage/{material}', [AdminController
 Route::post('/admin/major/course/material/restoreImage/{material}', [AdminController::class, 'editMaterialImageDefult'])->name('materialAdmin.restoreImage')->middleware('AdminAccess');
 Route::post('/admin/major/course/material/edit/{material}', [AdminController::class, 'editMaterial'])->name('materialAdmin.update')->middleware('AdminAccess');
 Route::delete('/admin/major/course/material/delete/{material}/{course}', [AdminController::class, 'deleteMaterial'])->name('materialAdmin.delete')->middleware('AdminAccess');
+Route::post('/admin/major/course/material/{material}/uploadFiles', [AdminController::class, 'materialUploadFiles'])->name('admin.uploadFiles')->middleware('AdminAccess');
 
 Route::get('/admin/comments', [AdminController::class, 'commentsAdmin'])->name('admin.comments')->middleware('AdminAccess');
 Route::get('/admin/others', [AdminController::class, 'othersAdmin'])->name('admin.others')->middleware('AdminAccess');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\File;
 use App\Models\Lecturer;
 use App\Models\Major;
 use App\Models\Material;
@@ -466,12 +467,13 @@ class AdminController extends Controller
         $courses = Course::all();
         $course = Course::where('ID_course', '=', $material->ID_course)->first();
         $lecturerID = Lecturer::where('ID_course', '=', $course->ID_course)->get();
+        $files = File::where('ID_material', '=', $material->ID_material)->get();
         if ($lecturerID->first()) {
             $lecturer = User::where('ID_user', '=', $lecturerID[0]->ID_user)->get();
-            return view('admin.materialEdit', compact('material', 'lecturer', 'courses'));
+            return view('admin.materialEdit', compact('material', 'lecturer', 'courses', 'files'));
         } else {
             $lecturer = 'no lecturer';
-            return view('admin.materialEdit', compact('material', 'lecturer', 'courses'));
+            return view('admin.materialEdit', compact('material', 'lecturer', 'courses', 'files'));
         }
     }
     public function editMaterial(Request $request, Material $material)
@@ -526,6 +528,77 @@ class AdminController extends Controller
             $material->delete();
         }
         return redirect()->route('admin.courseDetails', $course);
+    }
+    public function materialUploadFiles(Request $request, Material $material)
+    {
+        $files = $request->file('files');
+        if ($request->hasFile('files')) {
+            foreach ($files as $fileB) {
+                $file = new File;
+                $file->material()->associate($material);
+                $file->file_title = pathinfo($fileB->getClientOriginalName(), PATHINFO_FILENAME);
+                $type = $this->Typefile($fileB->getClientOriginalExtension());
+                switch ($type) {
+                    case 'pdf':
+                        $file->icon = 'images/pdf.png';
+                        break;
+                    case 'word':
+                        $file->icon = 'images/word.png';
+                        break;
+                    case 'powerpoint':
+                        $file->icon = 'images/powerpoint.png';
+                        break;
+                    case 'excel':
+                        $file->icon = 'images/excel.png';
+                        break;
+                    case 'archive':
+                        $file->icon = 'images/archive.png';
+                        break;
+                    case 'image':
+                        $file->icon = 'images/image.png';
+                        break;
+                    default:
+                        $file->icon = 'images/alt.png';
+                }
+                $file->file_name = $fileB->store('Material_files', 'public');
+                $file->save();
+            }
+        }
+        return redirect()->route('admin.materialDetails', $material);
+    }
+    public function Typefile($extension)
+    {
+        switch ($extension) {
+            case 'pdf':
+                $type = 'pdf';
+                break;
+            case 'docx':
+            case 'doc':
+                $type = 'word';
+                break;
+            case 'ppt':
+            case 'pptx':
+                $type = 'powerpoint';
+                break;
+            case 'xls':
+            case 'xlsx':
+            case 'csv':
+                $type = 'excel';
+                break;
+            case 'zip':
+            case '7z':
+            case 'rar':
+                $type = 'archive';
+                break;
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+                $type = 'image';
+                break;
+            default:
+                $type = 'alt';
+        }
+        return $type;
     }
     public function commentsAdmin()
     {

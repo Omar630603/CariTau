@@ -79,7 +79,7 @@
     <h3>Lecturers in CariTau: {{count($lecturers)}}</h3>
     <div class="main center">
         @foreach ($lecturers as $lecturer)
-        <div class="box center">
+        <div class="boxLectuter center">
             <a href="{{ route('admin.userDetails', $lecturer->ID_user) }}">
                 <img src="{{asset('storage/'.$lecturer->image)}}" alt="">
             </a>

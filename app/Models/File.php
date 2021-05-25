@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Material;
 
 class File extends Model
 {
@@ -14,4 +15,8 @@ class File extends Model
         'ID_material',
         'file_name',
     ];
+    public function material()
+    {
+        return $this->belongsTo(Material::class, 'ID_material');
+    }
 }

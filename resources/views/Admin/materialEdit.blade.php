@@ -118,7 +118,8 @@
         @endif
     </div>
 </div>
-<div class="container centerMaterial" style="display: flex; gap: 10px; margin-top: 10px">
+
+<div class="container centerMaterial" style="display: flex; gap: 10px; margin-top: 10px;">
     <div class="container">
         <div class="row">
             <div class="col-md-12" style="padding-left: 0; padding-right: 0">
@@ -126,13 +127,35 @@
                     <div class="card-header">
                         <div style="font-weight: 1000; vertical-align: text-bottom; line-height: 200%;">
                             {{ __('Files') }}
-                            <a class="btn btn-dark" style="float: right"><i class="fa fa-plus"
-                                    aria-hidden="true"></i></a>
+                            <button class="btn btn-dark" style="float: right" data-toggle="modal"
+                                data-target="#filesModal"><i class="fa fa-plus" aria-hidden="true"></i></button>
                         </div>
                     </div>
                     <div class="card-body">
-
-                        {{ __('Files') }}
+                        @foreach ($files as $file)
+                        <div style="display: flex;">
+                            <div style="display: flex; gap: 5px; flex: 1">
+                                <img width="20px" height="20px" src="{{ asset('storage/'.$file->icon) }}" alt="">
+                                <p>{{$file->file_title}}</p>
+                            </div>
+                            <div style="flex: 0">
+                                <i class="fa fa-ellipsis-h" style="color: #808080; cursor: pointer;" aria-hidden="true"
+                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false"></i>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <div>
+                                        <a class="dropdown-item" href="#"><i class="fa fa-edit"></i> Edit</a>
+                                    </div>
+                                    <div>
+                                        <a class="dropdown-item" href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                                    </div>
+                                    <div>
+                                        <a class="dropdown-item" href="#"><i class="fa fa-download"></i> Download</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -196,6 +219,48 @@
         </div>
     </div>
 </div>
+<div style="animation: drop 0.5s" class="modal" id="filesModal" tabindex="-1" role="dialog" aria-labelledby="filesModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Upload Files</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="panel panel-default">
+                        <div class="panel-body" style="border: none">
+                            <h4>Select files from your computer</h4>
+                            <form action="{{route('admin.uploadFiles', $material)}}" method="post"
+                                enctype="multipart/form-data" id="js-upload-form">
+                                @csrf
+                                <div class="form-inline" style="justify-content: space-between; margin: 20px 0">
+                                    <div class="form-group">
+                                        <input type="file" name="files[]" id="js-upload-files" multiple>
+                                    </div>
+                                    <button type="submit" class="btn btn-sm btn-dark" id="js-upload-submit">Upload
+                                        files</button>
+                                </div>
+                            </form>
+                            <h4>Or drag and drop files below</h4>
+                            <div class="upload-drop-zone" id="drop-zone">
+                                Just drag and drop files here
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"">Close</button>
+                <button type=" button" class="btn btn-sm btn-primary"
+                    onclick="document.getElementById('js-upload-submit').click();">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     function onlyOne(checkbox) {
     var checkboxes = document.getElementsByName('course')
@@ -215,5 +280,37 @@
     document.execCommand('copy');
     document.body.removeChild(el);
     }
+</script>
+<script>
+    + function($) {
+    'use strict';
+    var dropZone = document.getElementById('drop-zone');
+    var uploadForm = document.getElementById('js-upload-form');
+    var uploadInput = document.getElementById('js-upload-files');
+    var startUpload = function(files) {
+        console.log(files)
+        uploadInput.files = files
+        console.log(uploadInput.files.length)
+        uploadForm.submit()
+    }
+    uploadForm.addEventListener('submit', function(e) {
+        var uploadFiles = document.getElementById('js-upload-files').files;
+        e.preventDefault()
+        startUpload(uploadFiles)
+    })
+    dropZone.ondrop = function(e) {
+        e.preventDefault();
+        this.className = 'upload-drop-zone';
+        startUpload(e.dataTransfer.files)
+    }
+    dropZone.ondragover = function() {
+        this.className = 'upload-drop-zone drop';
+        return false;
+    }
+    dropZone.ondragleave = function() {
+        this.className = 'upload-drop-zone';
+        return false;
+    }
+    }(jQuery);
 </script>
 @endsection

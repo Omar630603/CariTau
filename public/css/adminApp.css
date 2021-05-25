@@ -264,7 +264,7 @@ nav.shift ul li a:hover:after {
     justify-content: center;
     align-items: center;
 }
-.box {
+.boxLectuter {
     width: 250px;
     height: 250px;
     margin: 10px;
@@ -277,7 +277,7 @@ nav.shift ul li a:hover:after {
     overflow: hidden;
     justify-content: center;
 }
-.box img {
+.boxLectuter img {
     width: 100px;
     height: 100px;
     border-radius: 50px;
@@ -432,4 +432,26 @@ nav.shift ul li a:hover:after {
     background-color: #fff;
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
+}
+.upload-drop-zone {
+    height: 200px;
+    border-width: 2px;
+    margin-bottom: 20px;
+}
+.upload-drop-zone {
+    color: #ccc;
+    border-style: dashed;
+    border-color: #ccc;
+    line-height: 200px;
+    text-align: center;
+}
+.upload-drop-zone.drop {
+    color: #222;
+    border-color: #222;
+}
+.box__dragndrop,
+.box__uploading,
+.box__success,
+.box__error {
+    display: none;
 }
