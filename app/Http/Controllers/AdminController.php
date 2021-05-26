@@ -561,6 +561,7 @@ class AdminController extends Controller
                         $file->icon = 'images/alt.png';
                 }
                 $file->file_name = $fileB->store('Material_files', 'public');
+                $file->file_extension = $fileB->getClientOriginalExtension();
                 $file->save();
             }
         }
@@ -599,6 +600,35 @@ class AdminController extends Controller
                 $type = 'alt';
         }
         return $type;
+    }
+    public function editFile(Request $request, File $file, Material $material)
+    {
+        $request->validate([
+            'file_title' => 'required',
+        ]);
+        $file->file_title = $request->get('file_title');
+        if ($request->get('description')) {
+            $file->description = $request->get('description');
+        }
+        $file->save();
+        return redirect()->route('admin.materialDetails', $material);
+    }
+    public function deletefile(File $file, Material $material)
+    {
+        Storage::delete('public/' . $file->file_name);
+        $file->delete();
+        return redirect()->route('admin.materialDetails', $material);
+    }
+    public function downloadFile(File $file)
+    {
+        return Storage::download('public/' . $file->file_name, $file->file_title . '.' . $file->file_extension);
+    }
+    public function showFile(File $file)
+    {
+        $file = File::where('ID_file', '=', $file->ID_file)->first();
+        $url =  storage_path('app/public/' . $file->file_name);
+        $headers = $file->file_title;
+        return response()->file($url);
     }
     public function commentsAdmin()
     {

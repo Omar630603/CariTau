@@ -68,6 +68,10 @@ Route::post('/admin/major/course/material/restoreImage/{material}', [AdminContro
 Route::post('/admin/major/course/material/edit/{material}', [AdminController::class, 'editMaterial'])->name('materialAdmin.update')->middleware('AdminAccess');
 Route::delete('/admin/major/course/material/delete/{material}/{course}', [AdminController::class, 'deleteMaterial'])->name('materialAdmin.delete')->middleware('AdminAccess');
 Route::post('/admin/major/course/material/{material}/uploadFiles', [AdminController::class, 'materialUploadFiles'])->name('admin.uploadFiles')->middleware('AdminAccess');
+Route::post('/admin/major/course/material/{file}/{material}/editFiles', [AdminController::class, 'editFile'])->name('admin.editFiles')->middleware('AdminAccess');
+Route::delete('/admin/major/course/material/{file}/{material}/deleteFiles', [AdminController::class, 'deleteFile'])->name('admin.deleteFiles')->middleware('AdminAccess');
+Route::get('/admin/major/course/material/{file}/downloadFiles', [AdminController::class, 'downloadFile'])->name('admin.downloadFiles')->middleware('AdminAccess');
+Route::get('/admin/major/course/material/showFiles/{file}', [AdminController::class, 'showFile'])->name('admin.showFile')->middleware('AdminAccess');
 
 Route::get('/admin/comments', [AdminController::class, 'commentsAdmin'])->name('admin.comments')->middleware('AdminAccess');
 Route::get('/admin/others', [AdminController::class, 'othersAdmin'])->name('admin.others')->middleware('AdminAccess');

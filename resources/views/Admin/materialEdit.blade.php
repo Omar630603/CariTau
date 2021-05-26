@@ -132,30 +132,108 @@
                         </div>
                     </div>
                     <div class="card-body">
+                        @if(count($files)>0)
                         @foreach ($files as $file)
-                        <div style="display: flex;">
+                        <div style="display: flex; gap: 5px;">
                             <div style="display: flex; gap: 5px; flex: 1">
                                 <img width="20px" height="20px" src="{{ asset('storage/'.$file->icon) }}" alt="">
-                                <p>{{$file->file_title}}</p>
+                                @if ($file->file_extension === 'pdf' || $file->file_extension === 'jpeg'||
+                                $file->file_extension === 'png'|| $file->file_extension === 'jpg')
+                                <a href="{{route('admin.showFile', $file)}}" target="_blank"
+                                    rel="noopener noreferrer">{{$file->file_title}}</a>
+                                @else
+                                <a href="{{route('admin.downloadFiles', $file)}}">{{$file->file_title}}</a>
+                                @endif
                             </div>
                             <div style="flex: 0">
                                 <i class="fa fa-ellipsis-h" style="color: #808080; cursor: pointer;" aria-hidden="true"
                                     id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false"></i>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <div>
-                                        <a class="dropdown-item" href="#"><i class="fa fa-edit"></i> Edit</a>
+                                    <div style="cursor: pointer">
+                                        <a class="dropdown-item" data-toggle="modal"
+                                            data-target="#filesEditModal{{$file->ID_file}}"><i class="fa fa-edit"></i>
+                                            Edit</a>
                                     </div>
-                                    <div>
-                                        <a class="dropdown-item" href="#"><i class="fa fa-trash-o"></i> Delete</a>
+                                    <div style="cursor: pointer">
+                                        <a class="dropdown-item"
+                                            onclick="document.getElementById('deleteFiles{{$file->ID_file}}').click();"><i
+                                                class="fa fa-trash-o"></i> Delete</a>
                                     </div>
-                                    <div>
-                                        <a class="dropdown-item" href="#"><i class="fa fa-download"></i> Download</a>
+                                    <div style="cursor: pointer">
+                                        <a class="dropdown-item" href="{{route('admin.downloadFiles', $file)}}"><i
+                                                class="fa fa-download"></i> Download</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div style="animation: drop 0.5s" class="modal" id="filesEditModal{{$file->ID_file}}"
+                            tabindex="-1" role="dialog" aria-labelledby="filesEditModal{{$file->ID_file}}"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Edit {{$file->file_title}}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div style="margin: 0 20px">
+                                            <form method="post"
+                                                action="{{route('admin.editFiles', ['file'=>$file,'material'=>$material])}}"
+                                                class="card-body" style="padding: 0;">
+                                                @csrf
+                                                <div class="form-group row">
+                                                    <label style="margin-bottom: 0" for="material_name">File
+                                                        Name:</label>
+                                                    <input class="form-control" name="file_title" type="text"
+                                                        placeholder="{{$file->file_title}}"
+                                                        value="{{$file->file_title}}">
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                                        <label style="margin-bottom: 0" for="description">File
+                                                            Description:</label>
+                                                        <div id="copy-icon" data-toggle="tooltip" title="Copy">
+                                                            <i style="cursor: pointer;" onclick="copyToClipboard()"
+                                                                class="fa fa-copy"></i>
+                                                        </div>
+                                                    </div>
+                                                    <textarea id="description-copy" rows="3" class="form-control"
+                                                        name="description" type="text"
+                                                        placeholder="{{$file->description}}"
+                                                        value="{{$file->description}}"></textarea>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <button type="submit" id="js-fileEdit-submit"
+                                                        class="btn btn-primary">Done</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"">Close</button>
+                                                        <button type=" button" class="btn btn-sm btn-primary"
+                                            onclick="document.getElementById('js-fileEdit-submit').click();">Save
+                                            changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: none">
+                            <form action="{{route('admin.deleteFiles', ['file'=>$file,'material'=>$material])}}"
+                                method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button id="deleteFiles{{$file->ID_file}}" type="submit"></button>
+                            </form>
+                        </div>
                         @endforeach
+                        @else
+                        {{ __('Files') }}
+                        @endif
                     </div>
                 </div>
             </div>
@@ -219,8 +297,8 @@
         </div>
     </div>
 </div>
-<div style="animation: drop 0.5s" class="modal" id="filesModal" tabindex="-1" role="dialog" aria-labelledby="filesModal"
-    aria-hidden="true">
+<div style="animation: drop 0.5s" class="modal" id="filesModal" tabindex="-1" role="dialog"
+    aria-labelledby="filesEditModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">

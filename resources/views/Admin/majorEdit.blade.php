@@ -152,8 +152,8 @@
                         @php $no = 1; @endphp
                         @foreach ($materials as $material)
                         @if ($material->ID_course == $course->ID_course)
-                        <b>Material - {{$no ++}}: <a href="{{route('admin.materialDetails', $material)}}"
-                                target="_blank" rel="noopener noreferrer">{{$material->material_name}}</a></b><br>
+                        <b>Material - {{$no ++}}: <a
+                                href="{{route('admin.materialDetails', $material)}}">{{$material->material_name}}</a></b><br>
                         @endif
                         @endforeach
                     </div>
