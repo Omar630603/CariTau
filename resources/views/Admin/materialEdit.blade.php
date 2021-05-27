@@ -186,7 +186,7 @@
                                                 class="card-body" style="padding: 0;">
                                                 @csrf
                                                 <div class="form-group row">
-                                                    <label style="margin-bottom: 0" for="material_name">File
+                                                    <label style="margin-bottom: 0" for="file_title">File
                                                         Name:</label>
                                                     <input class="form-control" name="file_title" type="text"
                                                         placeholder="{{$file->file_title}}"
@@ -246,13 +246,111 @@
                     <div class="card-header">
                         <div style="font-weight: 1000; vertical-align: text-bottom; line-height: 200%;">
                             {{ __('Video') }}
-                            <a class="btn btn-dark" style="float: right"><i class="fa fa-plus"
-                                    aria-hidden="true"></i></a>
+                            <a class="btn btn-dark" style="float: right" data-toggle="modal"
+                                data-target="#videosModal"><i class="fa fa-plus" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <div class="card-body">
-
+                        @if(count($videos)>0)
+                        @foreach ($videos as $video)
+                        <div style="display: flex; gap: 5px;">
+                            <div style="display: flex; gap: 5px; flex: 1">
+                                <a href="{{$video->video_url}}" target="_blank"
+                                    rel="noopener noreferrer">{{$video->video_name}}</a>
+                            </div>
+                            <div style="flex: 0">
+                                <i class="fa fa-ellipsis-h" style="color: #808080; cursor: pointer;" aria-hidden="true"
+                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false"></i>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <div style="cursor: pointer">
+                                        <a class="dropdown-item" data-toggle="modal"
+                                            data-target="#filesVideoModal{{$video->ID_video}}"><i
+                                                class="fa fa-edit"></i>
+                                            Edit</a>
+                                    </div>
+                                    <div style="cursor: pointer">
+                                        <a class="dropdown-item"
+                                            onclick="document.getElementById('deleteVideo{{$video->ID_video}}').click();"><i
+                                                class="fa fa-trash-o"></i> Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="animation: drop 0.5s" class="modal" id="filesVideoModal{{$video->ID_video}}"
+                            tabindex="-1" role="dialog" aria-labelledby="filesVideoModal{{$video->ID_video}}"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Edit {{$video->video_name}}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div style="margin: 0 20px">
+                                            <form method="post"
+                                                action="{{route('admin.editVideos', ['video'=>$video,'material'=>$material])}}"
+                                                class="card-body" style="padding: 0;">
+                                                @csrf
+                                                <div class="form-group row">
+                                                    <label style="margin-bottom: 0" for="video_name">Video
+                                                        Name:</label>
+                                                    <input class="form-control" name="video_name" type="text"
+                                                        placeholder="{{$video->video_name}}"
+                                                        value="{{$video->video_name}}">
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                                        <label style="margin-bottom: 0" for="description">File
+                                                            Description:</label>
+                                                        <div id="copy-icon" data-toggle="tooltip" title="Copy">
+                                                            <i style="cursor: pointer;" onclick="copyToClipboard()"
+                                                                class="fa fa-copy"></i>
+                                                        </div>
+                                                    </div>
+                                                    <textarea id="description-copy" rows="3" class="form-control"
+                                                        name="description" type="text"
+                                                        placeholder="{{$video->description}}"
+                                                        value="{{$video->description}}"></textarea>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label style="margin-bottom: 0" for="video_url">Video
+                                                        URL:</label>
+                                                    <input class="form-control" name="video_url" type="text"
+                                                        placeholder="{{$video->video_url}}"
+                                                        value="{{$video->video_url}}">
+                                                </div>
+                                                <div class="form-group row">
+                                                    <button type="submit" id="js-videoEdit-submit"
+                                                        class="btn btn-primary">Done</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"">Close</button>
+                                                        <button type=" button" class="btn btn-sm btn-primary"
+                                            onclick="document.getElementById('js-videoEdit-submit').click();">Save
+                                            changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: none">
+                            <form action="{{route('admin.deleteVideos', ['video'=>$video,'material'=>$material])}}"
+                                method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button id="deleteVideo{{$video->ID_video}}" type="submit"></button>
+                            </form>
+                        </div>
+                        @endforeach
+                        @else
                         {{ __('Video') }}
+                        @endif
                     </div>
                 </div>
             </div>
@@ -297,8 +395,8 @@
         </div>
     </div>
 </div>
-<div style="animation: drop 0.5s" class="modal" id="filesModal" tabindex="-1" role="dialog"
-    aria-labelledby="filesEditModal" aria-hidden="true">
+<div style="animation: drop 0.5s" class="modal" id="filesModal" tabindex="-1" role="dialog" aria-labelledby="filesModal"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -335,6 +433,45 @@
                 <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"">Close</button>
                 <button type=" button" class="btn btn-sm btn-primary"
                     onclick="document.getElementById('js-upload-submit').click();">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="animation: drop 0.5s" class="modal" id="videosModal" tabindex="-1" role="dialog"
+    aria-labelledby="videosModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Video</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form action="{{route('admin.addVideos', $material)}}" method="POST" id="addVideosForm">
+                        @csrf
+                        <div class="form-group">
+                            <div class="form-group row">
+                                <label style="margin-bottom: 0" for="video_name">Video Name:</label>
+                                <input class="form-control" name="video_name" type="text">
+                            </div>
+                            <div class="form-group row">
+                                <label style="margin-bottom: 0" for="description">Description:</label>
+                                <textarea class="form-control" name="description" id="description"></textarea>
+                            </div>
+                            <div class="form-group row">
+                                <label style="margin-bottom: 0" for="video_url">Video URL:</label>
+                                <input class="form-control" name="video_url" type="url">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class=" modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"">Close</button>
+                <button type=" button" class="btn btn-sm btn-primary"
+                    onclick="document.getElementById('addVideosForm').submit();">Save changes</button>
             </div>
         </div>
     </div>

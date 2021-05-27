@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Course;
 use App\Models\File;
+use App\Models\Video;
 
 class Material extends Model
 {
@@ -24,5 +25,9 @@ class Material extends Model
     public function file()
     {
         return $this->hasMany(File::class, 'ID_material');
+    }
+    public function video()
+    {
+        return $this->hasMany(Video::class, 'ID_material');
     }
 }

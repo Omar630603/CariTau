@@ -10,6 +10,7 @@ use App\Models\Lecturer;
 use App\Models\Major;
 use App\Models\Material;
 use App\Models\User;
+use App\Models\Video;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -468,13 +469,13 @@ class AdminController extends Controller
         $course = Course::where('ID_course', '=', $material->ID_course)->first();
         $lecturerID = Lecturer::where('ID_course', '=', $course->ID_course)->get();
         $files = File::where('ID_material', '=', $material->ID_material)->get();
+        $videos = Video::where('ID_material', '=', $material->ID_material)->get();
         if ($lecturerID->first()) {
             $lecturer = User::where('ID_user', '=', $lecturerID[0]->ID_user)->get();
-            return view('admin.materialEdit', compact('material', 'lecturer', 'courses', 'files'));
         } else {
             $lecturer = 'no lecturer';
-            return view('admin.materialEdit', compact('material', 'lecturer', 'courses', 'files'));
         }
+        return view('admin.materialEdit', compact('material', 'lecturer', 'courses', 'files', 'videos'));
     }
     public function editMaterial(Request $request, Material $material)
     {
@@ -565,7 +566,8 @@ class AdminController extends Controller
                 $file->save();
             }
         }
-        return redirect()->route('admin.materialDetails', $material);
+        $message = 'Added Successfully';
+        return redirect()->route('admin.materialDetails', $material)->with('success', $message);
     }
     public function Typefile($extension)
     {
@@ -627,8 +629,46 @@ class AdminController extends Controller
     {
         $file = File::where('ID_file', '=', $file->ID_file)->first();
         $url =  storage_path('app/public/' . $file->file_name);
-        $headers = $file->file_title;
         return response()->file($url);
+    }
+    public function materialAddVideos(Request $request, Material $material)
+    {
+        try {
+            $request->validate([
+                'video_name' => 'required',
+                'video_url' => 'required',
+            ]);
+            $video = new Video;
+            $video->material()->associate($material);
+            $video->video_name = $request->get('video_name');
+            $video->description = $request->get('description');
+            $video->video_url = $request->get('video_url');
+            $video->save();
+        } catch (Exception  $e) {
+            $message = 'There was Something Wrong. Please, Try again';
+            return redirect()->route('admin.materialDetails', $material)->with('fail', $message);
+        }
+        $message = 'Added Successfully';
+        return redirect()->route('admin.materialDetails', $material)->with('success', $message);
+    }
+    public function editVideo(Request $request, Video $video, Material $material)
+    {
+        $request->validate([
+            'video_name' => 'required',
+            'video_url' => 'required',
+        ]);
+        $video->video_name = $request->get('video_name');
+        if ($request->get('description')) {
+            $video->description = $request->get('description');
+        }
+        $video->video_url = $request->get('video_url');
+        $video->save();
+        return redirect()->route('admin.materialDetails', $material);
+    }
+    public function deleteVideo(Video $video, Material $material)
+    {
+        $video->delete();
+        return redirect()->route('admin.materialDetails', $material);
     }
     public function commentsAdmin()
     {
