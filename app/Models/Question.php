@@ -19,4 +19,8 @@ class Question extends Model
         'option_four',
         'correctAnswer',
     ];
+    public function quiz()
+    {
+        return $this->belongsTo(Quiz::class, 'ID_quiz');
+    }
 }

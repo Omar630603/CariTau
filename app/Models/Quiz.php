@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Material;
+use App\Models\Question;
+
 
 class Quiz extends Model
 {
@@ -15,4 +18,12 @@ class Quiz extends Model
         'description',
         'status',
     ];
+    public function material()
+    {
+        return $this->belongsTo(Material::class, 'ID_material');
+    }
+    public function question()
+    {
+        return $this->hasMany(Question::class, 'ID_quiz');
+    }
 }

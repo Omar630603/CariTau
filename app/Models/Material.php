@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Course;
 use App\Models\File;
 use App\Models\Video;
+use App\Models\Quiz;
 
 class Material extends Model
 {
@@ -29,5 +30,9 @@ class Material extends Model
     public function video()
     {
         return $this->hasMany(Video::class, 'ID_material');
+    }
+    public function quiz()
+    {
+        return $this->hasMany(Quiz::class, 'ID_material');
     }
 }

@@ -9,6 +9,8 @@ use App\Models\File;
 use App\Models\Lecturer;
 use App\Models\Major;
 use App\Models\Material;
+use App\Models\Question;
+use App\Models\Quiz;
 use App\Models\User;
 use App\Models\Video;
 use Exception;
@@ -470,12 +472,18 @@ class AdminController extends Controller
         $lecturerID = Lecturer::where('ID_course', '=', $course->ID_course)->get();
         $files = File::where('ID_material', '=', $material->ID_material)->get();
         $videos = Video::where('ID_material', '=', $material->ID_material)->get();
+        $quizzes = Quiz::where('ID_material', '=', $material->ID_material)->get();
+        if ($quizzes->first()) {
+            $questions = Question::where('ID_quiz', '=', $quizzes->first()->ID_quiz)->get();
+        } else {
+            $questions = new Question;
+        }
         if ($lecturerID->first()) {
             $lecturer = User::where('ID_user', '=', $lecturerID[0]->ID_user)->get();
         } else {
             $lecturer = 'no lecturer';
         }
-        return view('admin.materialEdit', compact('material', 'lecturer', 'courses', 'files', 'videos'));
+        return view('admin.materialEdit', compact('material', 'lecturer', 'courses', 'files', 'videos', 'quizzes', 'questions'));
     }
     public function editMaterial(Request $request, Material $material)
     {
@@ -669,6 +677,105 @@ class AdminController extends Controller
     {
         $video->delete();
         return redirect()->route('admin.materialDetails', $material);
+    }
+    public function materialAddQuiz(Request $request, Material $material)
+    {
+        try {
+            $request->validate([
+                'quiz_name' => 'required',
+            ]);
+            $quiz = new Quiz;
+            $quiz->material()->associate($material);
+            $quiz->quiz_name = $request->get('quiz_name');
+            $quiz->description = $request->get('description');
+            $quiz->save();
+        } catch (Exception  $e) {
+            $message = 'There was Something Wrong. Please, Try again';
+            return redirect()->route('admin.materialDetails', $material)->with('fail', $message);
+        }
+        $message = 'Added Successfully';
+        return redirect()->route('admin.materialDetails', $material)->with('success', $message);
+    }
+    public function editQuiz(Request $request, Quiz $quiz, Material $material)
+    {
+        $request->validate([
+            'quiz_name' => 'required',
+        ]);
+        $quiz->quiz_name = $request->get('quiz_name');
+        if ($request->get('description')) {
+            $quiz->description = $request->get('description');
+        }
+        $quiz->save();
+        return redirect()->route('admin.materialDetails', $material);
+    }
+    public function deleteQuiz(Quiz $quiz, Material $material)
+    {
+        $quiz->delete();
+        return redirect()->route('admin.materialDetails', $material);
+    }
+    public function addQuestion(Quiz $quiz, Material $material)
+    {
+        $questions = Question::where('ID_quiz', '=', $quiz->ID_quiz)->get();
+        return view('admin.addQuestion', compact('quiz', 'material', 'questions'));
+    }
+    public function postQuestion(Request $request, Quiz $quiz)
+    {
+        try {
+            $request->validate([
+                'question' => 'required',
+                'option_one' => 'required',
+                'option_two' => 'required',
+                'option_three' => 'required',
+                'option_four' => 'required',
+                'correctAnswer' => 'required',
+            ]);
+            $question = new Question;
+            $question->quiz()->associate($quiz);
+            $question->question = $request->get('question');
+            $question->option_one = $request->get('option_one');
+            $question->option_two = $request->get('option_two');
+            $question->option_three = $request->get('option_three');
+            $question->option_four = $request->get('option_four');
+            $question->correctAnswer = $request->get('correctAnswer');
+            $question->save();
+        } catch (Exception  $e) {
+            $message = 'There was Something Wrong. Please, Try again';
+            return redirect()->back()->with('fail', $message);
+        }
+        $message = 'Added Successfully';
+        return redirect()->back()->with('success', $message);
+    }
+    public function editQuestion(Request $request, $question)
+    {
+        $question = Question::find($question);
+        try {
+            $request->validate([
+                'question' . $question->ID_question => 'required',
+                'option_one' . $question->ID_question => 'required',
+                'option_two' . $question->ID_question => 'required',
+                'option_three' . $question->ID_question => 'required',
+                'option_four' . $question->ID_question => 'required',
+                'correctAnswer' . $question->ID_question => 'required',
+            ]);
+            $question->question = $request->get('question' . $question->ID_question);
+            $question->option_one = $request->get('option_one' . $question->ID_question);
+            $question->option_two = $request->get('option_two' . $question->ID_question);
+            $question->option_three = $request->get('option_three' . $question->ID_question);
+            $question->option_four = $request->get('option_four' . $question->ID_question);
+            $question->correctAnswer = $request->get('correctAnswer' . $question->ID_question);
+            $question->save();
+        } catch (Exception  $e) {
+            $message = 'There was Something Wrong. Please, Try again';
+            return redirect()->back()->with('fail', $message);
+        }
+        $message = 'Updated Successfully';
+        return redirect()->back()->with('success', $message);
+    }
+    public function deleteQuestion($question)
+    {
+        $question = Question::find($question);
+        $question->delete();
+        return redirect()->back()->with('success', 'Deleted Successfully');
     }
     public function commentsAdmin()
     {

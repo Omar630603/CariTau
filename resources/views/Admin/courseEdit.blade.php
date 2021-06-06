@@ -174,21 +174,17 @@
                         <a style="color: white; background-color: rgb(21, 74, 172);" class="btn btn-info"
                             href="{{route('admin.materialDetails', $material)}}">Edit
                             Material Data</a>
+                        <a href="{{route('admin.materialDetails', $material)}}"><img width="50px" height="50px"
+                                style="margin-top: 10px; border-radius: 10%;"
+                                src="{{asset('storage/'.$material->image)}}"></a>
                     </div>
                     <div class="control-major">
                         <b>Description</b> : {{$material->description}}<br>
                     </div>
                     <div class="control-major">
-                        <b>Files</b> :
-                    </div>
-                    <div class="control-major">
-                        <b>Video</b> :
-                    </div>
-                    <div class="control-major">
-                        <b>Quiz</b> :
-                    </div>
-                    <div class="control-major">
-                        <b>Form</b> :
+                        <b>Click on <q><i> Edit
+                                    Material Data</i></q> to Change {{$material->material_name}} Files, Video, Quiz, and
+                            Form</b>
                     </div>
                 </div>
             </div>

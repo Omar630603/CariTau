@@ -74,12 +74,15 @@
                 <div class="form-group row">
                     <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                         <label style="margin-bottom: 0" for="description">Material Description:</label>
-                        <div id="copy-icon" data-toggle="tooltip" title="Copy">
-                            <i style="cursor: pointer;" onclick="copyToClipboard()" class="fa fa-copy"></i>
+                        <div id="copy-icon-material{{$material->ID_material}}" data-toggle="tooltip" title="Copy">
+                            <i style="cursor: pointer;"
+                                onclick="copyToClipboard('description-copy-material{{$material->ID_material}}')"
+                                class="fa fa-copy"></i>
                         </div>
                     </div>
-                    <textarea id="description-copy" rows="3" class="form-control" name="description" type="text"
-                        placeholder="{{$material->description}}" value="{{$material->description}}"></textarea>
+                    <textarea id="description-copy-material{{$material->ID_material}}" rows="3" class="form-control"
+                        name="description" type="text" placeholder="{{$material->description}}"
+                        value="{{$material->description}}"></textarea>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Done</button>
@@ -196,13 +199,15 @@
                                                     <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                                                         <label style="margin-bottom: 0" for="description">File
                                                             Description:</label>
-                                                        <div id="copy-icon" data-toggle="tooltip" title="Copy">
-                                                            <i style="cursor: pointer;" onclick="copyToClipboard()"
+                                                        <div id="copy-icon-file{{$file->ID_file}}" data-toggle="tooltip"
+                                                            title="Copy">
+                                                            <i style="cursor: pointer;"
+                                                                onclick="copyToClipboard('description-copy-file{{$file->ID_file}}')"
                                                                 class="fa fa-copy"></i>
                                                         </div>
                                                     </div>
-                                                    <textarea id="description-copy" rows="3" class="form-control"
-                                                        name="description" type="text"
+                                                    <textarea id="description-copy-file{{$file->ID_file}}" rows="3"
+                                                        class="form-control" name="description" type="text"
                                                         placeholder="{{$file->description}}"
                                                         value="{{$file->description}}"></textarea>
                                                 </div>
@@ -246,8 +251,9 @@
                     <div class="card-header">
                         <div style="font-weight: 1000; vertical-align: text-bottom; line-height: 200%;">
                             {{ __('Video') }}
-                            <a class="btn btn-dark" style="float: right" data-toggle="modal"
+                            @if(count($videos)<1) <a class="btn btn-dark" style="float: right" data-toggle="modal"
                                 data-target="#videosModal"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                                @endif
                         </div>
                     </div>
                     <div class="card-body">
@@ -255,6 +261,7 @@
                         @foreach ($videos as $video)
                         <div style="display: flex; gap: 5px;">
                             <div style="display: flex; gap: 5px; flex: 1">
+                                <img width="20px" height="20px" src="{{ asset('storage/images/video.png') }}" alt="">
                                 <a href="{{$video->video_url}}" target="_blank"
                                     rel="noopener noreferrer">{{$video->video_name}}</a>
                             </div>
@@ -304,15 +311,17 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                                                        <label style="margin-bottom: 0" for="description">File
+                                                        <label style="margin-bottom: 0" for="description">Video
                                                             Description:</label>
-                                                        <div id="copy-icon" data-toggle="tooltip" title="Copy">
-                                                            <i style="cursor: pointer;" onclick="copyToClipboard()"
+                                                        <div id="copy-icon-video{{$video->ID_video}}"
+                                                            data-toggle="tooltip" title="Copy">
+                                                            <i style="cursor: pointer;"
+                                                                onclick="copyToClipboard('description-copy-video{{$video->ID_video}}')"
                                                                 class="fa fa-copy"></i>
                                                         </div>
                                                     </div>
-                                                    <textarea id="description-copy" rows="3" class="form-control"
-                                                        name="description" type="text"
+                                                    <textarea id="description-copy-video{{$video->ID_video}}" rows="3"
+                                                        class="form-control" name="description" type="text"
                                                         placeholder="{{$video->description}}"
                                                         value="{{$video->description}}"></textarea>
                                                 </div>
@@ -363,13 +372,194 @@
                     <div class="card-header">
                         <div style="font-weight: 1000; vertical-align: text-bottom; line-height: 200%;">
                             {{ __('Quiz') }}
-                            <a class="btn btn-dark" style="float: right"><i class="fa fa-plus"
-                                    aria-hidden="true"></i></a>
+                            @if(count($quizzes)<1) <a class="btn btn-dark" style="float: right" data-toggle="modal"
+                                data-target="#QuizModal"><i class="fa fa-plus" aria-hidden="true" disabled></i></a>
+                                @endif
                         </div>
                     </div>
                     <div class="card-body">
-
+                        @if(count($quizzes)>0)
+                        @foreach ($quizzes as $quiz)
+                        <div style="display: flex; gap: 5px;">
+                            <div style="display: flex; gap: 5px; flex: 1">
+                                <img width="20px" height="20px" src="{{ asset('storage/images/quiz.png') }}" alt="">
+                                <a href="{{route('admin.addQuestion', ['quiz'=>$quiz,'material'=>$material])}}"
+                                    target="_blank" rel="noopener noreferrer">{{$quiz->quiz_name}}</a>
+                            </div>
+                            <div style="flex: 0">
+                                <i class="fa fa-ellipsis-h" style="color: #808080; cursor: pointer;" aria-hidden="true"
+                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false"></i>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <div style="cursor: pointer">
+                                        <a class="dropdown-item" data-toggle="modal"
+                                            data-target="#filesQuizModal{{$quiz->ID_quiz}}"><i class="fa fa-edit"></i>
+                                            Edit</a>
+                                    </div>
+                                    <div style="cursor: pointer">
+                                        <a class="dropdown-item"
+                                            onclick="document.getElementById('deleteQuiz{{$quiz->ID_quiz}}').click();"><i
+                                                class="fa fa-trash-o"></i> Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="animation: drop 0.5s" class="modal" id="filesQuizModal{{$quiz->ID_quiz}}"
+                            tabindex="-1" role="dialog" aria-labelledby="filesQuizModal{{$quiz->ID_quiz}}"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Edit {{$quiz->quiz_name}}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div style="margin: 0 20px">
+                                            <form method="post"
+                                                action="{{route('admin.editQuiz', ['quiz'=>$quiz,'material'=>$material])}}"
+                                                class="card-body" style="padding: 0;">
+                                                @csrf
+                                                <div class="form-group row">
+                                                    <label style="margin-bottom: 0" for="quiz_name">Quiz
+                                                        Name:</label>
+                                                    <input class="form-control" name="quiz_name" type="text"
+                                                        placeholder="{{$quiz->quiz_name}}" value="{{$quiz->quiz_name}}">
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                                        <label style="margin-bottom: 0" for="description">Quiz
+                                                            Description:</label>
+                                                        <div id="copy-icon-quiz{{$quiz->ID_quiz}}" data-toggle="tooltip"
+                                                            title="Copy">
+                                                            <i style="cursor: pointer;"
+                                                                onclick="copyToClipboard('description-copy-quiz{{$quiz->ID_quiz}}')"
+                                                                class="fa fa-copy"></i>
+                                                        </div>
+                                                    </div>
+                                                    <textarea id="description-copy-quiz{{$quiz->ID_quiz}}" rows="3"
+                                                        class="form-control" name="description" type="text"
+                                                        placeholder="{{$quiz->description}}"
+                                                        value="{{$quiz->description}}"></textarea>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <button type="submit" id="js-quizEdit-submit"
+                                                        class="btn btn-primary">Done</button>
+                                                </div>
+                                            </form>
+                                            @if (count($questions)>=5)
+                                            <div class="form-group row" style="float: right; margin-top: -20px">
+                                                <a href="{{route('admin.addQuestion', ['quiz'=>$quiz,'material'=>$material])}}"
+                                                    class="btn btn-sm btn-dark">Edit
+                                                    Questions</a>
+                                            </div>
+                                            <div style="margin-top: 50px">
+                                                @foreach ($questions as $question)
+                                                <div
+                                                    style="border: 1px solid #cccc; padding: 10px; border-radius: 1%; margin-bottom: 10px">
+                                                    <a
+                                                        href="{{route('admin.addQuestion', ['quiz'=>$quiz,'material'=>$material])}}">{{$question->question}}</a>
+                                                    <ul class="list-group list-group-flush">
+                                                        @if ($question->correctAnswer == $question->option_one)
+                                                        <li class="list-group-item">{{$question->option_one}} <i
+                                                                class="fa fa-check" style="color:green"></i>
+                                                        </li>
+                                                        @else
+                                                        <li class="list-group-item">{{$question->option_one}}</li>
+                                                        @endif
+                                                        @if ($question->correctAnswer == $question->option_two)
+                                                        <li class="list-group-item">{{$question->option_two}} <i
+                                                                class="fa fa-check" style="color:green"></i>
+                                                        </li>
+                                                        @else
+                                                        <li class="list-group-item">{{$question->option_two}}</li>
+                                                        @endif
+                                                        @if ($question->correctAnswer == $question->option_three)
+                                                        <li class="list-group-item">{{$question->option_three}} <i
+                                                                class="fa fa-check" style="color:green"></i></li>
+                                                        @else
+                                                        <li class="list-group-item">{{$question->option_three}}</li>
+                                                        @endif
+                                                        @if ($question->correctAnswer == $question->option_four)
+                                                        <li class="list-group-item">{{$question->option_four}} <i
+                                                                class="fa fa-check" style="color:green"></i></li>
+                                                        @else
+                                                        <li class="list-group-item">{{$question->option_four}}</li>
+                                                        @endif
+                                                    </ul>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                            @else
+                                            <div class="form-group row" style="float: right; margin-top: -20px">
+                                                <a href="{{route('admin.addQuestion', ['quiz'=>$quiz,'material'=>$material])}}"
+                                                    class="btn btn-sm btn-dark" target="_blank"
+                                                    rel="noopener noreferrer">Add
+                                                    Questions</a>
+                                            </div>
+                                            <div style="margin-top: 50px">
+                                                @foreach ($questions as $question)
+                                                <div
+                                                    style="border: 1px solid #cccc; padding: 10px; border-radius: 1%; margin-bottom: 10px">
+                                                    <a
+                                                        href="{{route('admin.addQuestion', ['quiz'=>$quiz,'material'=>$material])}}">{{$question->question}}</a>
+                                                    <ul class="list-group list-group-flush">
+                                                        @if ($question->correctAnswer == $question->option_one)
+                                                        <li class="list-group-item">{{$question->option_one}} <i
+                                                                class="fa fa-check" style="color:green"></i>
+                                                        </li>
+                                                        @else
+                                                        <li class="list-group-item">{{$question->option_one}}</li>
+                                                        @endif
+                                                        @if ($question->correctAnswer == $question->option_two)
+                                                        <li class="list-group-item">{{$question->option_two}} <i
+                                                                class="fa fa-check" style="color:green"></i>
+                                                        </li>
+                                                        @else
+                                                        <li class="list-group-item">{{$question->option_two}}</li>
+                                                        @endif
+                                                        @if ($question->correctAnswer == $question->option_three)
+                                                        <li class="list-group-item">{{$question->option_three}} <i
+                                                                class="fa fa-check" style="color:green"></i></li>
+                                                        @else
+                                                        <li class="list-group-item">{{$question->option_three}}</li>
+                                                        @endif
+                                                        @if ($question->correctAnswer == $question->option_four)
+                                                        <li class="list-group-item">{{$question->option_four}} <i
+                                                                class="fa fa-check" style="color:green"></i></li>
+                                                        @else
+                                                        <li class="list-group-item">{{$question->option_four}}</li>
+                                                        @endif
+                                                    </ul>
+                                                </div>
+                                                @endforeach
+                                            </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"">Close</button>
+                                                        <button type=" button" class="btn btn-sm btn-primary"
+                                            onclick="document.getElementById('js-quizEdit-submit').click();">Save
+                                            changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: none">
+                            <form action="{{route('admin.deleteQuiz', ['quiz'=>$quiz,'material'=>$material])}}"
+                                method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button id="deleteQuiz{{$quiz->ID_quiz}}" type="submit"></button>
+                            </form>
+                        </div>
+                        @endforeach
+                        @else
                         {{ __('Quiz') }}
+                        @endif
                     </div>
                 </div>
             </div>
@@ -417,7 +607,8 @@
                                     <div class="form-group">
                                         <input type="file" name="files[]" id="js-upload-files" multiple>
                                     </div>
-                                    <button type="submit" class="btn btn-sm btn-dark" id="js-upload-submit">Upload
+                                    <button onclick="document.getElementById('js-upload-form').submit();" type="submit"
+                                        class="btn btn-sm btn-dark" id="js-upload-submit">Upload
                                         files</button>
                                 </div>
                             </form>
@@ -432,7 +623,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"">Close</button>
                 <button type=" button" class="btn btn-sm btn-primary"
-                    onclick="document.getElementById('js-upload-submit').click();">Save changes</button>
+                    onclick="document.getElementById('js-upload-form').submit();">Save changes</button>
             </div>
         </div>
     </div>
@@ -476,6 +667,41 @@
         </div>
     </div>
 </div>
+<div style="animation: drop 0.5s" class="modal" id="QuizModal" tabindex="-1" role="dialog" aria-labelledby="QuizModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Quiz</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form action="{{route('admin.addQuiz', $material)}}" method="POST" id="addQuizForm">
+                        @csrf
+                        <div class="form-group">
+                            <div class="form-group row">
+                                <label style="margin-bottom: 0" for="quiz_name">Quiz Name:</label>
+                                <input class="form-control" name="quiz_name" type="text">
+                            </div>
+                            <div class="form-group row">
+                                <label style="margin-bottom: 0" for="description">Description:</label>
+                                <textarea class="form-control" name="description" id="description"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class=" modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"">Close</button>
+                <button type=" button" class="btn btn-sm btn-primary"
+                    onclick="document.getElementById('addQuizForm').submit();">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     function onlyOne(checkbox) {
     var checkboxes = document.getElementsByName('course')
@@ -483,12 +709,12 @@
         if (item !== checkbox) item.checked = false
     })
     }
-    function copyToClipboard() {
-    const str = document.getElementById('description-copy').placeholder ;
-    const el = document.createElement('textarea');
-    el.value = str;
+    function copyToClipboard(id) {
+    const str = document.getElementById(id) ;
+    var el = document.createElement('textarea');
+    el.value = str.placeholder;
     el.setAttribute('readonly', '');
-    el.style.position = 'absolute';
+    el.style.display = 'absolute';
     el.style.left = '-9999px';
     document.body.appendChild(el);
     el.select();
@@ -503,10 +729,7 @@
     var uploadForm = document.getElementById('js-upload-form');
     var uploadInput = document.getElementById('js-upload-files');
     var startUpload = function(files) {
-        console.log(files)
         uploadInput.files = files
-        console.log(uploadInput.files.length)
-        uploadForm.submit()
     }
     uploadForm.addEventListener('submit', function(e) {
         var uploadFiles = document.getElementById('js-upload-files').files;

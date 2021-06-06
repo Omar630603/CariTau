@@ -78,6 +78,14 @@ Route::post('/admin/major/course/material/{material}/addVideos', [AdminControlle
 Route::post('/admin/major/course/material/{video}/{material}/editVideos', [AdminController::class, 'editVideo'])->name('admin.editVideos')->middleware('AdminAccess');
 Route::delete('/admin/major/course/material/{video}/{material}/deleteVideos', [AdminController::class, 'deleteVideo'])->name('admin.deleteVideos')->middleware('AdminAccess');
 
+Route::post('/admin/major/course/material/{material}/addQuiz', [AdminController::class, 'materialAddQuiz'])->name('admin.addQuiz')->middleware('AdminAccess');
+Route::post('/admin/major/course/material/{quiz}/{material}/editQuiz', [AdminController::class, 'editQuiz'])->name('admin.editQuiz')->middleware('AdminAccess');
+Route::delete('/admin/major/course/material/{quiz}/{material}/deleteQuiz', [AdminController::class, 'deleteQuiz'])->name('admin.deleteQuiz')->middleware('AdminAccess');
+Route::get('/admin/major/course/material/{quiz}/{material}/addQuestion', [AdminController::class, 'addQuestion'])->name('admin.addQuestion')->middleware('AdminAccess');
+Route::post('/admin/major/course/material/{quiz}/postQuestion', [AdminController::class, 'postQuestion'])->name('admin.postQuestion')->middleware('AdminAccess');
+Route::post('/admin/major/course/material/editQuestion/{Question}', [AdminController::class, 'editQuestion'])->name('admin.editQuestion')->middleware('AdminAccess');
+Route::delete('/admin/major/course/material/deleteQuestion/{Question}', [AdminController::class, 'deleteQuestion'])->name('admin.deleteQuestion')->middleware('AdminAccess');
+
 Route::get('/admin/comments', [AdminController::class, 'commentsAdmin'])->name('admin.comments')->middleware('AdminAccess');
 Route::get('/admin/others', [AdminController::class, 'othersAdmin'])->name('admin.others')->middleware('AdminAccess');
 
