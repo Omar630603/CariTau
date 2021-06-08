@@ -62,13 +62,12 @@
                     </a>
                 </h4>
             </div>
-            <div id="collapse{{$major->ID_major}}" class="panel-collapse collapse" role="tabpanel"
+            <div id="collapse{{$major->ID_major}}" class="panel-collapse collapse show" role="tabpanel"
                 aria-labelledby="heading{{$major->ID_major}}">
                 <div class="panel-body">
                     <div class="control-major action-major">
-                        <a style="color: white; background-color: rgb(21, 74, 172);" class="btn btn-info"
-                            href="{{route('admin.major', $major)}}">Edit
-                            Major Data</a>
+                        <a class="btn btn-dark" href="{{route('admin.major', $major)}}">Edit
+                            {{$major->major_name}}: Major Data</a>
                         <a href="{{route('admin.major', $major)}}"><img width="50px" height="50px"
                                 style="margin-top: 10px; border-radius: 10%;"
                                 src="{{asset('storage/'.$major->image)}}"></a>

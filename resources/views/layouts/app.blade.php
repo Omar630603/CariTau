@@ -16,6 +16,8 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -41,19 +43,32 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                     </ul>
+                    <!-- Middle Side Of Navbar -->
+                    <nav class="shift">
+                        <ul class="navbar-nav md-auto">
+                            <li><a href="/">Home</a></li>
+                            <li><a href="">About Us</a></li>
+                            <li><a href="">Courses</a></li>
+                            <li><a href="">Lecturers</a></li>
+                            <li><a href="">Contact Us</a></li>
+                        </ul>
+                    </nav>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
                         @if (Route::has('login'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                        </li>
-                        @endif
+                        <li>
+                            @auth
+                            @else
+                            <a href="{{ route('login') }}" class="btn btn-dark">Log in <i class="fa fa-sign-in"
+                                    aria-hidden="true"></i></a>
 
-                        @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="btn btn-dark">Register <i
+                                    class="fa fa-address-book-o" aria-hidden="true"></i></a>
+                            @endif
+                            @endauth
                         </li>
                         @endif
                         @else
@@ -65,9 +80,11 @@
                                         {{ Auth::user()->username }}
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                        <a href="{{ route('home') }}" class="dropdown-item">Home <i class="fa fa-home"
+                                                aria-hidden="true"></i></a>
                                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
+                                            {{ __('Logout') }} <i class="fa fa-sign-out" aria-hidden="true"></i>
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"

@@ -125,12 +125,12 @@
                     </a>
                 </h4>
             </div>
-            <div id="collapse{{$course->ID_course}}" class="panel-collapse collapse" role="tabpanel"
+            <div id="collapse{{$course->ID_course}}" class="panel-collapse collapse show" role="tabpanel"
                 aria-labelledby="heading{{$course->ID_course}}">
                 <div class="panel-body">
                     <div class="control-major action-major">
-                        <a style="color: white; background-color: rgb(21, 74, 172);" class="btn btn-info"
-                            href="{{ route('admin.courseDetails', $course) }}">Edit Course Data</a>
+                        <a class="btn btn-dark" href="{{ route('admin.courseDetails', $course) }}">Edit
+                            {{$course->course_name}}: Course Data</a>
                         <a href="{{route('admin.courseDetails', $course)}}"><img width="50px" height="50px"
                                 style="margin-top: 10px; border-radius: 10%;"
                                 src="{{asset('storage/'.$course->image)}}"></a>
