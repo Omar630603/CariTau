@@ -35,4 +35,8 @@ class Material extends Model
     {
         return $this->hasMany(Quiz::class, 'ID_material');
     }
+    public function forum()
+    {
+        return $this->hasMany(Forum::class, 'ID_material');
+    }
 }

@@ -86,6 +86,14 @@ Route::post('/admin/major/course/material/{quiz}/postQuestion', [AdminController
 Route::post('/admin/major/course/material/editQuestion/{Question}', [AdminController::class, 'editQuestion'])->name('admin.editQuestion')->middleware('AdminAccess');
 Route::delete('/admin/major/course/material/deleteQuestion/{Question}', [AdminController::class, 'deleteQuestion'])->name('admin.deleteQuestion')->middleware('AdminAccess');
 
+Route::post('/admin/major/course/material/{material}/addForum', [AdminController::class, 'materialAddForum'])->name('admin.addForum')->middleware('AdminAccess');
+Route::post('/admin/major/course/material/{forum}/{material}/editForum', [AdminController::class, 'editForum'])->name('admin.editForum')->middleware('AdminAccess');
+Route::delete('/admin/major/course/material/{forum}/{material}/deleteForum', [AdminController::class, 'deleteForum'])->name('admin.deleteForum')->middleware('AdminAccess');
+Route::get('/admin/major/course/material/{forum}/showForum', [AdminController::class, 'showForum'])->name('admin.showForum')->middleware('AdminAccess');
+Route::post('/admin/major/course/material/forum/addComment', [AdminController::class, 'addForumComment'])->name('admin.addForumComment')->middleware('AdminAccess');
+Route::post('/admin/major/course/material/forum/addComment/reply', [AdminController::class, 'addForumCommentReply'])->name('admin.addForumCommentReply')->middleware('AdminAccess');
+Route::delete('/admin/major/course/material/forum/{comment}/deleteComment', [AdminController::class, 'ForumDeleteComment'])->name('admin.deleteComment')->middleware('AdminAccess');
+
 Route::get('/admin/comments', [AdminController::class, 'commentsAdmin'])->name('admin.comments')->middleware('AdminAccess');
 Route::get('/admin/others', [AdminController::class, 'othersAdmin'])->name('admin.others')->middleware('AdminAccess');
 

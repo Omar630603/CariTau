@@ -82,7 +82,7 @@
                     </div>
                     <textarea id="description-copy-material{{$material->ID_material}}" rows="3" class="form-control"
                         name="description" type="text" placeholder="{{$material->description}}"
-                        value="{{$material->description}}"></textarea>
+                        value="{{$material->description}}">{{$material->description}}</textarea>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Done</button>
@@ -209,7 +209,7 @@
                                                     <textarea id="description-copy-file{{$file->ID_file}}" rows="3"
                                                         class="form-control" name="description" type="text"
                                                         placeholder="{{$file->description}}"
-                                                        value="{{$file->description}}"></textarea>
+                                                        value="{{$file->description}}">{{$file->description}}</textarea>
                                                 </div>
                                                 <div class="form-group row">
                                                     <button type="submit" id="js-fileEdit-submit"
@@ -323,7 +323,7 @@
                                                     <textarea id="description-copy-video{{$video->ID_video}}" rows="3"
                                                         class="form-control" name="description" type="text"
                                                         placeholder="{{$video->description}}"
-                                                        value="{{$video->description}}"></textarea>
+                                                        value="{{$video->description}}">{{$video->description}}</textarea>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label style="margin-bottom: 0" for="video_url">Video
@@ -384,7 +384,8 @@
                             <div style="display: flex; gap: 5px; flex: 1">
                                 <img width="20px" height="20px" src="{{ asset('storage/images/quiz.png') }}" alt="">
                                 <a href="{{route('admin.addQuestion', ['quiz'=>$quiz,'material'=>$material])}}"
-                                    target="_blank" rel="noopener noreferrer">{{$quiz->quiz_name}}</a>
+                                    target="_blank" rel="noopener noreferrer">{{$quiz->quiz_name}}
+                                    ({{count($questions)}}/5 Questions)</a>
                             </div>
                             <div style="flex: 0">
                                 <i class="fa fa-ellipsis-h" style="color: #808080; cursor: pointer;" aria-hidden="true"
@@ -442,7 +443,7 @@
                                                     <textarea id="description-copy-quiz{{$quiz->ID_quiz}}" rows="3"
                                                         class="form-control" name="description" type="text"
                                                         placeholder="{{$quiz->description}}"
-                                                        value="{{$quiz->description}}"></textarea>
+                                                        value="{{$quiz->description}}">{{$quiz->description}}</textarea>
                                                 </div>
                                                 <div class="form-group row">
                                                     <button type="submit" id="js-quizEdit-submit"
@@ -571,14 +572,112 @@
                 <div class="card">
                     <div class="card-header">
                         <div style="font-weight: 1000; vertical-align: text-bottom; line-height: 200%;">
-                            {{ __('Form') }}
-                            <a class="btn btn-dark" style="float: right"><i class="fa fa-plus"
-                                    aria-hidden="true"></i></a>
+                            {{ __('Forum') }}
+                            <a class="btn btn-dark" style="float: right" data-toggle="modal"
+                                data-target="#ForumModal"><i class="fa fa-plus" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <div class="card-body">
-
-                        {{ __('Form') }}
+                        @if(count($forums)>0)
+                        @foreach ($forums as $forum)
+                        <div style="display: flex; gap: 5px;">
+                            <div style="display: flex; gap: 5px; flex: 1">
+                                <img width="20px" height="20px" src="{{ asset('storage/images/forum.png') }}" alt="">
+                                <a href="{{route('admin.showForum', $forum)}}" target="_blank"
+                                    rel="noopener noreferrer">{{$forum->title}}</a>
+                            </div>
+                            <div style="flex: 0">
+                                <i class="fa fa-ellipsis-h" style="color: #808080; cursor: pointer;" aria-hidden="true"
+                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false"></i>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <div style="cursor: pointer">
+                                        <a class="dropdown-item" data-toggle="modal"
+                                            data-target="#filesForumModal{{$forum->ID_forum}}"><i
+                                                class="fa fa-edit"></i>
+                                            Edit</a>
+                                    </div>
+                                    <div style="cursor: pointer">
+                                        <a class="dropdown-item"
+                                            onclick="document.getElementById('deleteForum{{$forum->ID_forum}}').click();"><i
+                                                class="fa fa-trash-o"></i> Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="animation: drop 0.5s" class="modal" id="filesForumModal{{$forum->ID_forum}}"
+                            tabindex="-1" role="dialog" aria-labelledby="filesForumModal{{$forum->ID_forum}}"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Edit {{$forum->title}}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div style="margin: 0 20px">
+                                            <form method="post"
+                                                action="{{route('admin.editForum', ['forum'=>$forum,'material'=>$material])}}"
+                                                class="card-body" style="padding: 0;">
+                                                @csrf
+                                                <div class="form-group row">
+                                                    <label style="margin-bottom: 0" for="title">Forum
+                                                        Title:</label>
+                                                    <input class="form-control" name="title" type="text"
+                                                        placeholder="{{$forum->title}}" value="{{$forum->title}}">
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                                        <label style="margin-bottom: 0" for="description">Quiz
+                                                            Description:</label>
+                                                        <div id="copy-icon-forum{{$forum->ID_forum}}"
+                                                            data-toggle="tooltip" title="Copy">
+                                                            <i style="cursor: pointer;"
+                                                                onclick="copyToClipboard('description-copy-forum{{$forum->ID_forum}}')"
+                                                                class="fa fa-copy"></i>
+                                                        </div>
+                                                    </div>
+                                                    <textarea id="description-copy-forum{{$forum->ID_forum}}" rows="3"
+                                                        class="form-control" name="body" type="text"
+                                                        placeholder="{{$forum->body}}"
+                                                        value="{{$forum->body}}">{{$forum->body}}</textarea>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <button type="submit" id="js-forumEdit-submit"
+                                                        class="btn btn-primary">Done</button>
+                                                </div>
+                                                <div class="form-group row" style="float: right; margin-top: -20px">
+                                                    <a href="{{route('admin.showForum', $forum)}}"
+                                                        class="btn btn-sm btn-dark" target="_blank"
+                                                        rel="noopener noreferrer">View Forum</a>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"">Close</button>
+                                                        <button type=" button" class="btn btn-sm btn-primary"
+                                            onclick="document.getElementById('js-forumEdit-submit').click();">Save
+                                            changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: none">
+                            <form action="{{route('admin.deleteForum', ['forum'=>$forum,'material'=>$material])}}"
+                                method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button id="deleteForum{{$forum->ID_forum}}" type="submit"></button>
+                            </form>
+                        </div>
+                        @endforeach
+                        @else
+                        {{ __('Forum') }}
+                        @endif
                     </div>
                 </div>
             </div>
@@ -698,6 +797,41 @@
                 <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"">Close</button>
                 <button type=" button" class="btn btn-sm btn-primary"
                     onclick="document.getElementById('addQuizForm').submit();">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="animation: drop 0.5s" class="modal" id="ForumModal" tabindex="-1" role="dialog" aria-labelledby="ForumModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Forum</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <form action="{{route('admin.addForum', $material)}}" method="POST" id="addForumForm">
+                        @csrf
+                        <div class="form-group">
+                            <div class="form-group row">
+                                <label style="margin-bottom: 0" for="title">Forum Title:</label>
+                                <input class="form-control" name="title" type="text">
+                            </div>
+                            <div class="form-group row">
+                                <label style="margin-bottom: 0" for="body">Forum Body:</label>
+                                <textarea class="form-control" name="body" id="body"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class=" modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"">Close</button>
+                <button type=" button" class="btn btn-sm btn-primary"
+                    onclick="document.getElementById('addForumForm').submit();">Save changes</button>
             </div>
         </div>
     </div>

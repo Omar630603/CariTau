@@ -184,7 +184,7 @@
                     <div class="control-major">
                         <b>Click on <q><i> Edit
                                     Material Data</i></q> to Change {{$material->material_name}} Files, Video, Quiz, and
-                            Form</b>
+                            Forum</b>
                     </div>
                 </div>
             </div>

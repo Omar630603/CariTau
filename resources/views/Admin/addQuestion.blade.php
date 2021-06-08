@@ -185,7 +185,7 @@
                             @csrf
                             <div class="card-header">
                                 <div class="form-group">
-                                    <label for="question">Question</label>
+                                    <label for="question">Question ({{count($questions)}}/5)</label>
                                     <input class="form-control" type="text" name="question">
                                 </div>
                             </div>

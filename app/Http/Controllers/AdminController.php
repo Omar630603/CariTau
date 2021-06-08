@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Comment;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\File;
+use App\Models\Forum;
 use App\Models\Lecturer;
 use App\Models\Major;
 use App\Models\Material;
@@ -473,6 +475,7 @@ class AdminController extends Controller
         $files = File::where('ID_material', '=', $material->ID_material)->get();
         $videos = Video::where('ID_material', '=', $material->ID_material)->get();
         $quizzes = Quiz::where('ID_material', '=', $material->ID_material)->get();
+        $forums = Forum::where('ID_material', '=', $material->ID_material)->get();
         if ($quizzes->first()) {
             $questions = Question::where('ID_quiz', '=', $quizzes->first()->ID_quiz)->get();
         } else {
@@ -483,7 +486,7 @@ class AdminController extends Controller
         } else {
             $lecturer = 'no lecturer';
         }
-        return view('admin.materialEdit', compact('material', 'lecturer', 'courses', 'files', 'videos', 'quizzes', 'questions'));
+        return view('admin.materialEdit', compact('material', 'lecturer', 'courses', 'files', 'videos', 'quizzes', 'questions', 'forums'));
     }
     public function editMaterial(Request $request, Material $material)
     {
@@ -776,6 +779,79 @@ class AdminController extends Controller
         $question = Question::find($question);
         $question->delete();
         return redirect()->back()->with('success', 'Deleted Successfully');
+    }
+    public function materialAddForum(Request $request, Material $material)
+    {
+        try {
+            $request->validate([
+                'title' => 'required',
+                'body' => 'required',
+            ]);
+            $forum = new Forum;
+            $forum->material()->associate($material);
+            $forum->title = $request->get('title');
+            $forum->body = $request->get('body');
+            $forum->save();
+        } catch (Exception  $e) {
+            $message = 'There was Something Wrong. Please, Try again';
+            return redirect()->route('admin.materialDetails', $material)->with('fail', $message);
+        }
+        $message = 'Added Successfully';
+        return redirect()->route('admin.materialDetails', $material)->with('success', $message);
+    }
+    public function editForum(Request $request, Forum $forum, Material $material)
+    {
+        $request->validate([
+            'title' => 'required',
+        ]);
+        $forum->title = $request->get('title');
+        if ($request->get('body')) {
+            $forum->body = $request->get('body');
+        }
+        $forum->save();
+        return redirect()->route('admin.materialDetails', $material);
+    }
+    public function deleteForum(Forum $forum, Material $material)
+    {
+        $forum->delete();
+        return redirect()->route('admin.materialDetails', $material);
+    }
+    public function showForum(Forum $forum)
+    {
+        $material = Material::where('ID_material', $forum->ID_material)->first();
+        return view('admin.showForum', compact('forum', 'material'));
+    }
+    public function addForumComment(Request $request)
+    {
+        $comment = new Comment();
+        if ($request->get('comment_body')) {
+            $comment->body = '@admin: ' . $request->get('comment_body');
+            $comment->user()->associate($request->user());
+            $forum = Forum::find($request->get('post_id'));
+            $forum->comment()->save($comment);
+            return back();
+        } else {
+            return back()->with('fail', 'Comment field is empty');
+        }
+    }
+    public function addForumCommentReply(Request $request)
+    {
+        $reply = new Comment();
+        if ($request->get('comment_body')) {
+            $reply->body = '@admin: ' . $request->get('comment_body');
+            $reply->user()->associate($request->user());
+            $reply->ID_parent = $request->get('comment_id');
+            $forum = Forum::find($request->get('post_id'));
+            $forum->comment()->save($reply);
+            return back();
+        } else {
+            return back()->with('fail', 'Comment field is empty');
+        }
+    }
+    public function ForumDeleteComment(Comment $comment)
+    {
+        $comment->delete();
+        return back();
     }
     public function commentsAdmin()
     {
