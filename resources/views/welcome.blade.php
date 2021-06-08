@@ -30,6 +30,14 @@
         <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
             @auth
             <a href="{{ route('home') }}" class="btn btn-dark">Home <i class="fa fa-home" aria-hidden="true"></i></a>
+            <a class="btn btn-danger" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                {{ __('Logout') }} <i class="fa fa-sign-out" aria-hidden="true"></i>
+
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
             @else
             <a href="{{ route('login') }}" class="btn btn-dark">Log in <i class="fa fa-sign-in"
                     aria-hidden="true"></i></a>
