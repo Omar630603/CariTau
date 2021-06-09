@@ -48,10 +48,10 @@
     <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between">
         @if (count($courses)>0) @foreach ($courses as $course) <div class="card" style="width: 16rem;">
             <img class="card-img-top" src="{{ asset('storage/'.$course->image) }}" alt="Card image cap">
-            <div class="card-body">
+            <div class="card-body d-flex flex-column">
                 <h5 class="card-title">{{$course->course_name}}</h5>
                 <p class="card-text">{{$course->description}}</p>
-                <a href="#" class="btn btn-dark">Learn more</a>
+                <a href="#" class="mt-auto btn btn-success">Learn more</a>
             </div>
         </div>
         @endforeach

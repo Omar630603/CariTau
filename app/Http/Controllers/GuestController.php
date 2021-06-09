@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\Course;
+use App\Models\Enrollment;
+use App\Models\Lecturer;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class GuestController extends Controller
@@ -14,15 +18,28 @@ class GuestController extends Controller
     }
     public function aboutUs()
     {
-        return view('aboutUs');
+        $courses = count(Course::all());
+        $enrollment = count(Enrollment::all());
+        $lecturers = count(Lecturer::all());
+        $countAdmins = count(Admin::all());
+        $students = count(User::all()) - $countAdmins - $lecturers;
+        return view('aboutUs', compact('courses', 'enrollment', 'students', 'lecturers'));
     }
-    public function courses()
+    public function courses(Request $request)
     {
-        return view('courses');
+        $search = $request->get('search');
+        if ($request->get('search')) {
+            $courses = Course::search(['course_name'], $search)->get();
+        } else {
+            $courses = Course::all();
+        }
+        return view('courses', compact('courses', 'search'));
     }
     public function lecturers()
     {
-        return view('lecturers');
+        $lecturers = Lecturer::Join('user', 'lecturer.ID_user', '=', 'user.ID_user', 'left outer')->get();
+        $courses = Course::all();
+        return view('lecturers', compact('lecturers', 'courses'));
     }
     public function contactUs()
     {
