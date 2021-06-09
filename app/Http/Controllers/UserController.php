@@ -17,6 +17,16 @@ class UserController extends Controller
         return view('user.index');
     }
 
+    public function profile()
+    {
+        return view('user.profile');
+    }
+
+    public function mycourse()
+    {
+        return view('user.mycourse');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

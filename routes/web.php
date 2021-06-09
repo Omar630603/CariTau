@@ -30,6 +30,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Auth::routes();
 
 Route::get('/user/home', [UserController::class, 'index'])->name('user.home')->middleware('StudentAccess');
+Route::get('/user/profile', [UserController::class, 'profile'])->name('user.profile')->middleware('StudentAccess');
+Route::get('/user/mycourse', [UserController::class, 'mycourse'])->name('user.mycourse')->middleware('StudentAccess');
 
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.home')->middleware('AdminAccess');
 Route::post('/admin', [AdminController::class, 'authAdmin'])->name('admin.auth')->middleware('AdminAccess');

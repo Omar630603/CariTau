@@ -48,8 +48,8 @@
                     <nav class="shift" style="padding: 0">
                         <ul class="navbar-nav md-auto">
                             <li><a href="{{route('home')}}">Dashboard</a></li>
-                            <li><a href="">Profile</a></li>
-                            <li><a href="">My Courses</a></li>
+                            <li><a href="{{ route('user.profile') }}">Profile</a></li>
+                            <li><a href="{{ route('user.mycourse') }}">My Courses</a></li>
                         </ul>
                     </nav>
 
