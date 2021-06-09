@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\ContactUs;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Lecturer;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class GuestController extends Controller
@@ -44,5 +46,27 @@ class GuestController extends Controller
     public function contactUs()
     {
         return view('contactUs');
+    }
+    public function sendMessage(Request $request)
+    {
+        try {
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required',
+                'subject' => 'required',
+                'message' => 'required',
+            ]);
+            $contact_us = new ContactUs;
+            $contact_us->name = $request->get('name');
+            $contact_us->email = $request->get('email');
+            $contact_us->subject = $request->get('subject');
+            $contact_us->message = $request->get('message');
+            $contact_us->save();
+        } catch (Exception  $e) {
+            $message = 'There was Something Wrong. Please, Try again';
+            return redirect()->back()->with('fail', $message);
+        }
+        $message = 'Sent Successfully, Thanks, We Are Looking Forwared to Hear From You Soon! :)';
+        return redirect()->back()->with('success', $message);
     }
 }

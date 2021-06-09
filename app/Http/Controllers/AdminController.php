@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\Comment;
+use App\Models\ContactUs;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\File;
@@ -855,7 +856,8 @@ class AdminController extends Controller
     }
     public function commentsAdmin()
     {
-        return view('admin.comments');
+        $contact_us = ContactUs::paginate(10);
+        return view('admin.comments', compact('contact_us'));
     }
     public function othersAdmin()
     {

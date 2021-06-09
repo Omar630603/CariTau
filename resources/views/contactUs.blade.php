@@ -2,6 +2,17 @@
 @section('content')
 <div class="content">
     <div class="container">
+        <div>
+            @if ($message = Session::get('fail'))
+            <div class="alert alert-warning">
+                <p>{{ $message }}</p>
+            </div>
+            @elseif ($message = Session::get('success'))
+            <div class="alert alert-success">
+                <p>{{ $message }}</p>
+            </div>
+            @endif
+        </div>
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="row justify-content-center">
@@ -13,11 +24,12 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <form class="mb-5" method="post" id="contactForm" name="contactForm">
+                        <form action="{{route('contactUsSendMessage')}}" class="mb-5" method="post" id="contactForm" name="contactForm">
+                            @csrf
                             @auth
                             <div class="row">
                                 <div class="col-md-12 form-group">
-                                    <input type="text" hidden name="name" id="name" placeholder="Your name" value="">
+                                    <input type="text" hidden name="name" id="name" placeholder="Your name" value="{{Auth::user()->name}}">
                                 </div>
                             </div>
                             <div class="row">

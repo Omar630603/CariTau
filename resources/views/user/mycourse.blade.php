@@ -3,7 +3,6 @@
 @section('content')
 
 <style>
-    @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,900);
 body {
   -moz-box-sizing: border-box;
        box-sizing: border-box;
