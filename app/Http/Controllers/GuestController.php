@@ -12,4 +12,20 @@ class GuestController extends Controller
         $courses = Course::paginate(8);
         return view('welcome', compact('courses'));
     }
+    public function aboutUs()
+    {
+        return view('aboutUs');
+    }
+    public function courses()
+    {
+        return view('courses');
+    }
+    public function lecturers()
+    {
+        return view('lecturers');
+    }
+    public function contactUs()
+    {
+        return view('contactUs');
+    }
 }

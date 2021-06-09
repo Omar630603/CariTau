@@ -19,6 +19,11 @@ use App\Http\Controllers\GuestController;
 */
 
 Route::get('/', [GuestController::class, 'home'])->name('/');
+Route::get('/abour-us', [GuestController::class, 'aboutUs'])->name('aboutUs');
+Route::get('/courses', [GuestController::class, 'courses'])->name('courses');
+Route::get('/lecturers', [GuestController::class, 'lecturers'])->name('lecturers');
+Route::get('/contact-us', [GuestController::class, 'contactUs'])->name('contactUs');
+
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 

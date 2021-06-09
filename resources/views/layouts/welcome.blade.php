@@ -42,10 +42,10 @@
                 <nav class="shift">
                     <ul class="navbar-nav md-auto">
                         <li><a href="/">Home</a></li>
-                        <li><a href="">About Us</a></li>
-                        <li><a href="">Courses</a></li>
-                        <li><a href="">Lecturers</a></li>
-                        <li><a href="">Contact Us</a></li>
+                        <li><a href="{{route('aboutUs')}}">About Us</a></li>
+                        <li><a href="{{route('courses')}}">Courses</a></li>
+                        <li><a href="{{route('lecturers')}}">Lecturers</a></li>
+                        <li><a href="{{route('contactUs')}}">Contact Us</a></li>
                     </ul>
                 </nav>
                 <!-- Right Side Of Navbar -->
