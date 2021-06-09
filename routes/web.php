@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LecturerController;
-
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\GuestController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,13 +18,11 @@ use App\Http\Controllers\LecturerController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [GuestController::class, 'home'])->name('/');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/user/home', [UserController::class, 'index'])->name('user.home')->middleware('StudentAccess');
 

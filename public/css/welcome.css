@@ -344,3 +344,11 @@ video {
         padding-right: 2rem;
     }
 }
+::-webkit-scrollbar {
+    width: 3px;
+    scroll-behavior: smooth;
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #154aac;
+}
