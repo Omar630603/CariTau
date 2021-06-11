@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -14,7 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('user.index');
+        $userCourse = User::find(Auth::user()->ID_user)->course()->get();
+        return view('user.index', compact('userCourse'));
     }
 
     public function profile()
@@ -24,7 +26,8 @@ class UserController extends Controller
 
     public function mycourse()
     {
-        return view('user.mycourse');
+        $userCourse = User::find(Auth::user()->ID_user)->course()->get();
+        return view('user.mycourse', compact('userCourse'));
     }
 
     /**

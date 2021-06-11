@@ -384,15 +384,25 @@ class AdminController extends Controller
     public function showCourse(Course $course)
     {
         $majors = Major::all();
-        $materials = Material::all();
+        $materials = Material::where('ID_course', '=', $course->ID_course)->orderBy('order', 'ASC')->get();
         $lecturerID = Lecturer::where('ID_course', '=', $course->ID_course)->get();
         if ($lecturerID->first()) {
             $lecturer = User::where('ID_user', '=', $lecturerID[0]->ID_user)->get();
-            return view('admin.courseEdit', compact('course', 'lecturer', 'materials', 'majors'));
         } else {
             $lecturer = 'no lecturer';
-            return view('admin.courseEdit', compact('course', 'lecturer', 'materials', 'majors'));
         }
+        return view('admin.courseEdit', compact('course', 'lecturer', 'materials', 'majors'));
+    }
+    public function SortMaterials(Request $request, Material $material)
+    {
+        $materials = Material::where('ID_course', '=', $material->ID_course)->orderBy('order', 'ASC')->get();
+        foreach ($materials as $key) {
+            if ($key->ID_material == $request->get('ID_material' . $key->ID_material)) {
+                $key->order = $request->get('order' . $key->ID_material);
+                $key->save();
+            }
+        }
+        return redirect()->back();
     }
     public function editCourse(Request $request, Course $course)
     {
@@ -451,6 +461,11 @@ class AdminController extends Controller
     }
     public function addMaterialCourseAdmin(Request $request, Course $course)
     {
+        $materials = Material::where('ID_course', '=', $course->ID_course)->orderBy('order', 'ASC')->get();
+        $order = 0;
+        foreach ($materials as $key) {
+            $order = $key->order;
+        }
         try {
             $request->validate([
                 'material_name' => 'required',
@@ -460,6 +475,7 @@ class AdminController extends Controller
             $material->course()->associate($course);
             $material->material_name = $request->get('material_name');
             $material->description = $request->get('description');
+            $material->order = $order + 1;
             $material->save();
         } catch (Exception  $e) {
             $message = 'There was Something Wrong. Please, Try again';
@@ -858,6 +874,23 @@ class AdminController extends Controller
     {
         $contact_us = ContactUs::paginate(10);
         return view('admin.comments', compact('contact_us'));
+    }
+    public function commentsAdminPublish(ContactUs $c)
+    {
+        $c->show = 1;
+        $c->save();
+        return redirect()->back();
+    }
+    public function commentsAdminUnPublish(ContactUs $c)
+    {
+        $c->show = 0;
+        $c->save();
+        return redirect()->back();
+    }
+    public function commentsAdminDelete(ContactUs $c)
+    {
+        $c->delete();
+        return redirect()->back();
     }
     public function othersAdmin()
     {

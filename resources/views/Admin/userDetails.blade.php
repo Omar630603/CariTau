@@ -44,7 +44,7 @@
                 <img width="220px" height="220px" style="border-radius: 10%" src="{{asset('storage/'.$user->image)}}">
             </div>
             <a style="margin-top: 10px; color: white; background-color: rgb(21, 74, 172);" class="btn btn-info" href=""
-                onclick="$('#imageInput').show(); return false;">Change Picture</a>
+                onclick="$('#imageInput').click(); return false;">Change Picture</a>
             <form method="POST" action="{{ route('userAdmin.restoreImage', $user) }}">
                 @csrf
                 <button type="submit"
@@ -52,16 +52,13 @@
                     class="btn btn-info">Restore
                     Default</button>
             </form>
-            <form method="post" style="display: none; margin-top: 10px" id="imageInput"
+            <form method="post" style="display: none; margin-top: 10px"
                 action="{{ route('userAdmin.updateImage', $user) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <input style="border: none" onchange="document.getElementById('upload').click();" type="file"
+                <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();" type="file"
                     name="image">
                 <input type="submit" style="display: none;" name="upload" id="upload">
-                <i class="fa fa-close" style="margin-right: 15px; font-size:24px; cursor: pointer;"
-                    onclick="$('#imageInput').hide();return false;">
-                </i>
             </form>
         </div>
     </div>
@@ -153,7 +150,7 @@
                     @endif
                     <td style="display: flex; justify-content: space-around">
                         <a style="color: white; background-color: rgb(21, 74, 172)" class="btn btn-info" href=""
-                            onclick="$('#editStudentCourseStatus{{$Course->ID_course}}').show(); return false;">Edit</a>
+                            onclick="$('#editStudentCourseStatus{{$Course->ID_course}}').toggle('fast'); return false;">Edit</a>
                         <a style="color: white" class="btn btn-danger" href=""
                             onclick="document.getElementById('deleteCourse{{$Course->ID_course}}').click();return false;">Delete</a>
                         <form style="display: none"
@@ -180,10 +177,6 @@
                             <div style="margin-top: 5px; margin-left: 10px">
                                 <button type="submit" class="btn btn-primary">Done</button>
                             </div>
-                            <i class="fa fa-close"
-                                style="margin-top: 10px; margin-left: 10px; font-size:24px; cursor: pointer;"
-                                onclick="$('#editStudentCourseStatus{{$Course->ID_course}}').hide();return false;">
-                            </i>
                         </form>
                     </td>
                 </tr>
@@ -234,7 +227,7 @@
                 <img width="220px" height="220px" style="border-radius: 10%" src="{{asset('storage/'.$user->image)}}">
             </div>
             <a style="margin-top: 10px; color: white; background-color: rgb(21, 74, 172);" class="btn btn-info" href=""
-                onclick="$('#imageInput').show(); return false;">Change Picture</a>
+                onclick="$('#imageInput').click(); return false;">Change Picture</a>
             <form method="POST" action="{{ route('userAdmin.restoreImage', $user) }}">
                 @csrf
                 <button type="submit"
@@ -242,16 +235,13 @@
                     class="btn btn-info">Restore
                     Default</button>
             </form>
-            <form method="post" style="display: none; margin-top: 10px" id="imageInput"
+            <form method="post" style="display: none; margin-top: 10px" 
                 action="{{ route('userAdmin.updateImage', $user) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <input style="border: none" onchange="document.getElementById('upload').click();" type="file"
+                <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();" type="file"
                     name="image">
                 <input type="submit" style="display: none;" name="upload" id="upload">
-                <i class="fa fa-close" style="margin-right: 15px; font-size:24px; cursor: pointer;"
-                    onclick="$('#imageInput').hide();return false;">
-                </i>
             </form>
         </div>
     </div>
@@ -339,7 +329,7 @@
                 <img width="220px" height="220px" style="border-radius: 10%" src="{{asset('storage/'.$user->image)}}">
             </div>
             <a style="margin-top: 10px; color: white; background-color: rgb(21, 74, 172);" class="btn btn-info" href=""
-                onclick="$('#imageInput').show(); return false;">Change Picture</a>
+                onclick="$('#imageInput').click(); return false;">Change Picture</a>
             <form method="POST" action="{{ route('userAdmin.restoreImage', $user) }}">
                 @csrf
                 <button type="submit"
@@ -347,16 +337,13 @@
                     class="btn btn-info">Restore
                     Default</button>
             </form>
-            <form method="post" style="display: none; margin-top: 10px" id="imageInput"
+            <form method="post" style="display: none; margin-top: 10px" 
                 action="{{ route('userAdmin.updateImage', $user) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <input style="border: none" onchange="document.getElementById('upload').click();" type="file"
+                <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();" type="file"
                     name="image">
                 <input type="submit" style="display: none;" name="upload" id="upload">
-                <i class="fa fa-close" style="margin-right: 15px; font-size:24px; cursor: pointer;"
-                    onclick="$('#imageInput').hide();return false;">
-                </i>
             </form>
         </div>
     </div>

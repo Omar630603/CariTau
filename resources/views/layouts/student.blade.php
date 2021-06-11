@@ -20,7 +20,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/adminApp.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/user.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -47,7 +47,7 @@
                     <!-- Middle Side Of Navbar -->
                     <nav class="shift" style="padding: 0">
                         <ul class="navbar-nav md-auto">
-                            <li><a href="{{route('home')}}">Dashboard</a></li>
+                            <li><a href="{{ route('home') }}">Dashboard</a></li>
                             <li><a href="{{ route('user.profile') }}">Profile</a></li>
                             <li><a href="{{ route('user.mycourse') }}">My Courses</a></li>
                         </ul>
@@ -58,31 +58,31 @@
                         <!-- Authentication Links -->
                         @guest
                         @else
-                        <li class="nav-item dropdown">
-                            <div class="profile-logo" style="display: flex; justify-content: space-between;">
-                                <div style="display: flex; flex-direction: column;">
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        {{ Auth::user()->username }}
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a href="{{ route('home') }}" class="dropdown-item">Home <i class="fa fa-home"
-                                                aria-hidden="true"></i></a>
-                                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }} <i class="fa fa-sign-out" aria-hidden="true"></i>
+                            <li class="nav-item dropdown">
+                                <div class="profile-logo" style="display: flex; justify-content: space-between;">
+                                    <div style="display: flex; flex-direction: column;">
+                                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                            {{ Auth::user()->username }}
                                         </a>
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                            class="d-none">
-                                            @csrf
-                                        </form>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                            <a href="{{ route('home') }}" class="dropdown-item">Home <i
+                                                    class="fa fa-home" aria-hidden="true"></i></a>
+                                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                                 document.getElementById('logout-form').submit();">
+                                                {{ __('Logout') }} <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                            </a>
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                class="d-none">
+                                                @csrf
+                                            </form>
+                                        </div>
                                     </div>
+                                    <a href="{{ route('user.profile') }}"><img width="35px" height="35px"
+                                            style="border-radius: 50%"
+                                            src="{{ asset('storage/' . Auth::user()->image) }}"></a>
                                 </div>
-                                <a href="{{ route('admin.userDetails', Auth::user()->ID_user) }}"><img width="35px"
-                                        height="35px" style="border-radius: 50%"
-                                        src="{{asset('storage/'.Auth::user()->image)}}"></a>
-                            </div>
-                        </li>
+                            </li>
                         @endguest
                     </ul>
                 </div>
@@ -93,5 +93,10 @@
         </main>
     </div>
 </body>
+<footer class="bg-light pb-5">
+    <div class="container text-center">
+        <p class="font-italic text-muted mb-0">&copy; Copyrights CariTau.com All rights reserved.</p>
+    </div>
+</footer>
 
 </html>

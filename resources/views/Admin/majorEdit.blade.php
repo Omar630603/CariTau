@@ -20,7 +20,7 @@
                         src="{{asset('storage/'.$major->image)}}">
                 </div>
                 <a style="margin-top: 10px; color: white; background-color: rgb(21, 74, 172);" class="btn btn-info"
-                    href="" onclick="$('#imageInput').show(); return false;">Change Picture</a>
+                    href="" onclick="$('#imageInput').click(); return false;">Change Picture</a>
                 <form method="POST" action="{{route('majorAdmin.restoreImage', $major)}}">
                     @csrf
                     <button type="submit"
@@ -28,16 +28,13 @@
                         class="btn btn-info">Restore
                         Default</button>
                 </form>
-                <form method="post" style="display: none; margin-top: 10px" id="imageInput"
+                <form method="post" style="display: none; margin-top: 10px"
                     action="{{route('majorAdmin.updateImage', $major)}}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <input style="border: none" onchange="document.getElementById('upload').click();" type="file"
+                    <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();" type="file"
                         name="image">
                     <input type="submit" style="display: none;" name="upload" id="upload">
-                    <i class="fa fa-close" style="margin-right: 15px; font-size:24px; cursor: pointer;"
-                        onclick="$('#imageInput').hide();return false;">
-                    </i>
                 </form>
             </div>
             <form method="post" action="{{route('majorAdmin.update', $major)}}" enctype="multipart/form-data"
@@ -56,7 +53,7 @@
                         </div>
                     </div>
                     <textarea id="description-copy" rows="9" class="form-control" name="description" type="text"
-                        placeholder="{{$major->description}}" value="{{$major->description}}"></textarea>
+                        placeholder="{{$major->description}}" value="{{$major->description}}">{{$major->description}}</textarea>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Done</button>

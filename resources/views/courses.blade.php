@@ -28,8 +28,9 @@
     <div class="card-header" style="margin-bottom: 1rem">
         <h5 class="card-title">This is a list of all the courses in CariTau</h5>
     </div>
-    <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between">
-        @if (count($courses)>0) @foreach ($courses as $course) <div class="card" style="width: 16rem;">
+    <div class="row" style="margin-left: 0">
+    <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-between">
+        @if (count($courses)>0) @foreach ($courses as $course) <div class="card" style="width: 15rem;">
             <img class="card-img-top" src="{{ asset('storage/'.$course->image) }}" alt="Card image cap">
             <div class="card-body d-flex flex-column">
                 <h5 class="card-title">{{$course->course_name}}</h5>
@@ -51,6 +52,7 @@
             @endif
         </div>
         @endif
+    </div>
     </div>
 </div>
 @endsection

@@ -69,6 +69,7 @@ Route::post('/admin/major/course/restoreImage/{course}', [AdminController::class
 Route::post('/admin/major/course/edit/{course}', [AdminController::class, 'editCourse'])->name('courseAdmin.update')->middleware('AdminAccess');
 Route::delete('/admin/major/course/delete/{course}/{major}', [AdminController::class, 'deleteCourse'])->name('courseAdmin.delete')->middleware('AdminAccess');
 Route::post('/admin/major/add/course/material/{course}', [AdminController::class, 'addMaterialCourseAdmin'])->name('admin.courseAddMaterial')->middleware('AdminAccess');
+Route::post('/admin/major/course/sortMaterials/{material}', [AdminController::class, 'SortMaterials'])->name('admin.SortMaterials')->middleware('AdminAccess');;
 
 Route::get('/admin/major/course/material/{material}', [AdminController::class, 'showMaterial'])->name('admin.materialDetails')->middleware('AdminAccess');
 Route::put('/admin/major/course/material/editImage/{material}', [AdminController::class, 'editMaterialImage'])->name('materialAdmin.updateImage')->middleware('AdminAccess');
@@ -103,6 +104,10 @@ Route::post('/admin/major/course/material/forum/addComment/reply', [AdminControl
 Route::delete('/admin/major/course/material/forum/{comment}/deleteComment', [AdminController::class, 'ForumDeleteComment'])->name('admin.deleteComment')->middleware('AdminAccess');
 
 Route::get('/admin/comments', [AdminController::class, 'commentsAdmin'])->name('admin.comments')->middleware('AdminAccess');
+Route::get('/admin/comments/{c}/publish', [AdminController::class, 'commentsAdminPublish'])->name('admin.commentsPublish')->middleware('AdminAccess');
+Route::get('/admin/comments/{c}/unPublish', [AdminController::class, 'commentsAdminUnPublish'])->name('admin.commentsUnPublish')->middleware('AdminAccess');
+Route::get('/admin/comments/{c}/delete', [AdminController::class, 'commentsAdminDelete'])->name('admin.commentsAdminDelete')->middleware('AdminAccess');
+
 Route::get('/admin/others', [AdminController::class, 'othersAdmin'])->name('admin.others')->middleware('AdminAccess');
 
 

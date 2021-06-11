@@ -45,7 +45,8 @@ class GuestController extends Controller
     }
     public function contactUs()
     {
-        return view('contactUs');
+        $comments = ContactUs::where('show', 1)->get();
+        return view('contactUs', compact('comments'));
     }
     public function sendMessage(Request $request)
     {

@@ -106,10 +106,43 @@
                         </form>
                         <div id="form-message-warning mt-4"></div>
                         <div id="form-message-success">
-                            Your message will be sent, we will contact you soon. Thank you!
+                            Your message will be sent, we will contact you soon. Thank you!<br>
+                            Scroll down <i class="fa fa-arrow-down" aria-hidden="true"></i> to check comments.
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-10">
+                <div class="headings d-flex justify-content-between align-items-center mb-3">
+                    <h5>Comments({{count($comments)}})</h5>
+                </div>
+                @foreach ($comments as $comment)
+                <div class="card p-3" style="margin-top: 10px">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="user d-flex flex-row align-items-center"> 
+                            <img src="{{ asset('storage/images/ICON2.png') }}" width="30" class="user-img rounded-circle mr-2"> 
+                                <span>
+                                    <small class="font-weight-bold text-primary">{{$comment->name}}</small> 
+                                    <small class="font-weight-bold">{{$comment->subject}}</small>
+                                </span>
+                        </div> 
+                        <small>{{$comment->created_at}}</small>
+                    </div>
+                    <div class="action d-flex justify-content-between mt-2 align-items-center">
+                        <div class="reply px-4"> 
+                            <small>{{$comment->message}}</small>
+                        </div>
+                        <div class="icons align-items-center" data-toggle="tooltip" title="Approved by Admin"> 
+                            <i class="fa fa-star text-warning"></i> 
+                            <i class="fa fa-check-circle-o check-icon"></i> 
+                        </div>
+                    </div>
+                </div>
+                @endforeach
             </div>
         </div>
     </div>
