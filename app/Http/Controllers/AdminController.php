@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\replyComment;
 use App\Models\Admin;
 use App\Models\Comment;
 use App\Models\ContactUs;
@@ -19,6 +20,7 @@ use App\Models\Video;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\MessageBag;
 
@@ -872,7 +874,7 @@ class AdminController extends Controller
     }
     public function commentsAdmin()
     {
-        $contact_us = ContactUs::paginate(10);
+        $contact_us = ContactUs::orderBy('created_at', 'desc')->paginate(10);
         return view('admin.comments', compact('contact_us'));
     }
     public function commentsAdminPublish(ContactUs $c)
@@ -891,6 +893,17 @@ class AdminController extends Controller
     {
         $c->delete();
         return redirect()->back();
+    }
+    public function replyEmail(Request $request, ContactUs $c)
+    {
+        if ($request->get('reply')) {
+            $msg = $request->get('reply');
+            $email = $c->email;
+            Mail::to($email)->send(new replyComment($msg, $c));
+        } else {
+            return redirect()->back()->with('fail', 'Comment field is empty');
+        }
+        return redirect()->back()->with('success', 'Sent Successfuly!');;
     }
     public function othersAdmin()
     {

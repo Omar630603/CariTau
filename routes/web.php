@@ -107,6 +107,7 @@ Route::get('/admin/comments', [AdminController::class, 'commentsAdmin'])->name('
 Route::get('/admin/comments/{c}/publish', [AdminController::class, 'commentsAdminPublish'])->name('admin.commentsPublish')->middleware('AdminAccess');
 Route::get('/admin/comments/{c}/unPublish', [AdminController::class, 'commentsAdminUnPublish'])->name('admin.commentsUnPublish')->middleware('AdminAccess');
 Route::get('/admin/comments/{c}/delete', [AdminController::class, 'commentsAdminDelete'])->name('admin.commentsAdminDelete')->middleware('AdminAccess');
+Route::get('/admin/comments/{c}/reply', [AdminController::class, 'replyEmail'])->name('admin.commentsAdminReply')->middleware('AdminAccess');
 
 Route::get('/admin/others', [AdminController::class, 'othersAdmin'])->name('admin.others')->middleware('AdminAccess');
 

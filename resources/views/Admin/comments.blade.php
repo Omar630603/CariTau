@@ -2,6 +2,17 @@
 
 @section('content')
 <div class="container">
+    <div>
+        @if ($message = Session::get('fail'))
+        <div class="alert alert-warning">
+            <p>{{ $message }}</p>
+        </div>
+        @elseif ($message = Session::get('success'))
+        <div class="alert alert-success">
+            <p>{{ $message }}</p>
+        </div>
+        @endif
+    </div>
     <div class="row d-flex justify-content-center">
         <div class="col-lg-10">
             <div class="card" style="padding: 10px">
@@ -21,7 +32,7 @@
                         <span class="m-b-15 d-block" style="margin-left: 20px">{{$c->message}} </span>
                         <div class="comment-footer" style="margin: 10px">
                             <div class="float-right">
-                                <a href="" type="button" class="btn btn-dark btn-sm">Reply</a>
+                                <a href="" onclick="$('#replyDiv{{ $c->ID_contact_us }}').toggle('slow'); return false;" type="button" class="btn btn-dark btn-sm">Reply</a>
                                 @if ($c->show)
                                 <a href="{{route('admin.commentsUnPublish', $c)}}" type="button" class="btn btn-primary btn-sm">Unpublish</a>    
                                 @else
@@ -29,6 +40,16 @@
                                 @endif 
                                 <a href="{{route('admin.commentsAdminDelete', $c)}}" type="button" class="btn btn-danger btn-sm">Delete</a>
                             </div>
+                        </div>
+                        <div id="replyDiv{{ $c->ID_contact_us }}" style="display: none; margin-top:40px">
+                            <form action="{{route('admin.commentsAdminReply', $c)}}" method="GET">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="reply">Reply to <strong>{{$c->email}}</strong>.</label>
+                                    <textarea class="form-control" name="reply" id="" cols="30" rows="5"></textarea>
+                                    <button style="margin-top: 10px; float: right" type="submit" class="btn btn-sm btn-dark">Send</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
