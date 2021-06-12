@@ -13,7 +13,7 @@
             <div class="container" style="padding: 0">
                 <div class="col-md-4 mb-3" style="max-width: none">
                     <div class="card" style="border-radius:20px;">
-                        <div class="card-body" style="background: #3490dc;border-radius:20px;">
+                        <div class="card-body" style="background: #3ba7ff;border-radius:20px;">
                             <div class="d-flex flex-column align-items-center text-center">
                                 <a href="{{ route('user.profile') }}">
                                     <img src="{{ asset('storage/' . Auth::user()->image) }}"

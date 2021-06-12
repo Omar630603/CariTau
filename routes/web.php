@@ -18,6 +18,7 @@ use App\Http\Controllers\GuestController;
 |
 */
 
+//guest//
 Route::get('/', [GuestController::class, 'home'])->name('/');
 Route::get('/abour-us', [GuestController::class, 'aboutUs'])->name('aboutUs');
 Route::get('/courses', [GuestController::class, 'courses'])->name('courses');
@@ -25,16 +26,22 @@ Route::get('/lecturers', [GuestController::class, 'lecturers'])->name('lecturers
 Route::get('/contact-us', [GuestController::class, 'contactUs'])->name('contactUs');
 Route::post('/contact-us/sendMessage', [GuestController::class, 'sendMessage'])->name('contactUsSendMessage');
 
-
+//home//
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-
+//auth//
 Auth::routes();
 
+//StudentAccess//
 Route::get('/user/home', [UserController::class, 'index'])->name('user.home')->middleware('StudentAccess');
 Route::get('/user/profile', [UserController::class, 'profile'])->name('user.profile')->middleware('StudentAccess');
 Route::get('/user/mycourse', [UserController::class, 'mycourse'])->name('user.mycourse')->middleware('StudentAccess');
+Route::post('/user/profile/edit/{user}', [UserController::class, 'editStudent'])->name('userStudent.update')->middleware('StudentAccess');
+Route::put('/user/profile/editImage/{user}', [UserController::class, 'editStudentImage'])->name('userStudent.updateImage')->middleware('StudentAccess');
+Route::post('/user/profile/restoreImage/{user}', [UserController::class, 'editStudentImageDefult'])->name('userStudent.restoreImage')->middleware('StudentAccess');
+Route::delete('/user/profile/delete/{user}', [UserController::class, 'deleteStudent'])->name('userStudent.delete')->middleware('StudentAccess');
 
+//AdminAccess//
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.home')->middleware('AdminAccess');
 Route::post('/admin', [AdminController::class, 'authAdmin'])->name('admin.auth')->middleware('AdminAccess');
 Route::get('/admin/dashboard', [AdminController::class, 'dashboardAdmin'])->name('admin.dashboard')->middleware('AdminAccess');
@@ -69,7 +76,7 @@ Route::post('/admin/major/course/restoreImage/{course}', [AdminController::class
 Route::post('/admin/major/course/edit/{course}', [AdminController::class, 'editCourse'])->name('courseAdmin.update')->middleware('AdminAccess');
 Route::delete('/admin/major/course/delete/{course}/{major}', [AdminController::class, 'deleteCourse'])->name('courseAdmin.delete')->middleware('AdminAccess');
 Route::post('/admin/major/add/course/material/{course}', [AdminController::class, 'addMaterialCourseAdmin'])->name('admin.courseAddMaterial')->middleware('AdminAccess');
-Route::post('/admin/major/course/sortMaterials/{material}', [AdminController::class, 'SortMaterials'])->name('admin.SortMaterials')->middleware('AdminAccess');;
+Route::post('/admin/major/course/sortMaterials/{material}', [AdminController::class, 'SortMaterials'])->name('admin.SortMaterials')->middleware('AdminAccess');
 
 Route::get('/admin/major/course/material/{material}', [AdminController::class, 'showMaterial'])->name('admin.materialDetails')->middleware('AdminAccess');
 Route::put('/admin/major/course/material/editImage/{material}', [AdminController::class, 'editMaterialImage'])->name('materialAdmin.updateImage')->middleware('AdminAccess');
@@ -111,7 +118,50 @@ Route::get('/admin/comments/{c}/reply', [AdminController::class, 'replyEmail'])-
 
 Route::get('/admin/others', [AdminController::class, 'othersAdmin'])->name('admin.others')->middleware('AdminAccess');
 
-
+//LecturerAccess//
 Route::get('/lecturer/home', [LecturerController::class, 'index'])->name('lecturer.home')->middleware('LecturerAccess');
+
 Route::get('/lecturer/profile', [LecturerController::class, 'profile'])->name('lecturer.profile')->middleware('LecturerAccess');
+Route::post('/lecturer/profile/edit/{user}', [LecturerController::class, 'editLecturer'])->name('userLecturer.update')->middleware('LecturerAccess');
+Route::put('/lecturer/profile/editImage/{user}', [LecturerController::class, 'editLecturerImage'])->name('userLecturer.updateImage')->middleware('LecturerAccess');
+Route::post('/lecturer/profile/restoreImage/{user}', [LecturerController::class, 'editLecturerImageDefult'])->name('userLecturer.restoreImage')->middleware('LecturerAccess');
+Route::delete('/lecturer/profile/delete/{user}', [LecturerController::class, 'deleteLecturer'])->name('userLecturer.delete')->middleware('LecturerAccess');
+
 Route::get('/lecturer/course', [LecturerController::class, 'course'])->name('lecturer.mycourse')->middleware('LecturerAccess');
+Route::post('/lecturer/course/edit/{course}', [LecturerController::class, 'editCourse'])->name('courseLecturer.update')->middleware('LecturerAccess');
+Route::put('/lecturer/course/editImage/{course}', [LecturerController::class, 'editCourseImage'])->name('courseLecturer.updateImage')->middleware('LecturerAccess');
+Route::post('/lecturer/course/restoreImage/{course}', [LecturerController::class, 'editCourseImageDefult'])->name('courseLecturer.restoreImage')->middleware('LecturerAccess');
+Route::post('/lecturer/course/add/material/{course}', [LecturerController::class, 'addMaterialCourseLecturer'])->name('lecturer.courseAddMaterial')->middleware('LecturerAccess');
+Route::post('/lecturer/course/sortMaterials/{material}', [LecturerController::class, 'SortMaterials'])->name('lecturer.SortMaterials')->middleware('LecturerAccess');
+
+Route::get('/lecturer/course/material/{material}', [LecturerController::class, 'showMaterial'])->name('lecturer.materialDetails')->middleware('LecturerAccess');
+Route::post('/lecturer/course/material/edit/{material}', [LecturerController::class, 'editMaterial'])->name('materialLecturer.update')->middleware('LecturerAccess');
+Route::put('/lecturer/course/material/editImage/{material}', [LecturerController::class, 'editMaterialImage'])->name('materialLecturer.updateImage')->middleware('LecturerAccess');
+Route::post('/lecturer/course/material/restoreImage/{material}', [LecturerController::class, 'editMaterialImageDefult'])->name('materialLecturer.restoreImage')->middleware('LecturerAccess');
+Route::delete('/lecturer/course/material/delete/{material}', [LecturerController::class, 'deleteMaterial'])->name('materialLecturer.delete')->middleware('LecturerAccess');
+
+Route::post('/lecturer/course/material/{material}/uploadFiles', [LecturerController::class, 'materialUploadFiles'])->name('lecturer.uploadFiles')->middleware('LecturerAccess');
+Route::post('/lecturer/course/material/{file}/editFiles', [LecturerController::class, 'editFile'])->name('lecturer.editFiles')->middleware('LecturerAccess');
+Route::delete('/lecturer/course/material/{file}/deleteFiles', [LecturerController::class, 'deleteFile'])->name('lecturer.deleteFiles')->middleware('LecturerAccess');
+Route::get('/lecturer/course/material/{file}/downloadFiles', [LecturerController::class, 'downloadFile'])->name('lecturer.downloadFiles')->middleware('LecturerAccess');
+Route::get('/lecturer/course/material/showFiles/{file}', [LecturerController::class, 'showFile'])->name('lecturer.showFile')->middleware('LecturerAccess');
+
+Route::post('/lecturer/course/material/{material}/addVideos', [LecturerController::class, 'materialAddVideos'])->name('lecturer.addVideos')->middleware('LecturerAccess');
+Route::post('/lecturer/course/material/{video}/editVideos', [LecturerController::class, 'editVideo'])->name('lecturer.editVideos')->middleware('LecturerAccess');
+Route::delete('/lecturer/course/material/{video}/deleteVideos', [LecturerController::class, 'deleteVideo'])->name('lecturer.deleteVideos')->middleware('LecturerAccess');
+
+Route::post('/lecturer/course/material/{material}/addQuiz', [LecturerController::class, 'materialAddQuiz'])->name('lecturer.addQuiz')->middleware('LecturerAccess');
+Route::post('/lecturer/course/material/{quiz}/editQuiz', [LecturerController::class, 'editQuiz'])->name('lecturer.editQuiz')->middleware('LecturerAccess');
+Route::delete('/lecturer/course/material/{quiz}/deleteQuiz', [LecturerController::class, 'deleteQuiz'])->name('lecturer.deleteQuiz')->middleware('LecturerAccess');
+Route::get('/lecturer/course/material/{quiz}/{material}/addQuestion', [LecturerController::class, 'addQuestion'])->name('lecturer.addQuestion')->middleware('LecturerAccess');
+Route::post('/lecturer/course/material/{quiz}/postQuestion', [LecturerController::class, 'postQuestion'])->name('lecturer.postQuestion')->middleware('LecturerAccess');
+Route::post('/lecturer/course/material/editQuestion/{Question}', [LecturerController::class, 'editQuestion'])->name('lecturer.editQuestion')->middleware('LecturerAccess');
+Route::delete('/lecturer/course/material/deleteQuestion/{Question}', [LecturerController::class, 'deleteQuestion'])->name('lecturer.deleteQuestion')->middleware('LecturerAccess');
+
+Route::post('/lecturer/course/material/{material}/addForum', [LecturerController::class, 'materialAddForum'])->name('lecturer.addForum')->middleware('LecturerAccess');
+Route::post('/lecturer/course/material/{forum}/editForum', [LecturerController::class, 'editForum'])->name('lecturer.editForum')->middleware('LecturerAccess');
+Route::delete('/lecturer/course/material/{forum}/deleteForum', [LecturerController::class, 'deleteForum'])->name('lecturer.deleteForum')->middleware('LecturerAccess');
+Route::get('/lecturer/course/material/{forum}/showForum', [LecturerController::class, 'showForum'])->name('lecturer.showForum')->middleware('LecturerAccess');
+Route::post('/lecturer/course/material/forum/addComment', [LecturerController::class, 'addForumComment'])->name('lecturer.addForumComment')->middleware('LecturerAccess');
+Route::post('/lecturer/course/material/forum/addComment/reply', [LecturerController::class, 'addForumCommentReply'])->name('lecturer.addForumCommentReply')->middleware('LecturerAccess');
+Route::delete('/lecturer/course/material/forum/{comment}/deleteComment', [LecturerController::class, 'ForumDeleteComment'])->name('lecturer.deleteComment')->middleware('LecturerAccess');
