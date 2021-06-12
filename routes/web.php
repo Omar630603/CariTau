@@ -113,3 +113,5 @@ Route::get('/admin/others', [AdminController::class, 'othersAdmin'])->name('admi
 
 
 Route::get('/lecturer/home', [LecturerController::class, 'index'])->name('lecturer.home')->middleware('LecturerAccess');
+Route::get('/lecturer/profile', [LecturerController::class, 'profile'])->name('lecturer.profile')->middleware('LecturerAccess');
+Route::get('/lecturer/course', [LecturerController::class, 'course'])->name('lecturer.mycourse')->middleware('LecturerAccess');
