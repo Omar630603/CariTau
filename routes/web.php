@@ -25,7 +25,7 @@ Route::get('/courses', [GuestController::class, 'courses'])->name('courses');
 Route::get('/lecturers', [GuestController::class, 'lecturers'])->name('lecturers');
 Route::get('/contact-us', [GuestController::class, 'contactUs'])->name('contactUs');
 Route::post('/contact-us/sendMessage', [GuestController::class, 'sendMessage'])->name('contactUsSendMessage');
-
+Route::get('/login-first', [GuestController::class, 'redirectLogin'])->name('redirectLogin');
 //home//
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 

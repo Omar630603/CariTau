@@ -45,7 +45,7 @@
                     <ul class="navbar-nav ml-auto">
                     </ul>
                     <!-- Middle Side Of Navbar -->
-                    <nav class="shift">
+                    <nav class="shift"style="padding: 0">
                         <ul class="navbar-nav md-auto">
                             <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                             <li><a href="{{ route('admin.users') }}">Users</a></li>
@@ -101,5 +101,9 @@
         <p class="font-italic text-muted mb-0">&copy; Copyrights CariTau.com All rights reserved.</p>
     </div>
 </footer>
-
+<script>
+    $(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
 </html>

@@ -7,6 +7,7 @@ use App\Models\ContactUs;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Lecturer;
+use App\Models\Major;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,8 +16,13 @@ class GuestController extends Controller
 {
     public function home()
     {
-        $courses = Course::paginate(8);
-        return view('welcome', compact('courses'));
+        $courses = Course::all();
+        $majors = Major::all();
+        return view('welcome', compact('courses', 'majors'));
+    }
+    public function redirectLogin()
+    {
+        return redirect()->route('login')->with('info', 'You have to Login First');
     }
     public function aboutUs()
     {

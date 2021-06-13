@@ -98,5 +98,9 @@
         <p class="font-italic text-muted mb-0">&copy; Copyrights CariTau.com All rights reserved.</p>
     </div>
 </footer>
-
+<script>
+    $(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
 </html>

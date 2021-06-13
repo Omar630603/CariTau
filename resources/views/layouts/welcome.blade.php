@@ -39,7 +39,7 @@
                 <ul class="navbar-nav ml-auto">
                 </ul>
                 <!-- Middle Side Of Navbar -->
-                <nav class="shift">
+                <nav class="shift"style="padding: 0">
                     <ul class="navbar-nav md-auto">
                         <li><a href="/">Home</a></li>
                         <li><a href="{{route('aboutUs')}}">About Us</a></li>
@@ -56,11 +56,13 @@
                     <li>
                         @auth
                         @else
-                        <a href="{{ route('login') }}" class="btn btn-dark">Log in <i class="fa fa-sign-in"
+                        <a href="{{ route('login') }}" class="btn btn-dark" data-toggle="tooltip"
+                        title="login"><i class="fa fa-sign-in"
                                 aria-hidden="true"></i></a>
 
                         @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="btn btn-dark">Register <i class="fa fa-address-book-o"
+                        <a href="{{ route('register') }}" class="btn btn-dark" data-toggle="tooltip"
+                        title="register"><i class="fa fa-address-book-o"
                                 aria-hidden="true"></i></a>
                         @endif
                         @endauth
@@ -105,5 +107,9 @@
         <p class="font-italic text-muted mb-0">&copy; Copyrights CariTau.com All rights reserved.</p>
     </div>
 </footer>
-
+<script>
+    $(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
 </html>
