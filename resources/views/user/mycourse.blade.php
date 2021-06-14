@@ -20,7 +20,7 @@
         <div class="container-fostrap">
             <div class="content">
                 <div class="container">
-                    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                    <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between">
                         @if (count($userCourse) > 0)
                             @foreach ($userCourse as $course)
                                 <div class="card" style="width: 15rem;">
@@ -41,11 +41,8 @@
                                                 @endif
                                             </div>
                                         </h4>
-                                        <div class="mt-auto" style="margin-bottom: 20px">
-                                            <p class="card-text">{{ $course->description }}</p>
-                                        </div>
                                         <div class="mt-auto card-read-more" style="margin-top: 40px;>">
-                                            <a href="" class="mt-auto btn btn-link btn-block">
+                                            <a href="{{route('course', $course)}}" class="mt-auto btn btn-link btn-block">
                                                 Study!
                                             </a>
                                         </div>

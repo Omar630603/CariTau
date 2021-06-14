@@ -40,6 +40,7 @@ Route::post('/user/profile/edit/{user}', [UserController::class, 'editStudent'])
 Route::put('/user/profile/editImage/{user}', [UserController::class, 'editStudentImage'])->name('userStudent.updateImage')->middleware('StudentAccess');
 Route::post('/user/profile/restoreImage/{user}', [UserController::class, 'editStudentImageDefult'])->name('userStudent.restoreImage')->middleware('StudentAccess');
 Route::delete('/user/profile/delete/{user}', [UserController::class, 'deleteStudent'])->name('userStudent.delete')->middleware('StudentAccess');
+Route::get('/user/course/{course}', [UserController::class, 'course'])->name('course')->middleware('StudentAccess');
 
 //AdminAccess//
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.home')->middleware('AdminAccess');

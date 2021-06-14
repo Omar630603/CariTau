@@ -32,10 +32,21 @@
     <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-between">
         @if (count($courses)>0) @foreach ($courses as $course) <div class="card" style="width: 15rem;">
             <img class="card-img-top" src="{{ asset('storage/'.$course->image) }}" alt="Card image cap">
-            <div class="card-body d-flex flex-column">
-                <h5 class="card-title">{{$course->course_name}}</h5>
-                <p class="card-text">{{$course->description}}</p>
-                <a href="#" class="mt-auto btn btn-success">Study!</a>
+            <div class="card-body d-flex flex-column" style="margin-bottom: 5px">
+                <strong><h4 class="card-title" style="text-align: center; font-weight: bold;">{{$course->course_name}}</h4></strong>
+                @auth
+                    @if (is_array($enrollment) || is_object($enrollment))
+                        @if (in_array($course->ID_course, $enrollment))
+                        <a href="{{route('course', $course)}}" style="border-radius:20px;" class="mt-auto btn btn-warning">Study!</a>
+                        @else
+                        <a href="{{route('course', $course)}}" style="border-radius:20px;" class="mt-auto btn btn-outline-success">Enroll</a>
+                        @endif
+                    @else
+                    <a href="{{route('course', $course)}}" style="border-radius:20px;" class="mt-auto btn btn-outline-success">Enroll</a>
+                    @endif
+                @else
+                <a href="{{route('redirectLogin')}}" style="border-radius:20px;" class="mt-auto btn btn-success">Learn more</a>
+                @endauth
             </div>
         </div>
         @endforeach

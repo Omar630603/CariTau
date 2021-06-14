@@ -20,7 +20,7 @@
                                         alt="user{{ Auth::user()->username }}" class="rounded-circle" width="150"
                                         style="border: white 2px solid;"></a>
                                 <div class="mt-3">
-                                    <h4 style="color: white">{{ Auth::user()->username }}</h4>
+                                    <h4 style="color: white;text-transform: uppercase">{{ Auth::user()->username }}</h4>
                                     <p style="color: white">Student</p>
                                     <p style="color: white">{{ Auth::user()->address }} - {{ Auth::user()->phone }}
                                     </p>
@@ -72,7 +72,7 @@
                                 </h6>
                                 @if (count($userCourse) > 0)
                                     @foreach ($userCourse as $course)
-                                        <a href="" style="text-decoration: none">
+                                        <a href="{{route('course', $course)}}" style="text-decoration: none">
                                             <p style="margin: 1px; border-bottom: 1px solid #ccc; padding: 5px">
                                                 {{ $course->course_name }}</p>
                                         </a>

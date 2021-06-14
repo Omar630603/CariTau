@@ -11,6 +11,7 @@ use App\Models\Major;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GuestController extends Controller
 {
@@ -18,6 +19,11 @@ class GuestController extends Controller
     {
         $courses = Course::all();
         $majors = Major::all();
+        if (Auth::check()) {
+            $enrollment = Enrollment::where('ID_user', '=', Auth::user()->ID_user)->pluck('ID_course');
+            $enrollment = json_decode(json_encode($enrollment), true);
+            return view('welcome', compact('courses', 'majors', 'enrollment'));
+        }
         return view('welcome', compact('courses', 'majors'));
     }
     public function redirectLogin()
@@ -38,8 +44,18 @@ class GuestController extends Controller
         $search = $request->get('search');
         if ($request->get('search')) {
             $courses = Course::search(['course_name'], $search)->get();
+            if (Auth::check()) {
+                $enrollment = Enrollment::where('ID_user', '=', Auth::user()->ID_user)->pluck('ID_course');
+                $enrollment = json_decode(json_encode($enrollment), true);
+                return view('courses', compact('courses', 'search', 'enrollment'));
+            }
         } else {
             $courses = Course::all();
+            if (Auth::check()) {
+                $enrollment = Enrollment::where('ID_user', '=', Auth::user()->ID_user)->pluck('ID_course');
+                $enrollment = json_decode(json_encode($enrollment), true);
+                return view('courses', compact('courses', 'search', 'enrollment'));
+            }
         }
         return view('courses', compact('courses', 'search'));
     }

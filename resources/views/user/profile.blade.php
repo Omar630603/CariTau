@@ -23,7 +23,7 @@
                                 alt="user{{ Auth::user()->username }}" class="rounded-circle" width="150"
                                 style="border: white 2px solid;">
                             <div class="mt-3">
-                                <h4 style="color: white">{{ Auth::user()->username }}</h4>
+                                <h4 style="color: white;text-transform: uppercase">{{ Auth::user()->username }}</h4>
                                 <p style="color: white">Student</p>
                                 <p style="color: white">{{ Auth::user()->address }} - {{ Auth::user()->phone }}</p>
                             </div>

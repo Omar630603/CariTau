@@ -21,6 +21,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/adminApp.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/icon.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -66,14 +67,13 @@
                                         {{ Auth::user()->username }}
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a href="{{ route('home') }}" class="dropdown-item">Home <i class="fa fa-home"
-                                                aria-hidden="true"></i></a>
+                                        <a href="{{ route('home') }}" class="dropdown-item">Dashboard <i style="margin-top: 4px"
+                                                class="fa fa-dashboard float-right" aria-hidden="true"></i></a>
                                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }} <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                                                                         document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }} <i style="margin-top: 4px" class="fa fa-sign-out float-right" aria-hidden="true"></i>
                                         </a>
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                            class="d-none">
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                             @csrf
                                         </form>
                                     </div>
@@ -93,9 +93,35 @@
         </main>
     </div>
 </body>
-<footer class="bg-light pb-5">
-    <div class="container text-center">
-        <p class="font-italic text-muted mb-0">&copy; Copyrights CariTau.com All rights reserved.</p>
+<footer class="footer-16371">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-9 text-center">
+                <div class="footer-site-logo mb-4">
+                    <a href="#">CariTau</a>
+                </div>
+                <ul class="list-unstyled nav-links mb-4">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="{{route('aboutUs')}}">About Us</a></li>
+                    <li><a href="{{route('courses')}}">Courses</a></li>
+                    <li><a href="{{route('lecturers')}}">Lecturers</a></li>
+                    <li><a href="{{route('contactUs')}}">Contact Us</a></li>
+                </ul>
+                <div class="social mb-2">
+                    <h3>Stay in touch</h3>
+                    <ul class="list-unstyled nav-links">
+                        <li class="in"><a href="#"><span class="icon-instagram"></span></a></li>
+                        <li class="fb"><a href="#"><span class="icon-facebook"></span></a></li>
+                        <li class="tw"><a href="#"><span class="icon-twitter"></span></a></li>
+                        <li class="pin"><a href="#"><span class="icon-pinterest"></span></a></li>
+                        <li class="dr"><a href="#"><span class="icon-dribbble"></span></a></li>
+                    </ul>
+                </div>
+                <div class="copyright">
+                    <p class="font-italic text-muted mb-0">&copy; Copyrights CariTau.com All rights reserved.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </footer>
 <script>

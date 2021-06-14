@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use App\Models\Enrollment;
+use App\Models\Major;
+use App\Models\Material;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -84,5 +88,18 @@ class UserController extends Controller
             $user->delete();
         }
         return redirect()->route('/');
+    }
+    public function course(Course $course)
+    {
+        $enrollment = Enrollment::where('ID_user', '=', Auth::user()->ID_user)->where('ID_course', '=', $course->ID_course)->first();
+        $major = Major::where('ID_major', '=', $course->ID_major)->first();
+        $courses = Course::where('ID_major', '=', $course->ID_major)->get();
+        $materials = Material::where('ID_course', '=', $course->ID_course)->orderBy('order', 'ASC')->get();
+        // echo $major;
+        // echo Auth::user();
+        // echo $course;
+        // echo $enrollment;
+
+        return view('user.course', compact('enrollment', 'major', 'course', 'courses', 'materials'));
     }
 }

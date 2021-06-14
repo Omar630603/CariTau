@@ -209,7 +209,7 @@
                                 {{ $material->material_name }}</p>
                         </a>
                         <input hidden name="ID_material{{$material->ID_material}}" value="{{$material->ID_material}}">
-                        <input min="1" class="inputOrder" name="order{{$material->ID_material}}" type="number" value="{{$material->order}}">
+                        <input min="1" class="mt-auto inputOrder" name="order{{$material->ID_material}}" type="number" value="{{$material->order}}">
                         </div>
                         <br>
                         @endforeach

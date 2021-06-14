@@ -50,14 +50,15 @@
             @foreach ($majors as $major)
                 <div class="card " style="width: 15.4rem">
                     <img class="card-img-top" src="{{ asset('storage/' . $major->image) }}" alt="Card image cap">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ $major->major_name }}</h5>
-                        <a id="btnMajo{{$major->ID_major}}" class="mt-auto btn btn-outline-success"  
-                            data-toggle="collapse" href="#major{{$major->ID_major}}" role="button" aria-expanded="false"
-                            aria-controls="major{{$major->ID_major}}">Courses</a>
-                            <button class="btn btn-sm btn-outline-secondary" data-toggle="tooltip"
-                            title="After Clicking on Courses, Click to view content" data-placement="bottom" style="margin-top: 5px;" onclick="scrolls({{ $major->ID_major }})"><i class="fa fa-arrow-down" aria-hidden="true"></i>
-                            </button>
+                    <div class="card-body d-flex flex-column" style="margin-top: 5px">
+                        <strong style="margin-bottom: 5px">
+                            <h4 class="card-title" style="text-align: center; font-weight: bold;">{{ $major->major_name }}</h4>
+                        </strong>
+                        <span class="mt-auto" data-toggle="collapse" data-target="#major{{$major->ID_major}}" href="#major{{$major->ID_major}}">
+                        <a class="mt-auto btn btn-outline-dark"  
+                            data-toggle="tooltip" role="button" onclick="scrolls({{ $major->ID_major }}); return false"
+                            title="Double click to view content" style="width: 100%" >Courses</a>
+                        </span>
                     </div>
                 </div>
             @endforeach
@@ -67,8 +68,8 @@
             </div>
             </div>
         @foreach ($majors as $major)
-            <div class="row" style="margin-left: 0;margin-right: 0">
-                <div class="collapse multi-collapse" id="major{{$major->ID_major}}">
+            <div class="row" style="margin-left: 0;margin-right: 0;">
+                <div class="collapse multi-collapse" id="major{{$major->ID_major}}" style="width: 100%">
                     <div class="card-header" style="width: 100%; background:linear-gradient(rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.6)), url({{ asset('storage/' . $major->image) }});
                     background-position: center; border-radius:20px; margin-bottom: 20px; margin-top: 20px">
                         <center>
@@ -82,9 +83,23 @@
                             @if ($course->ID_major == $major->ID_major)
                             <div class="card card-course">
                                 <img class="card-img-top" src="{{ asset('storage/' . $course->image) }}" alt="Card image cap">
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title">{{ $course->course_name }}</h5>
-                                    <a href="{{route('redirectLogin')}}" class="mt-auto btn btn-success">Learn more</a>
+                                <div class="card-body d-flex flex-column" style="margin-bottom: 5px">
+                                    <strong>
+                                        <h4 class="card-title" style="text-align: center; font-weight: bold;">{{$course->course_name}}</h4>
+                                    </strong>
+                                    @auth
+                                        @if (is_array($enrollment) || is_object($enrollment))
+                                            @if (in_array($course->ID_course, $enrollment))
+                                                <a href="{{route('course', $course)}}"style="border-radius:20px;" class="mt-auto btn btn-warning">Access</a>
+                                            @else
+                                            <a href="{{route('course', $course)}}" style="border-radius:20px;" class="mt-auto btn btn-outline-success">Enroll</a>
+                                            @endif
+                                        @else
+                                        <a href="{{route('course', $course)}}" style="border-radius:20px;" class="mt-auto btn btn-outline-success">Enroll</a>
+                                        @endif
+                                    @else
+                                    <a href="{{route('redirectLogin')}}" style="border-radius:20px;" class="mt-auto btn btn-success">Learn more</a>
+                                    @endauth
                                 </div>
                             </div>
                             @endif
