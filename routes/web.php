@@ -47,11 +47,12 @@ Route::get('/user/course/{course}/material/{material}', [UserController::class, 
 Route::get('/user/course/material/{file}/downloadFiles', [UserController::class, 'downloadFile'])->name('user.downloadFiles')->middleware('StudentAccess');
 Route::get('/user/course/material/showFiles/{file}', [UserController::class, 'showFile'])->name('user.showFile')->middleware('StudentAccess');
 Route::get('/back', [UserController::class, 'back'])->name('back')->middleware('StudentAccess');
-
 Route::get('/user/course/{forum}/showForum/{course}/material/{material}', [UserController::class, 'showForum'])->name('user.showForum')->middleware('StudentAccess');
 Route::post('/user/course/material/forum/addComment', [UserController::class, 'addForumComment'])->name('user.addForumComment')->middleware('StudentAccess');
 Route::post('/user/course/material/forum/addComment/reply', [UserController::class, 'addForumCommentReply'])->name('user.addForumCommentReply')->middleware('StudentAccess');
 Route::delete('/user/course/material/forum/{comment}/deleteComment', [UserController::class, 'ForumDeleteComment'])->name('user.deleteComment')->middleware('StudentAccess');
+Route::get('/user/course/{quiz}/showQuiz/{course}/material/{material}', [UserController::class, 'showQuiz'])->name('user.showQuiz')->middleware('StudentAccess');
+Route::post('/user/course/{quiz}/doQuiz', [UserController::class, 'doQuiz'])->name('user.doQuiz')->middleware('StudentAccess');
 
 //AdminAccess//
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.home')->middleware('AdminAccess');

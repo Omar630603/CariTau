@@ -41,9 +41,16 @@
                                 @if (count($userCourse) > 0)
                                     @foreach ($userCourse as $course)
                                         <small>{{ $course->course_name }}</small>
-                                        <div class="progress mb-3" style="height: 5px">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"
-                                                aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="progress mb-3" style="height: 5px" data-placement='left' data-toggle="tooltip" title="Progress {{$course->pivot->progress}}%">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: {{$course->pivot->progress}}%"
+                                                aria-valuenow="{{$course->pivot->progress}}" aria-valuemin="0" aria-valuemax="100">
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="progress mb-3" style="height: 5px" data-placement='left' data-toggle="tooltip" title="Score {{$course->pivot->score}}%">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: {{$course->pivot->score}}%"
+                                                aria-valuenow="{{$course->pivot->score}}" aria-valuemin="0" aria-valuemax="100">
+                                            </div>
                                         </div>
                                     @endforeach
                                 @else

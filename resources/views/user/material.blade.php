@@ -206,10 +206,24 @@
                                                 @foreach ($quizzes as $quiz)
                                                 <div class="mt-auto"style="display: flex; gap: 15px; padding-bottom: 5px; flex-wrap: wrap">
                                                     <img style="margin-top: 5px;" width="30px" height="30px" src="{{ asset('storage/images/quiz.png') }}" alt="">
-                                                    <a style="margin-top: 10px;" href="{{route('lecturer.addQuestion', ['quiz'=>$quiz,'material'=>$material])}}" target="_blank"
-                                                        rel="noopener noreferrer">{{$quiz->quiz_name}} -> has
-                                                        ({{count($questions)}}/5 Questions)
+                                                    <a style="margin-top: 10px;flex: 1"
+                                                        href="{{route('user.showQuiz', ['quiz'=>$quiz, 'course'=>$course,'material'=>$material])}}" data-toggle="tooltip" title="Click to access the quiz" data-placement="left">
+                                                        {{$quiz->quiz_name}}
+                                                        @if (!is_array($quiz_user) || is_object($quiz_user))
+                                                        -> ({{count($questions)}}/5 Questions)
+                                                        @endif
                                                     </a>
+                                                    @if (is_array($quiz_user) || is_object($quiz_user))
+                                                    <div class="alert alert-success" style="text-align: center; flex:1">
+                                                        You Have Already Taken This Quiz <br>
+                                                        <strong>Your Score {{$quiz_user->score}} <i class="fa fa-percent" aria-hidden="true"></i></strong>
+                                                    </div>
+                                                    @else
+                                                    <div class="alert alert-info" style="text-align: center; flex:1">
+                                                        This Quiz Containes <br>
+                                                        <strong>({{count($questions)}}/5 Questions) ? <i class="fa fa-percent" aria-hidden="true"></i></strong>
+                                                    </div>
+                                                    @endif
                                                 </div>
                                                 <span style="margin-top: 5px;margin-bottom: 5px;border-bottom: 1px solid #ccc;">
                                                     <h6 class="d-flex align-items-center"
@@ -375,13 +389,26 @@
                                                         @foreach ($quizzes as $quiz)
                                                         <div class="mt-auto"
                                                             style="display: flex; gap: 15px; padding-bottom: 5px; flex-wrap: wrap">
-                                                            <img style="margin-top: 5px;" width="30px" height="30px"
+                                                            <img style="margin-top: 5px;flex: 0" width="30px" height="30px"
                                                                 src="{{ asset('storage/images/quiz.png') }}" alt="">
-                                                            <a style="margin-top: 10px;"
-                                                                href="{{route('lecturer.addQuestion', ['quiz'=>$quiz,'material'=>$material])}}"
-                                                                target="_blank" rel="noopener noreferrer">{{$quiz->quiz_name}} -> has
-                                                                ({{count($questions)}}/5 Questions)
+                                                            <a style="margin-top: 10px;flex: 1"
+                                                                href="{{route('user.showQuiz', ['quiz'=>$quiz, 'course'=>$course,'material'=>$material])}}"
+                                                                data-toggle="tooltip" title="Click to access the quiz" data-placement="left">{{$quiz->quiz_name}}
+                                                                @if (!is_array($quiz_user) || is_object($quiz_user))
+                                                                 -> ({{count($questions)}}/5 Questions)
+                                                                @endif
                                                             </a>
+                                                            @if (is_array($quiz_user) || is_object($quiz_user))
+                                                            <div class="alert alert-success" style="text-align: center; flex:1">
+                                                                You Have Already Taken This Quiz <br>
+                                                                <strong>Your Score {{$quiz_user->score}} <i class="fa fa-percent" aria-hidden="true"></i></strong>
+                                                            </div>
+                                                            @else
+                                                            <div class="alert alert-info" style="text-align: center; flex:1">
+                                                                This Quiz Containes <br>
+                                                                <strong>({{count($questions)}}/5 Questions) ? <i class="fa fa-percent" aria-hidden="true"></i></strong>
+                                                            </div>
+                                                            @endif
                                                         </div>
                                                         <span style="margin-top: 5px;margin-bottom: 5px;border-bottom: 1px solid #ccc;">
                                                             <h6 class="d-flex align-items-center"

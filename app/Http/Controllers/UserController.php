@@ -11,6 +11,8 @@ use App\Models\Major;
 use App\Models\Material;
 use App\Models\Question;
 use App\Models\Quiz;
+use App\Models\QuizUser;
+use App\Models\Score;
 use App\Models\User;
 use App\Models\Video;
 use Illuminate\Http\Request;
@@ -27,6 +29,9 @@ class UserController extends Controller
     public function index()
     {
         $userCourse = User::find(Auth::user()->ID_user)->course()->get();
+        foreach ($userCourse as $course) {
+            $this->UpdateStatus($course);
+        }
         return view('user.index', compact('userCourse'));
     }
 
@@ -101,11 +106,6 @@ class UserController extends Controller
         $major = Major::where('ID_major', '=', $course->ID_major)->first();
         $courses = Course::where('ID_major', '=', $course->ID_major)->get();
         $materials = Material::where('ID_course', '=', $course->ID_course)->orderBy('order', 'ASC')->get();
-        // echo $major;
-        // echo Auth::user();
-        // echo $course;
-        // echo $enrollment;
-
         return view('user.course', compact('enrollment', 'major', 'course', 'courses', 'materials'));
     }
     public function enroll(Course $course)
@@ -131,10 +131,12 @@ class UserController extends Controller
         $forums = Forum::where('ID_material', '=', $material->ID_material)->get();
         if ($quizzes->first()) {
             $questions = Question::where('ID_quiz', '=', $quizzes->first()->ID_quiz)->get();
+            $quiz_user = QuizUser::where('ID_user', '=', Auth::user()->ID_user)->where('ID_quiz', '=', $quizzes->first()->ID_quiz)->first();
         } else {
             $questions = new Question;
+            $quiz_user = new QuizUser;
         }
-        return view('user.material', compact('enrollment', 'course', 'courses', 'materials', 'material', 'files', 'videos', 'quizzes', 'forums', 'questions'));
+        return view('user.material', compact('enrollment', 'course', 'courses', 'materials', 'material', 'files', 'videos', 'quizzes', 'forums', 'questions', 'quiz_user'));
     }
     public function downloadFile(File $file)
     {
@@ -188,5 +190,78 @@ class UserController extends Controller
     public function back()
     {
         return redirect()->back();
+    }
+    public function showQuiz(Quiz $quiz, Course $course, Material $material)
+    {
+        $quiz_user = QuizUser::where('ID_user', '=', Auth::user()->ID_user)->where('ID_quiz', '=', $quiz->ID_quiz)->first();
+        $materials = Material::where('ID_course', '=', $course->ID_course)->orderBy('order', 'ASC')->get();
+        $enrollment = Enrollment::where('ID_user', '=', Auth::user()->ID_user)->where('ID_course', '=', $course->ID_course)->first();
+        $courses = Course::where('ID_major', '=', $course->ID_major)->get();
+        $questions = Question::where('ID_quiz', '=', $quiz->ID_quiz)->get();
+        return view('user.showQuiz', compact('quiz', 'material', 'enrollment', 'course', 'courses', 'materials', 'questions', 'quiz_user'));
+    }
+    public function doQuiz(Request $request, Quiz $quiz)
+    {
+        $questions = Question::where('ID_quiz', '=', $quiz->ID_quiz)->get();
+        $total = 0;
+        foreach ($questions as $question) {
+            $score = new Score;
+            $score->ID_question = $question->ID_question;
+            $score->ID_user = Auth::user()->ID_user;
+            if ($question->correctAnswer === $request->get('answer' . $question->ID_question)) {
+                $score->userAnswer = $request->get('answer' . $question->ID_question);
+                $score->score = 100;
+            } else {
+                $score->userAnswer = $request->get('answer' . $question->ID_question);
+                $score->score = 0;
+            }
+            $score->save();
+            $total += $score->score;
+        }
+        $quiz_user = new QuizUser;
+        $quiz_user->ID_user = Auth::user()->ID_user;
+        $quiz_user->ID_quiz = $quiz->ID_quiz;
+        $quiz_user->score = $total / count($questions);
+        $quiz_user->save();
+        $material = Material::where('ID_material', '=', $quiz->ID_material)->first();
+        $course = Course::where('ID_course', '=', $material->ID_course)->first();
+        $this->UpdateStatus($course);
+        return redirect()->back();
+    }
+    public function UpdateStatus(Course $course)
+    {
+        $materials = Material::where('ID_course', '=', $course->ID_course)->get();
+        $quiz_userS = QuizUser::where('ID_user', '=', Auth::user()->ID_user)->get();
+        $totalQuiz = 0;
+        $totalScore = 0;
+        $totalMaterial = 0;
+        foreach ($materials as $key) {
+            $totalMaterial++;
+            $quizS = Quiz::where('ID_material', '=', $key->ID_material)->first();
+            if ($quizS) {
+                foreach ($quiz_userS as $q) {
+                    if ($q->ID_quiz == $quizS->ID_quiz) {
+                        $totalQuiz++;
+                        $totalScore += $q->score;
+                    }
+                }
+            } else {
+                $totalMaterial--;
+            }
+        }
+        $enrollment = Enrollment::where('ID_user', '=', Auth::user()->ID_user)->where('ID_course', '=', $course->ID_course)->first();
+        if ($totalScore <= 0) {
+            $scoreE = 0;
+        } else {
+            $scoreE = ($totalScore / ($totalQuiz * 100)) * 100;
+        }
+        if ($totalQuiz <= 0) {
+            $progress = 0;
+        } else {
+            $progress =  ($totalQuiz  / $totalMaterial) * 100;
+        }
+        $enrollment->score = $scoreE;
+        $enrollment->progress = $progress;
+        $enrollment->save();
     }
 }
