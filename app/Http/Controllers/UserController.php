@@ -102,4 +102,16 @@ class UserController extends Controller
 
         return view('user.course', compact('enrollment', 'major', 'course', 'courses', 'materials'));
     }
+    public function enroll(Course $course)
+    {
+        $user = User::where('ID_user', Auth::user()->ID_user)->first();
+        $user->course()->attach($course, ['status' => 0]);
+        return redirect()->back();
+    }
+    public function unenroll(Course $course)
+    {
+        $user = User::where('ID_user', Auth::user()->ID_user)->first();
+        $user->course()->detach($course);
+        return redirect()->back();
+    }
 }

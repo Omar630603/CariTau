@@ -41,6 +41,8 @@ Route::put('/user/profile/editImage/{user}', [UserController::class, 'editStuden
 Route::post('/user/profile/restoreImage/{user}', [UserController::class, 'editStudentImageDefult'])->name('userStudent.restoreImage')->middleware('StudentAccess');
 Route::delete('/user/profile/delete/{user}', [UserController::class, 'deleteStudent'])->name('userStudent.delete')->middleware('StudentAccess');
 Route::get('/user/course/{course}', [UserController::class, 'course'])->name('course')->middleware('StudentAccess');
+Route::get('/user/course/enroll/{course}', [UserController::class, 'enroll'])->name('enroll')->middleware('StudentAccess');
+Route::get('/user/course/Unenroll/{course}', [UserController::class, 'unenroll'])->name('Unenroll')->middleware('StudentAccess');
 
 //AdminAccess//
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.home')->middleware('AdminAccess');

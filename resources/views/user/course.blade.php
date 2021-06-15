@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="{{ asset('css/course.css') }}">
 </head>
-<body >
+<body>
     <div class="wrapper d-flex align-items-stretch" style="margin-top: -1.5rem !important;margin-bottom: -1.5rem !important;">
         <nav id="sidebar">
             <div class="custom-menu" >
@@ -66,10 +66,61 @@
                                 @if ($enrollment->status == 1)
                                 <a disabled style="border-radius:20px;" class="mt-auto btn btn-success">Full Access</a>
                                 @elseif($enrollment->status == 0)
-                                <a disabled style="border-radius:20px;" class="mt-auto btn btn-dark">Preview</a>
+                                <div class="mt-auto" style="display: flex; justify-content: space-between; gap:5px">
+                                <a data-toggle="tooltip" title="Click to Pay for this Course and Get Full Access" href="" style="border-radius:20px; width: 100%" class="mt-auto btn btn-dark">Preview</a>
+                                <span data-toggle="modal" data-target="#unenrolling">
+                                    <a data-toggle="tooltip" title="Unenroll in This Course" style="border-radius:20px;width: 100%"class="mt-auto btn btn-danger">Unenroll</a>
+                                </span>
+                                <div class="modal fade" id="unenrolling" tabindex="-1" role="dialog" aria-labelledby="unenrolling" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">{{$course->course_name}}</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="alert alert-danger" role="alert">
+                                                    <h4 class="alert-heading">Unenrolling in Course {{$course->course_name}}</h4>
+                                                    You will unenroll in this course it will not be showen in your courses!<br>
+                                                    Are you sure?
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No, I'm not so sure</button>
+                                                <a href="{{route('Unenroll', $course)}}" type="button" class="btn btn-danger">Yes, I'm sure</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
                                 @endif
                             @else
-                            <a href="{{route('course', $course)}}" style="border-radius:20px;" class="mt-auto btn btn-outline-success">Enroll</a>
+                            <a data-toggle="modal" data-target="#enrolling" style="border-radius:20px;" class="mt-auto btn btn-outline-success">Enroll</a>
+                            <div class="modal fade" id="enrolling" tabindex="-1" role="dialog" aria-labelledby="enrolling" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">{{$course->course_name}}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="alert alert-info" role="alert">
+                                                <h4 class="alert-heading">Enrolling in Course {{$course->course_name}}</h4>
+                                                You will enroll in this course and will have access to the first material!<br>
+                                                Are you in?
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">No, I'm not so sure</button>
+                                            <a href="{{route('enroll', $course)}}" type="button" class="btn btn-success">Yes, I would like to enroll</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             @endif
                         </div>
                     </div>
