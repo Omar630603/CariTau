@@ -1,12 +1,14 @@
 @extends('layouts.student')
 @section('content')
+
 <head>
     <link rel="stylesheet" href="{{ asset('css/course.css') }}">
 </head>
+
 <body>
     <div class="wrapper d-flex align-items-stretch" style="margin-top: -1.5rem !important;margin-bottom: -1.5rem !important;">
         <nav id="sidebar">
-            <div class="custom-menu" >
+            <div class="custom-menu">
                 <button type="button" id="sidebarCollapse" class="btn btn-primary shadow-none">
                     <i class="fa fa-bars"></i>
                     <span class="sr-only">Toggle Menu</span>
@@ -14,7 +16,7 @@
             </div>
             <div class="p-4">
                 <h1>
-                    <a style="text-decoration: none; matgin-top:10px" class="logo">{{$major->major_name}} 
+                    <a style="text-decoration: none; margin-top:10px" class="logo">{{$major->major_name}}
                         <span>{{$major->description}}
                         </span>
                     </a>
@@ -42,10 +44,9 @@
                     <div class="card h-100" style="border-radius:20px;">
                         <div class="card-body" style="background: #3ba7ff;border-radius:20px;">
                             <div class="d-flex flex-column align-items-center text-center">
-                                <a href="{{ route('user.profile') }}"><img src="{{ asset('storage/' . Auth::user()->image) }}" alt="user{{ Auth::user()->username }}"
-                                    class="rounded-circle" width="150" style="border: white 2px solid;"></a>
+                                <a href="{{ route('user.profile') }}"><img src="{{ asset('storage/' . Auth::user()->image) }}" alt="user{{ Auth::user()->username }}" class="rounded-circle" width="150" style="border: white 2px solid;"></a>
                                 <div class="mt-3">
-                                    <h4 style="color: white; text-transform: uppercase">{{ Auth::user()->username }}</h4>
+                                    <h6 style="color: white; text-transform: uppercase">{{ Auth::user()->username }}</h6>
                                     <p style="color: white">Student</p>
                                     <p style="color: white">{{ Auth::user()->address }} - {{ Auth::user()->phone }}</p>
                                 </div>
@@ -55,21 +56,21 @@
                 </div>
                 <div class="col-md-8 mb-3">
                     <div class="card h-100" style="border-radius:20px;">
-                        <div class="card-body d-flex flex-column" style="border-radius:20px; background:linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.6)), url({{ asset('storage/' . $course->image) }});background-position: center;">
-                            <h6 class="d-flex align-items-center mb-3" style="text-align: left;border-radius:20px; background-color: #e9ecef;padding:10px;">
+                        <div class="card-body d-flex flex-column" style="text-align: center;border-radius:20px; background:linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.6)), url({{ asset('storage/' . $course->image) }});background-position: center;">
+                            <h6 class="d-flex align-items-center mb-3" style="border-radius:20px; background-color: #e9ecef;padding:10px;">
                                 <i class="material-icons text-info mr-2"></i>{{ $course->course_name }}
                             </h6>
                             <h5 style="color: #fff;">
-                            {{ $course->description }}
+                                {{ $course->description }}
                             </h5>
                             @if (is_array($enrollment) || is_object($enrollment))
-                                @if ($enrollment->status == 1)
-                                <a disabled style="border-radius:20px;" class="mt-auto btn btn-success">Full Access</a>
-                                @elseif($enrollment->status == 0)
-                                <div class="mt-auto" style="display: flex; justify-content: space-between; gap:5px">
+                            @if ($enrollment->status == 1)
+                            <a disabled style="border-radius:20px;" class="mt-auto btn btn-success">Full Access</a>
+                            @elseif($enrollment->status == 0)
+                            <div class="mt-auto" style="display: flex; justify-content: space-between; gap:5px">
                                 <a data-toggle="tooltip" title="Click to Pay for this Course and Get Full Access" href="" style="border-radius:20px; width: 100%" class="mt-auto btn btn-dark">Preview</a>
                                 <span data-toggle="modal" data-target="#unenrolling">
-                                    <a data-toggle="tooltip" title="Unenroll in This Course" style="border-radius:20px;width: 100%"class="mt-auto btn btn-danger">Unenroll</a>
+                                    <a data-toggle="tooltip" title="Unenroll in This Course" style="border-radius:20px;width: 100%" class="mt-auto btn btn-danger">Unenroll</a>
                                 </span>
                                 <div class="modal fade" id="unenrolling" tabindex="-1" role="dialog" aria-labelledby="unenrolling" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -94,8 +95,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                </div>
-                                @endif
+                            </div>
+                            @endif
                             @else
                             <a data-toggle="modal" data-target="#enrolling" style="border-radius:20px;" class="mt-auto btn btn-outline-success">Enroll</a>
                             <div class="modal fade" id="enrolling" tabindex="-1" role="dialog" aria-labelledby="enrolling" aria-hidden="true">
@@ -133,36 +134,36 @@
                             <i class="material-icons text-info mr-2"></i>Materials List: in {{$course->course_name}}
                         </h6>
                         <div class="row" style="justify-content: space-evenly">
-                            <div style="display: flex; flex-direction: column; justify-content: space-between">
+                            <div style="display: flex; flex-direction: column; justify-content: space-between;width: 100%">
                                 @foreach ($materials as $material)
                                 <div class="container">
                                     <div class="card">
                                         <div class="card-body d-flex" style="flex-direction: row; justify-content: space-between">
                                             @if (is_array($enrollment) || is_object($enrollment))
-                                                @if ($enrollment->status == 1)
-                                                <strong style="margin-bottom: 5px; margin-right: 5px">#{{$material->order}}</strong>
-                                                <a href="" style="text-decoration: none">
+                                            @if ($enrollment->status == 1)
+                                            <strong style="margin-bottom: 5px; margin-right: 5px">#{{$material->order}}</strong>
+                                            <a href="{{ route('material', ['course'=>$course, 'material'=>$material]) }}" style="text-decoration: none">
                                                 <p class="materialName">{{ $material->material_name }}</p>
                                                 <span style="color: #44bef1;margin-right: 5px">{{$material->description}}</span>
-                                                </a>
-                                                <button data-toggle="tooltip" title="Full Access" class="mt-auto btn btn-sm btn-primary">Access</button>
-                                                @elseif($enrollment->status == 0)
-                                                    @if ($material->order == 1)
-                                                    <strong style="margin-bottom: 5px; margin-right: 5px">#{{$material->order}}</strong>
-                                                    <a data-toggle="tooltip" title="First Material / Free" href="" style="text-decoration: none">
-                                                        <p class="materialName">{{ $material->material_name }}</p>
-                                                        <span style="color: #44bef1;margin-right: 5px">{{$material->description}}</span>
-                                                    </a>
-                                                    <button class="mt-auto btn btn-sm btn-primary">Access</button>    
-                                                    @else
-                                                    <strong style="margin-bottom: 5px; margin-right: 5px">#{{$material->order}}</strong>
-                                                    <a data-toggle="tooltip" title="Buy the Course to Access the Rest of the Materials" disabled style="text-decoration: none">
-                                                        <p class="materialName">{{ $material->material_name }}</p>
-                                                        <span style="color: #44bef1;margin-right: 5px">{{$material->description}}</span>
-                                                    </a>
-                                                    <button disabled class="mt-auto btn btn-sm btn-dark">Deluxe</button>
-                                                    @endif
-                                                @endif
+                                            </a>
+                                            <a href="{{ route('material', ['course'=>$course, 'material'=>$material]) }} " data-toggle="tooltip" title="Full Access" class="mt-auto btn btn-sm btn-primary">Access</a>
+                                            @elseif($enrollment->status == 0)
+                                            @if ($material->order == 1)
+                                            <strong style="margin-bottom: 5px; margin-right: 5px">#{{$material->order}}</strong>
+                                            <a href="{{ route('material', ['course'=>$course, 'material'=>$material]) }}" data-toggle="tooltip" title="First Material / Free" href="" style="text-decoration: none">
+                                                <p class="materialName">{{ $material->material_name }}</p>
+                                                <span style="color: #44bef1;margin-right: 5px">{{$material->description}}</span>
+                                            </a>
+                                            <a href="{{ route('material', ['course'=>$course, 'material'=>$material]) }}" class="mt-auto btn btn-sm btn-primary">Access</a>
+                                            @else
+                                            <strong style="margin-bottom: 5px; margin-right: 5px">#{{$material->order}}</strong>
+                                            <a data-toggle="tooltip" title="Buy the Course to Access the Rest of the Materials" disabled style="text-decoration: none">
+                                                <p class="materialName">{{ $material->material_name }}</p>
+                                                <span style="color: #44bef1;margin-right: 5px">{{$material->description}}</span>
+                                            </a>
+                                            <button disabled class="mt-auto btn btn-sm btn-dark">Deluxe</button>
+                                            @endif
+                                            @endif
                                             @else
                                             <strong style="margin-bottom: 5px; margin-right: 5px">#{{$material->order}}</strong>
                                             <a data-toggle="tooltip" title="Enroll in the Course to Access the First Material" disabled style="text-decoration: none">

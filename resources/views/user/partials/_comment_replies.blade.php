@@ -16,7 +16,7 @@
         </a>
         @endif
         <div style="display: none">
-            <form action="{{route('lecturer.deleteComment', $c)}}" method="POST">
+            <form action="{{route('user.deleteComment', $c)}}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button id="deleteComment{{$c->ID_comment}}" type="submit"></button>
@@ -24,7 +24,7 @@
         </div>
     </p>
 
-    <form style="display: none; margin-left: 40px" method="post" action="{{ route('lecturer.addForumCommentReply') }}"
+    <form style="display: none; margin-left: 40px" method="post" action="{{ route('user.addForumCommentReply') }}"
         id="formReply{{ $c->ID_comment }}">
         @csrf
         <div class="form-group">
@@ -36,6 +36,6 @@
             <input type="submit" class="btn btn-sm btn-dark" value="Reply" />
         </div>
     </form>
-    @include('lecturer.partials._comment_replies', ['comment' => $c->replies])
+    @include('user.partials._comment_replies', ['comment' => $c->replies])
 </div>
 @endforeach

@@ -43,6 +43,15 @@ Route::delete('/user/profile/delete/{user}', [UserController::class, 'deleteStud
 Route::get('/user/course/{course}', [UserController::class, 'course'])->name('course')->middleware('StudentAccess');
 Route::get('/user/course/enroll/{course}', [UserController::class, 'enroll'])->name('enroll')->middleware('StudentAccess');
 Route::get('/user/course/Unenroll/{course}', [UserController::class, 'unenroll'])->name('Unenroll')->middleware('StudentAccess');
+Route::get('/user/course/{course}/material/{material}', [UserController::class, 'material'])->name('material')->middleware('StudentAccess');
+Route::get('/user/course/material/{file}/downloadFiles', [UserController::class, 'downloadFile'])->name('user.downloadFiles')->middleware('StudentAccess');
+Route::get('/user/course/material/showFiles/{file}', [UserController::class, 'showFile'])->name('user.showFile')->middleware('StudentAccess');
+Route::get('/back', [UserController::class, 'back'])->name('back')->middleware('StudentAccess');
+
+Route::get('/user/course/{forum}/showForum/{course}/material/{material}', [UserController::class, 'showForum'])->name('user.showForum')->middleware('StudentAccess');
+Route::post('/user/course/material/forum/addComment', [UserController::class, 'addForumComment'])->name('user.addForumComment')->middleware('StudentAccess');
+Route::post('/user/course/material/forum/addComment/reply', [UserController::class, 'addForumCommentReply'])->name('user.addForumCommentReply')->middleware('StudentAccess');
+Route::delete('/user/course/material/forum/{comment}/deleteComment', [UserController::class, 'ForumDeleteComment'])->name('user.deleteComment')->middleware('StudentAccess');
 
 //AdminAccess//
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.home')->middleware('AdminAccess');

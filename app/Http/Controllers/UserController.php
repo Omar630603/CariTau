@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\File;
+use App\Models\Forum;
 use App\Models\Major;
 use App\Models\Material;
+use App\Models\Question;
+use App\Models\Quiz;
 use App\Models\User;
+use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -112,6 +118,75 @@ class UserController extends Controller
     {
         $user = User::where('ID_user', Auth::user()->ID_user)->first();
         $user->course()->detach($course);
+        return redirect()->back();
+    }
+    public function material(Course $course, Material $material)
+    {
+        $materials = Material::where('ID_course', '=', $course->ID_course)->orderBy('order', 'ASC')->get();
+        $enrollment = Enrollment::where('ID_user', '=', Auth::user()->ID_user)->where('ID_course', '=', $course->ID_course)->first();
+        $courses = Course::where('ID_major', '=', $course->ID_major)->get();
+        $files = File::where('ID_material', '=', $material->ID_material)->get();
+        $videos = Video::where('ID_material', '=', $material->ID_material)->get();
+        $quizzes = Quiz::where('ID_material', '=', $material->ID_material)->get();
+        $forums = Forum::where('ID_material', '=', $material->ID_material)->get();
+        if ($quizzes->first()) {
+            $questions = Question::where('ID_quiz', '=', $quizzes->first()->ID_quiz)->get();
+        } else {
+            $questions = new Question;
+        }
+        return view('user.material', compact('enrollment', 'course', 'courses', 'materials', 'material', 'files', 'videos', 'quizzes', 'forums', 'questions'));
+    }
+    public function downloadFile(File $file)
+    {
+        return Storage::download('public/' . $file->file_name, $file->file_title . '.' . $file->file_extension);
+    }
+    public function showFile(File $file)
+    {
+        $file = File::where('ID_file', '=', $file->ID_file)->first();
+        $url =  storage_path('app/public/' . $file->file_name);
+        return response()->file($url);
+    }
+    public function showForum(Forum $forum, Course $course, Material $material)
+    {
+        $materials = Material::where('ID_course', '=', $course->ID_course)->orderBy('order', 'ASC')->get();
+        $enrollment = Enrollment::where('ID_user', '=', Auth::user()->ID_user)->where('ID_course', '=', $course->ID_course)->first();
+        $courses = Course::where('ID_major', '=', $course->ID_major)->get();
+        return view('user.showForum', compact('forum', 'material', 'enrollment', 'course', 'courses', 'materials'));
+    }
+    public function addForumComment(Request $request)
+    {
+        $comment = new Comment();
+        if ($request->get('comment_body')) {
+            $comment->body = '@student: ' . $request->get('comment_body');
+            $comment->user()->associate($request->user());
+            $forum = Forum::find($request->get('post_id'));
+            $forum->comment()->save($comment);
+            return back();
+        } else {
+            return back()->with('fail', 'Comment field is empty');
+        }
+    }
+    public function addForumCommentReply(Request $request)
+    {
+        $reply = new Comment();
+        if ($request->get('comment_body')) {
+            $reply->body = '@student: ' . $request->get('comment_body');
+            $reply->user()->associate($request->user());
+            $reply->ID_parent = $request->get('comment_id');
+            $forum = Forum::find($request->get('post_id'));
+            $forum->comment()->save($reply);
+            return back();
+        } else {
+            return back()->with('fail', 'Comment field is empty');
+        }
+    }
+    public function ForumDeleteComment(Comment $comment)
+    {
+        $comment->delete();
+        return back();
+    }
+    public function back()
+    {
         return redirect()->back();
     }
 }

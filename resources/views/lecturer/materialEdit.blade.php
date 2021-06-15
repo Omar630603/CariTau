@@ -202,7 +202,7 @@
                                                         value="{{$file->description}}">{{$file->description}}</textarea>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <button type="submit" id="js-fileEdit-submit"
+                                                    <button type="submit" id="js-fileEdit-submit{{$file->ID_file}}"
                                                         class="btn btn-primary">Done</button>
                                                 </div>
                                             </form>
@@ -211,7 +211,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"">Close</button>
                                                         <button type=" button" class="btn btn-sm btn-primary"
-                                            onclick="document.getElementById('js-fileEdit-submit').click();">Save
+                                            onclick="document.getElementById('js-fileEdit-submit{{$file->ID_file}}').click();">Save
                                             changes</button>
                                     </div>
                                 </div>
@@ -323,7 +323,7 @@
                                                         value="{{$video->video_url}}">
                                                 </div>
                                                 <div class="form-group row">
-                                                    <button type="submit" id="js-videoEdit-submit"
+                                                    <button type="submit" id="js-videoEdit-submit{{$video->ID_video}}"
                                                         class="btn btn-primary">Done</button>
                                                 </div>
                                             </form>
@@ -332,7 +332,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"">Close</button>
                                                         <button type=" button" class="btn btn-sm btn-primary"
-                                            onclick="document.getElementById('js-videoEdit-submit').click();">Save
+                                            onclick="document.getElementById('js-videoEdit-submit{{$video->ID_video}}').click();">Save
                                             changes</button>
                                     </div>
                                 </div>
@@ -436,7 +436,7 @@
                                                         value="{{$quiz->description}}">{{$quiz->description}}</textarea>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <button type="submit" id="js-quizEdit-submit"
+                                                    <button type="submit" id="js-quizEdit-submit{{$quiz->ID_quiz}}"
                                                         class="btn btn-primary">Done</button>
                                                 </div>
                                             </form>
@@ -533,7 +533,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"">Close</button>
                                                         <button type=" button" class="btn btn-sm btn-primary"
-                                            onclick="document.getElementById('js-quizEdit-submit').click();">Save
+                                            onclick="document.getElementById('js-quizEdit-submit{{$quiz->ID_quiz}}').click();">Save
                                             changes</button>
                                     </div>
                                 </div>
@@ -636,7 +636,7 @@
                                                         value="{{$forum->body}}">{{$forum->body}}</textarea>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <button type="submit" id="js-forumEdit-submit"
+                                                    <button type="submit" id="js-forumEdit-submit{{$forum->ID_forum}}"
                                                         class="btn btn-primary">Done</button>
                                                 </div>
                                                 <div class="form-group row" style="float: right; margin-top: -20px">
@@ -650,7 +650,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal"">Close</button>
                                                         <button type=" button" class="btn btn-sm btn-primary"
-                                            onclick="document.getElementById('js-forumEdit-submit').click();">Save
+                                            onclick="document.getElementById('js-forumEdit-submit{{$forum->ID_forum}}').click();">Save
                                             changes</button>
                                     </div>
                                 </div>
