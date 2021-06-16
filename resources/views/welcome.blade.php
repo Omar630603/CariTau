@@ -1,4 +1,17 @@
 @extends('layouts.welcome')
+<style>
+    .carousel .carousel-item {
+    height: 270px;
+    }
+    
+    .carousel-item img {
+    position: absolute;
+    object-fit:cover;
+    top: 0;
+    left: 0;
+    min-height: 500px;
+    }
+</style>
 @section('content')
     <div class="container">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -6,27 +19,57 @@
                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                 <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                 <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
             </ol>
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <img class="d-block w-100" src="{{ asset('storage/images/slidshow1.png') }}" alt="First slide">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>...</h5>
-                        <p>...</p>
+                    <div class="carousel-caption">
+                        <h1>Welcome!</h1>
+                        <p>Cari Tau is here to help you</p>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <img class="d-block w-100" src="{{ asset('storage/images/slidshow2.png') }}" alt="Second slide">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>...</h5>
-                        <p>...</p>
+                    <div class="carousel-caption">
+                        <h1>Find Information!</h1>
+                        <p>“Education is the passport to the future, for tomorrow belongs to those who prepare for it today.” — Malcolm X</p>
                     </div>
                 </div>
                 <div class="carousel-item">
                     <img class="d-block w-100" src="{{ asset('storage/images/slidshow3.png') }}" alt="Third slide">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>...</h5>
-                        <p>...</p>
+                    <div class="carousel-caption">
+                        <h1>Look Forward</h1>
+                        <p>Here, in CariTau We provide best class education in the fields of engineering</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="{{ asset('storage/images/slidshow4.png') }}" alt="Fourth slide">
+                    <div class="carousel-caption">
+                        <h1>Keep Looking</h1>
+                        <p>We provide courses that contain materials which has been selected by our team. Navigate many Courses and interact with
+                        materials</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="{{ asset('storage/images/slidshow5.png') }}" alt="Fifth slide">
+                    <div class="carousel-caption">
+                        <h1>Keep Fighting</h1>
+                        <p>“When one door closes, another opens; but we often look so long and so regretfully upon the closed door that we do not
+                        see the one which has opened for us.”
+                        
+                        – Alexander Graham Bell</p>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="{{ asset('storage/images/slidshow6.png') }}" alt="Fifth slide">
+                    <div class="carousel-caption">
+                        <h1>Keep the hard Work!</h1>
+                        <p>“Success consists of going from failure to failure without loss of enthusiasm.”
+                        
+                        – Winston Churchill</p>
                     </div>
                 </div>
             </div>
@@ -40,15 +83,15 @@
             </a>
         </div>
     </div>
-    <div class="container" style="margin-top: 3rem">
-        <div class="card-header" style="margin-bottom: 1rem">
-            <h5 class="card-title">Majors in CariTau</h5>
-        </div>
-        <div class="row" style="margin-left: 0;margin-right: 0">
-            <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between">
+    <div class="container" style="margin-top: 1rem">
+            <h4 style="margin: 1rem 0;
+                background: #3445b4;background: linear-gradient(rgb(52, 69, 180), rgba(52, 69, 180, 0.8));border-radius:20px; color: #fff;padding:10px; text-align: center">
+               <center>Majors in CariTau</center>
+            </h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-evenly">
             @if (count($majors) > 0)
             @foreach ($majors as $major)
-                <div class="card " style="width: 15.4rem">
+                <div class="card " style="width: 12rem">
                     <img class="card-img-top" src="{{ asset('storage/' . $major->image) }}" alt="Card image cap">
                     <div class="card-body d-flex flex-column" style="margin-top: 5px">
                         <strong style="margin-bottom: 5px">
@@ -65,7 +108,6 @@
             @else
             <h5 style="margin-left: 10px" class="card-title">There are no Majors yet! :(</h5>
             @endif
-            </div>
             </div>
         @foreach ($majors as $major)
             <div class="row" style="margin-left: 0;margin-right: 0;">

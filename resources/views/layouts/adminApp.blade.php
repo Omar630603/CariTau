@@ -53,7 +53,7 @@
                             <li><a href="{{ route('admin.lecturers') }}">Lecturers</a></li>
                             <li><a href="{{ route('admin.majors') }}">Majors</a></li>
                             <li><a href="{{ route('admin.comments') }}">Comments</a></li>
-                            <li><a href="{{ route('admin.others') }}">Others</a></li>
+                            <li><a href="{{ route('admin.others') }}">Bank & Transactions</a></li>
                         </ul>
                     </nav>
 

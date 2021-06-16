@@ -14,7 +14,7 @@
         @endif
     </div>
 </div>
-<div class="" style="display: flex;flex-wrap:wrap; justify-content: space-evenly; flex-direction: row-reverse">
+<div class="" style="display: flex;flex-wrap:wrap; justify-content: space-evenly;">
     <div class="col-md-9 mt-4">
         <div class="card" style="border-radius:20px;">
             <div class="card-body" style="border-radius:20px;">
