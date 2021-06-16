@@ -15,5 +15,7 @@ class Transaction extends Model
         'ID_course',
         'ID_bank',
         'proof',
+        'transaction',
+        'approve',
     ];
 }

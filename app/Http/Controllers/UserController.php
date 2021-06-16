@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bank;
 use App\Models\Comment;
 use App\Models\Course;
 use App\Models\Enrollment;
@@ -13,6 +14,7 @@ use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\QuizUser;
 use App\Models\Score;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Video;
 use Illuminate\Http\Request;
@@ -102,11 +104,13 @@ class UserController extends Controller
     }
     public function course(Course $course)
     {
+        $banks = Bank::all();
+        $transaction = Transaction::where('ID_user', '=', Auth::user()->ID_user)->where('ID_course', '=', $course->ID_course)->first();
         $enrollment = Enrollment::where('ID_user', '=', Auth::user()->ID_user)->where('ID_course', '=', $course->ID_course)->first();
         $major = Major::where('ID_major', '=', $course->ID_major)->first();
         $courses = Course::where('ID_major', '=', $course->ID_major)->get();
         $materials = Material::where('ID_course', '=', $course->ID_course)->orderBy('order', 'ASC')->get();
-        return view('user.course', compact('enrollment', 'major', 'course', 'courses', 'materials'));
+        return view('user.course', compact('enrollment', 'major', 'course', 'courses', 'materials', 'banks', 'transaction'));
     }
     public function enroll(Course $course)
     {
@@ -263,5 +267,25 @@ class UserController extends Controller
         $enrollment->score = $scoreE;
         $enrollment->progress = $progress;
         $enrollment->save();
+    }
+    public function payCourse(Request $request)
+    {
+        if ($request->get('ID_bank')) {
+        } else {
+            return redirect()->back()->with('fail', 'Select Bank');
+        }
+        if ($request->file('image')) {
+            $image_name = $request->file('image')->store('transactions', 'public');
+        } else {
+            return redirect()->back()->with('fail', 'Somthing Wrong with the Image');
+        }
+        $transaction = new Transaction;
+        $transaction->ID_user = Auth::user()->ID_user;
+        $transaction->ID_course = $request->get('ID_course');
+        $transaction->ID_bank = $request->get('ID_bank');
+        $transaction->transaction = $request->get('transaction');
+        $transaction->proof = $image_name;
+        $transaction->save();
+        return redirect()->back()->with('success', 'Your Transaction Has Been Sent Successfully. Please, wait for the approval process. Thank you!');
     }
 }

@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\approveTransaction;
+use App\Mail\disapproveTransaction;
+use App\Mail\pendTransaction;
 use App\Mail\replyComment;
 use App\Models\Admin;
+use App\Models\Bank;
 use App\Models\Comment;
 use App\Models\ContactUs;
 use App\Models\Course;
@@ -15,6 +19,7 @@ use App\Models\Major;
 use App\Models\Material;
 use App\Models\Question;
 use App\Models\Quiz;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Video;
 use Exception;
@@ -907,6 +912,180 @@ class AdminController extends Controller
     }
     public function othersAdmin()
     {
-        return view('admin.others');
+        $banks = Bank::all();
+        $transactions = Transaction::all();
+        return view('admin.others', compact('banks', 'transactions'));
+    }
+    public function addBank(Request $request)
+    {
+        try {
+            $request->validate([
+                'bank_name' => 'required',
+                'no_account' => 'required',
+                'balance' => 'required',
+            ]);
+            $bank = new Bank;
+            $bank->bank_name = $request->get('bank_name');
+            $bank->no_account = $request->get('no_account');
+            $bank->balance = $request->get('balance');
+            $bank->save();
+        } catch (Exception  $e) {
+            $message = 'There was Something Wrong. Please, Try again';
+            return redirect()->back()->with('fail', $message);
+        }
+        $message = 'Added Successfully';
+        return redirect()->back()->with('success', $message);
+    }
+    public function editBank(Request $request, Bank $bank)
+    {
+        $bank->bank_name = $request->get('bank_name');
+        $bank->no_account = $request->get('no_account');
+        $bank->balance = $request->get('balance');
+        $bank->save();
+        return redirect()->back()->with('success', 'Edited');
+    }
+    public function deleteBank(Bank $bank)
+    {
+        $bank->delete();
+        return redirect()->back()->with('success', 'Deleted');
+    }
+    public function approve(Request $request)
+    {
+        $student = User::where('ID_user', '=', $request->get('ID_user'))->first();
+        $course = Course::where('ID_course', '=', $request->get('ID_course'))->first();
+        $m = '';
+        if ($request->get('emailing') == 'on') {
+            if ($request->get('emailText')) {
+                $msg = $request->get('emailText');
+            } else {
+                $msg = 'Good Luck! Selamat belajar';
+            }
+            Mail::to($student->email)->send(new approveTransaction($msg, $student, $course));
+            $m .= 'Sent Email, ';
+        } else {
+            $m .= 'No Sent Email, ';
+        }
+
+        $transaction = Transaction::where('ID_user', '=', $request->get('ID_user'))->where('ID_course', '=', $request->get('ID_course'))->where('ID_transaction', '=', $request->get('ID_transaction'))->first();
+
+        if ($request->get('status') == 'on') {
+            $enrollment = Enrollment::where('ID_user', '=', $request->get('ID_user'))->where('ID_course', '=', $request->get('ID_course'))->first();
+            $enrollment->status = 1;
+            $enrollment->save();
+            $m .= 'Status has changed to full access, ';
+        } else {
+            $m .= 'No Status change, ';
+        }
+
+        if ($request->get('balance') == 'on') {
+            $bank = Bank::where('ID_bank', '=', $request->get('ID_bank'))->first();
+            $bank->balance += $transaction->transaction;
+            $bank->save();
+            $m .= 'Balance Added, ';
+        } else {
+            $m .= 'No Balance Added, ';
+        }
+        $transaction->approve = 1;
+        $m .= 'Approved. ';
+        $transaction->save();
+        return redirect()->back()->with('success', $m);
+    }
+    public function disapprove(Request $request)
+    {
+        $student = User::where('ID_user', '=', $request->get('ID_user'))->first();
+        $course = Course::where('ID_course', '=', $request->get('ID_course'))->first();
+        $m = '';
+        if ($request->get('emailing') == 'on') {
+            if ($request->get('emailText')) {
+                $msg = $request->get('emailText');
+            } else {
+                $msg = 'Good Luck! Selamat belajar';
+            }
+            Mail::to($student->email)->send(new disapproveTransaction($msg, $student, $course));
+            $m .= 'Sent Email, ';
+        } else {
+            $m .= 'No Sent Email, ';
+        }
+
+        $transaction = Transaction::where('ID_user', '=', $request->get('ID_user'))->where('ID_course', '=', $request->get('ID_course'))->where('ID_transaction', '=', $request->get('ID_transaction'))->first();
+
+        if ($request->get('status') == 'on') {
+            $enrollment = Enrollment::where('ID_user', '=', $request->get('ID_user'))->where('ID_course', '=', $request->get('ID_course'))->first();
+            $enrollment->status = 0;
+            $enrollment->save();
+            $m .= 'Status has changed to Preview, ';
+        } else {
+            $m .= 'No Status change, ';
+        }
+
+        if ($request->get('balance') == 'on') {
+            $bank = Bank::where('ID_bank', '=', $request->get('ID_bank'))->first();
+            $bank->balance -= $transaction->transaction;
+            $bank->save();
+            $m .= 'Balance Decreased, ';
+        } else {
+            $m .= 'No Balance Decreased, ';
+        }
+        $transaction->approve = 2;
+        $transaction->save();
+        $m .= 'Disapproved. ';
+        return redirect()->back()->with('success', $m);
+    }
+    public function pending(Request $request)
+    {
+        $student = User::where('ID_user', '=', $request->get('ID_user'))->first();
+        $course = Course::where('ID_course', '=', $request->get('ID_course'))->first();
+        $m = '';
+        if ($request->get('emailing') == 'on') {
+            if ($request->get('emailText')) {
+                $msg = $request->get('emailText');
+            } else {
+                $msg = 'Good Luck! Selamat belajar';
+            }
+            Mail::to($student->email)->send(new pendTransaction($msg, $student, $course));
+            $m .= 'Sent Email, ';
+        } else {
+            $m .= 'No Sent Email, ';
+        }
+
+        $transaction = Transaction::where('ID_user', '=', $request->get('ID_user'))->where('ID_course', '=', $request->get('ID_course'))->where('ID_transaction', '=', $request->get('ID_transaction'))->first();
+
+        if ($request->get('status') == 'on') {
+            $enrollment = Enrollment::where('ID_user', '=', $request->get('ID_user'))->where('ID_course', '=', $request->get('ID_course'))->first();
+            $enrollment->status = 0;
+            $enrollment->save();
+            $m .= 'Status has changed to Preview, ';
+        } else {
+            $m .= 'No Status change, ';
+        }
+
+        if ($request->get('balanceAdd') == 'on') {
+            $bank = Bank::where('ID_bank', '=', $request->get('ID_bank'))->first();
+            $bank->balance += $transaction->transaction;
+            $bank->save();
+            $m .= 'Balance Added, ';
+        } else {
+            $m .= 'No Balance Added, ';
+        }
+
+        if ($request->get('balanceDecrease') == 'on') {
+            $bank = Bank::where('ID_bank', '=', $request->get('ID_bank'))->first();
+            $bank->balance -= $transaction->transaction;
+            $bank->save();
+            $m .= 'Balance Decreased, ';
+        } else {
+            $m .= 'No Balance Decreased, ';
+        }
+        $transaction->approve = 0;
+        $transaction->save();
+        $m .= 'Pended. ';
+        return redirect()->back()->with('success', $m);
+    }
+    public function deleteTransaction(Request $request)
+    {
+        $transaction = Transaction::where('ID_user', '=', $request->get('ID_user'))->where('ID_course', '=', $request->get('ID_course'))->where('ID_transaction', '=', $request->get('ID_transaction'))->first();
+        Storage::delete('public/' . $transaction->proof);
+        $transaction->delete();
+        return redirect()->back()->with('success', 'Deleted');
     }
 }

@@ -53,6 +53,7 @@ Route::post('/user/course/material/forum/addComment/reply', [UserController::cla
 Route::delete('/user/course/material/forum/{comment}/deleteComment', [UserController::class, 'ForumDeleteComment'])->name('user.deleteComment')->middleware('StudentAccess');
 Route::get('/user/course/{quiz}/showQuiz/{course}/material/{material}', [UserController::class, 'showQuiz'])->name('user.showQuiz')->middleware('StudentAccess');
 Route::post('/user/course/{quiz}/doQuiz', [UserController::class, 'doQuiz'])->name('user.doQuiz')->middleware('StudentAccess');
+Route::post('/user/course/payCourse', [UserController::class, 'payCourse'])->name('user.payCourse')->middleware('StudentAccess');
 
 //AdminAccess//
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.home')->middleware('AdminAccess');
@@ -130,6 +131,13 @@ Route::get('/admin/comments/{c}/delete', [AdminController::class, 'commentsAdmin
 Route::get('/admin/comments/{c}/reply', [AdminController::class, 'replyEmail'])->name('admin.commentsAdminReply')->middleware('AdminAccess');
 
 Route::get('/admin/others', [AdminController::class, 'othersAdmin'])->name('admin.others')->middleware('AdminAccess');
+Route::post('/admin/others/addBank', [AdminController::class, 'addBank'])->name('admin.addBank')->middleware('AdminAccess');
+Route::post('/admin/others/{bank}/editBank', [AdminController::class, 'editBank'])->name('admin.editBank')->middleware('AdminAccess');
+Route::delete('/admin/others/{bank}/deleteBank', [AdminController::class, 'deleteBank'])->name('admin.deleteBank')->middleware('AdminAccess');
+Route::post('/admin/others/transaction/approve', [AdminController::class, 'approve'])->name('admin.approve')->middleware('AdminAccess');
+Route::post('/admin/others/transaction/disapprove', [AdminController::class, 'disapprove'])->name('admin.disapprove')->middleware('AdminAccess');
+Route::post('/admin/others/transaction/pending', [AdminController::class, 'pending'])->name('admin.pending')->middleware('AdminAccess');
+Route::delete('/admin/others/transaction/deleteTransaction', [AdminController::class, 'deleteTransaction'])->name('admin.deleteTransaction')->middleware('AdminAccess');
 
 //LecturerAccess//
 Route::get('/lecturer/home', [LecturerController::class, 'index'])->name('lecturer.home')->middleware('LecturerAccess');
