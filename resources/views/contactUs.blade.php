@@ -24,12 +24,14 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <form action="{{route('contactUsSendMessage')}}" class="mb-5" method="post" id="contactForm" name="contactForm">
+                        <form action="{{route('contactUsSendMessage')}}" class="mb-5" method="post" id="contactForm"
+                            name="contactForm">
                             @csrf
                             @auth
                             <div class="row">
                                 <div class="col-md-12 form-group">
-                                    <input type="text" hidden name="name" id="name" placeholder="Your name" value="{{Auth::user()->name}}">
+                                    <input type="text" hidden name="name" id="name" placeholder="Your name"
+                                        value="{{Auth::user()->name}}">
                                 </div>
                             </div>
                             <div class="row">
@@ -123,22 +125,23 @@
                 @foreach ($comments as $comment)
                 <div class="card p-3" style="margin-top: 10px">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div class="user d-flex flex-row align-items-center"> 
-                            <img src="{{ asset('storage/images/ICON2.png') }}" width="30" class="user-img rounded-circle mr-2"> 
-                                <span>
-                                    <small class="font-weight-bold text-primary">{{$comment->name}}</small> 
-                                    <small class="font-weight-bold">{{$comment->subject}}</small>
-                                </span>
-                        </div> 
+                        <div class="user d-flex flex-row align-items-center">
+                            <img src="{{ asset('storage/images/ICON2.png') }}" width="30"
+                                class="user-img rounded-circle mr-2">
+                            <span>
+                                <small class="font-weight-bold text-primary">{{$comment->name}}</small>
+                                <small class="font-weight-bold">{{$comment->subject}}</small>
+                            </span>
+                        </div>
                         <small>{{$comment->created_at}}</small>
                     </div>
                     <div class="action d-flex justify-content-between mt-2 align-items-center">
-                        <div class="reply px-4"> 
+                        <div class="reply px-4">
                             <small>{{$comment->message}}</small>
                         </div>
-                        <div class="icons align-items-center" data-toggle="tooltip" title="Approved by Admin"> 
-                            <i class="fa fa-star text-warning"></i> 
-                            <i class="fa fa-check-circle-o check-icon"></i> 
+                        <div class="icons align-items-center" data-toggle="tooltip" title="Approved by Admin">
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-check-circle-o check-icon"></i>
                         </div>
                     </div>
                 </div>

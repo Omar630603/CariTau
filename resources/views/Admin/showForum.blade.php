@@ -21,7 +21,8 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    This is Forum for <a href="{{ route('admin.materialDetails', $material) }}">{{$material->material_name}}</a> Material
+                    This is Forum for <a
+                        href="{{ route('admin.materialDetails', $material) }}">{{$material->material_name}}</a> Material
                 </div>
                 <div class="card-body">
                     <p><b>{{ $forum->title }}</b></p>

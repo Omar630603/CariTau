@@ -32,8 +32,8 @@
                     action="{{route('majorAdmin.updateImage', $major)}}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();" type="file"
-                        name="image">
+                    <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();"
+                        type="file" name="image">
                     <input type="submit" style="display: none;" name="upload" id="upload">
                 </form>
             </div>
@@ -53,7 +53,8 @@
                         </div>
                     </div>
                     <textarea id="description-copy" rows="9" class="form-control" name="description" type="text"
-                        placeholder="{{$major->description}}" value="{{$major->description}}">{{$major->description}}</textarea>
+                        placeholder="{{$major->description}}"
+                        value="{{$major->description}}">{{$major->description}}</textarea>
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Done</button>

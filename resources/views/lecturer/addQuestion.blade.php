@@ -14,7 +14,8 @@
 <div class="container">
     <div class="form group">
         <h3 style="text-transform: capitalize;">This page is to add / edit questions for : {{$quiz->quiz_name}} in
-            <a href="{{ route('lecturer.materialDetails', $material) }}">{{$material->material_name}}</a> material</h3>
+            <a href="{{ route('lecturer.materialDetails', $material) }}">{{$material->material_name}}</a> material
+        </h3>
 
     </div>
     <div style="display: flex">
@@ -137,13 +138,17 @@
                                                 correct answer : {{$question->correctAnswer}}
                                             </option>
                                             <option id="correctAnswer_option_one{{$question->ID_question}}">
-                                                {{$question->option_one}}</option>
+                                                {{$question->option_one}}
+                                            </option>
                                             <option id="correctAnswer_option_two{{$question->ID_question}}">
-                                                {{$question->option_two}}</option>
+                                                {{$question->option_two}}
+                                            </option>
                                             <option id="correctAnswer_option_three{{$question->ID_question}}">
-                                                {{$question->option_three}}</option>
+                                                {{$question->option_three}}
+                                            </option>
                                             <option id="correctAnswer_option_four{{$question->ID_question}}">
-                                                {{$question->option_four}}</option>
+                                                {{$question->option_four}}
+                                            </option>
                                         </select>
                                     </div>
                                     <center>

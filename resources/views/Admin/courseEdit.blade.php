@@ -32,8 +32,8 @@
                     action="{{route('courseAdmin.updateImage', $course)}}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();" type="file"
-                        name="image">
+                    <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();"
+                        type="file" name="image">
                     <input type="submit" style="display: none;" name="upload" id="upload">
                 </form>
             </div>
@@ -76,7 +76,8 @@
                         </div>
                     </div>
                     <textarea id="description-copy" rows="3" class="form-control" name="description" type="text"
-                        placeholder="{{$course->description}}" value="{{$course->description}}">{{$course->description}}</textarea>
+                        placeholder="{{$course->description}}"
+                        value="{{$course->description}}">{{$course->description}}</textarea>
                 </div>
                 <div class="form-group row">
                     <label style="margin-bottom: 0" for="price">Course price:</label>
@@ -151,10 +152,11 @@
         </form>
     </div>
     @if (count($materials)>0)
-    <div style="display: flex; justify-content:space-between ; flex-wrap: wrap; margin-top: 10px" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div style="display: flex; justify-content:space-between ; flex-wrap: wrap; margin-top: 10px" class="panel-group"
+        id="accordion" role="tablist" aria-multiselectable="true">
         <div class="materialsListAccordion">
             @foreach ($materials as $material)
-            <div class="panel panel-default" >
+            <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingTwo" style="border-radius:20px;">
                     <h4 class="panel-title">
                         <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
@@ -180,7 +182,8 @@
                         </div>
                         <div class="control-major">
                             <b>Click on <q><i> Edit
-                                        Material Data</i></q> to Change {{$material->material_name}} Files, Video, Quiz, and
+                                        Material Data</i></q> to Change {{$material->material_name}} Files, Video, Quiz,
+                                and
                                 Forum</b>
                         </div>
                     </div>
@@ -193,26 +196,31 @@
                 <div class="card h-100" style="border-radius:20px;">
                     <div class="card-body">
                         <h6 class="d-flex materialsListHeader">
-                            <i class="material-icons text-info mr-2"></i>Materials List: Change the order of {{$course->course_name}} materials
-                            <a style="cursor: pointer;" data-toggle="tooltip" title="Click to change the order" 
-                            onclick="$('#formChangeOrder').submit();">
+                            <i class="material-icons text-info mr-2"></i>Materials List: Change the order of
+                            {{$course->course_name}} materials
+                            <a style="cursor: pointer;" data-toggle="tooltip" title="Click to change the order"
+                                onclick="$('#formChangeOrder').submit();">
                                 <i class="fa fa-refresh" style="color:green"></i>
                             </a>
                         </h6>
-                        <form action="{{route('admin.SortMaterials', $materials[0])}}" method="POST" id="formChangeOrder">
-                        @csrf
-                        @foreach ($materials as $material)
-                        <div style="display: flex; justify-content: space-between">
-                        <strong style="margin-top: 5px">#{{$material->order}}</strong>
-                        <a href="{{route('admin.materialDetails', $material)}}" style="text-decoration: none">
-                            <p class="materialName">
-                                {{ $material->material_name }}</p>
-                        </a>
-                        <input hidden name="ID_material{{$material->ID_material}}" value="{{$material->ID_material}}">
-                        <input min="1" class="mt-auto inputOrder" name="order{{$material->ID_material}}" type="number" value="{{$material->order}}">
-                        </div>
-                        <br>
-                        @endforeach
+                        <form action="{{route('admin.SortMaterials', $materials[0])}}" method="POST"
+                            id="formChangeOrder">
+                            @csrf
+                            @foreach ($materials as $material)
+                            <div style="display: flex; justify-content: space-between">
+                                <strong style="margin-top: 5px">#{{$material->order}}</strong>
+                                <a href="{{route('admin.materialDetails', $material)}}" style="text-decoration: none">
+                                    <p class="materialName">
+                                        {{ $material->material_name }}
+                                    </p>
+                                </a>
+                                <input hidden name="ID_material{{$material->ID_material}}"
+                                    value="{{$material->ID_material}}">
+                                <input min="1" class="mt-auto inputOrder" name="order{{$material->ID_material}}"
+                                    type="number" value="{{$material->order}}">
+                            </div>
+                            <br>
+                            @endforeach
                         </form>
                     </div>
                 </div>
@@ -220,11 +228,13 @@
         </div>
     </div>
     @else
-        <div class="container" style="margin-top: 10px">
-            <div class="justify-content-center">
-                <center><h5 class="card-title">There are no materials yet!</h5></center>
-            </div>
+    <div class="container" style="margin-top: 10px">
+        <div class="justify-content-center">
+            <center>
+                <h5 class="card-title">There are no materials yet!</h5>
+            </center>
         </div>
+    </div>
     @endif
 </div>
 <script>

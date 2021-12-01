@@ -32,8 +32,8 @@
                     action="{{route('materialLecturer.updateImage', $material)}}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();" type="file"
-                        name="image">
+                    <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();"
+                        type="file" name="image">
                     <input type="submit" style="display: none;" name="upload" id="upload">
                 </form>
             </div>
@@ -64,8 +64,8 @@
             </form>
             @foreach ($courses as $course)
             @if ($course->ID_course == $material->ID_course)
-            <form style="display: none" id="deletematerial"
-                action="{{route('materialLecturer.delete', $material)}}" method="POST">
+            <form style="display: none" id="deletematerial" action="{{route('materialLecturer.delete', $material)}}"
+                method="POST">
                 @csrf
                 @method('DELETE')
             </form>
@@ -79,35 +79,39 @@
         <a id="open" style="display: none; color: white; background-color: rgb(21, 74, 172);" class="btn btn-info"
             onclick="$('#open').hide(); $('#material_data_edit').slideDown('slow'); $('#close').show('slow'); return false;">
             Edit Material Data</a>
-        <a data-toggle="modal" data-target="#deleteMaterialModal" class="btn btn-danger">Delete {{$material->material_name}}</a>
-            <div class="modal fade" id="deleteMaterialModal" tabindex="-1" role="dialog" aria-labelledby="deleteMaterialModal" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Delete Material: {{$material->material_name}}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+        <a data-toggle="modal" data-target="#deleteMaterialModal" class="btn btn-danger">Delete
+            {{$material->material_name}}</a>
+        <div class="modal fade" id="deleteMaterialModal" tabindex="-1" role="dialog"
+            aria-labelledby="deleteMaterialModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Delete Material: {{$material->material_name}}
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger" role="alert">
+                            <h4 class="alert-heading">By Deleteing This Material!</h4>
+                            All of The Material Records will be deleted Permanently!<br>
+                            Are you sure?
                         </div>
-                        <div class="modal-body">
-                            <div class="alert alert-danger" role="alert">
-                                <h4 class="alert-heading">By Deleteing This Material!</h4>
-                                All of The Material Records will be deleted Permanently!<br>
-                                Are you sure?
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">No, I'm not so sure</button>
-                            <button onclick="document.getElementById('deletematerial').submit();" type="button" class="btn btn-danger">Yes,
-                                Sure. Delete Material</button>
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No, I'm not so
+                            sure</button>
+                        <button onclick="document.getElementById('deletematerial').submit();" type="button"
+                            class="btn btn-danger">Yes,
+                            Sure. Delete Material</button>
                     </div>
                 </div>
             </div>
+        </div>
     </div>
     <div style="display: flex; justify-content: flex-end">
-        <h5>This Material has <a
-                href="{{ route('lecturer.profile') }}">{{$lecturer->name}}</a>
+        <h5>This Material has <a href="{{ route('lecturer.profile') }}">{{$lecturer->name}}</a>
             as a Lecturer</h5>
     </div>
 </div>
@@ -218,8 +222,7 @@
                             </div>
                         </div>
                         <div style="display: none">
-                            <form action="{{route('lecturer.deleteFiles', $file)}}"
-                                method="POST">
+                            <form action="{{route('lecturer.deleteFiles', $file)}}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button id="deleteFiles{{$file->ID_file}}" type="submit"></button>
@@ -288,8 +291,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <div style="margin: 0 20px">
-                                            <form method="post"
-                                                action="{{route('lecturer.editVideos', $video)}}"
+                                            <form method="post" action="{{route('lecturer.editVideos', $video)}}"
                                                 class="card-body" style="padding: 0;">
                                                 @csrf
                                                 <div class="form-group row">
@@ -339,8 +341,7 @@
                             </div>
                         </div>
                         <div style="display: none">
-                            <form action="{{route('lecturer.deleteVideos', $video)}}"
-                                method="POST">
+                            <form action="{{route('lecturer.deleteVideos', $video)}}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button id="deleteVideo{{$video->ID_video}}" type="submit"></button>
@@ -409,8 +410,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <div style="margin: 0 20px">
-                                            <form method="post"
-                                                action="{{route('lecturer.editQuiz', $quiz)}}"
+                                            <form method="post" action="{{route('lecturer.editQuiz', $quiz)}}"
                                                 class="card-body" style="padding: 0;">
                                                 @csrf
                                                 <div class="form-group row">
@@ -540,8 +540,7 @@
                             </div>
                         </div>
                         <div style="display: none">
-                            <form action="{{route('lecturer.deleteQuiz', $quiz)}}"
-                                method="POST">
+                            <form action="{{route('lecturer.deleteQuiz', $quiz)}}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button id="deleteQuiz{{$quiz->ID_quiz}}" type="submit"></button>
@@ -609,8 +608,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <div style="margin: 0 20px">
-                                            <form method="post"
-                                                action="{{route('lecturer.editForum', $forum)}}"
+                                            <form method="post" action="{{route('lecturer.editForum', $forum)}}"
                                                 class="card-body" style="padding: 0;">
                                                 @csrf
                                                 <div class="form-group row">
@@ -657,8 +655,7 @@
                             </div>
                         </div>
                         <div style="display: none">
-                            <form action="{{route('lecturer.deleteForum', $forum)}}"
-                                method="POST">
+                            <form action="{{route('lecturer.deleteForum', $forum)}}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button id="deleteForum{{$forum->ID_forum}}" type="submit"></button>

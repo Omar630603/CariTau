@@ -32,8 +32,8 @@
                     action="{{route('materialAdmin.updateImage', $material)}}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();" type="file"
-                        name="image">
+                    <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();"
+                        type="file" name="image">
                     <input type="submit" style="display: none;" name="upload" id="upload">
                 </form>
             </div>

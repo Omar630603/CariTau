@@ -15,13 +15,13 @@
             <i class="fa fa-trash-o"></i>
         </a>
         @endif
-        <div style="display: none">
-            <form action="{{route('lecturer.deleteComment', $c)}}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button id="deleteComment{{$c->ID_comment}}" type="submit"></button>
-            </form>
-        </div>
+    <div style="display: none">
+        <form action="{{route('lecturer.deleteComment', $c)}}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button id="deleteComment{{$c->ID_comment}}" type="submit"></button>
+        </form>
+    </div>
     </p>
 
     <form style="display: none; margin-left: 40px" method="post" action="{{ route('lecturer.addForumCommentReply') }}"

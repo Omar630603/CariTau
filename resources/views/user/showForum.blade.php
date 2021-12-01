@@ -115,111 +115,115 @@
         </nav>
 
         @if (is_array($enrollment) || is_object($enrollment))
-            @if ($enrollment->status == 1)
-                <div class="container">
-                    <div>
-                        @if ($message = Session::get('fail'))
-                        <div class="alert alert-warning">
-                            <p>{{ $message }}</p>
-                        </div>
-                        @elseif ($message = Session::get('success'))
-                        <div class="alert alert-success">
-                            <p>{{ $message }}</p>
-                        </div>
-                        @endif
-                    </div>
-                    <div class="row" style="padding: 30px">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    This is Forum for <a href="{{ route('material', ['course'=>$course, 'material'=>$material]) }}">{{$material->material_name}}</a> Material
-                                </div>
-                                <div class="card-body">
-                                    <p><b>{{ $forum->title }}</b></p>
-                                    <p>
-                                        {{ $forum->body }}
-                                    </p>
-                                    <hr />
-                                    <h4>Display Comments</h4>
-                                    @include('user.partials._comment_replies', ['comment' => $forum->comment, 'ID_forum' =>
-                                    $forum->ID_forum])
-                                    <hr />
-                                    <h4>Add comment</h4>
-                                    <form method="post" action="{{ route('user.addForumComment') }}">
-                                        @csrf
-                                        <div class="form-group">
-                                            <input type="text" name="comment_body" class="form-control" />
-                                            <input type="hidden" name="post_id" value="{{ $forum->ID_forum }}" />
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="submit" class="btn btn-dark" value="Add Comment" />
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        @if ($enrollment->status == 1)
+        <div class="container">
+            <div>
+                @if ($message = Session::get('fail'))
+                <div class="alert alert-warning">
+                    <p>{{ $message }}</p>
                 </div>
-            @elseif($enrollment->status == 0)
-                @if ($material->order == 1)
-                <div class="container">
-                    <div>
-                        @if ($message = Session::get('fail'))
-                        <div class="alert alert-warning">
-                            <p>{{ $message }}</p>
-                        </div>
-                        @elseif ($message = Session::get('success'))
-                        <div class="alert alert-success">
-                            <p>{{ $message }}</p>
-                        </div>
-                        @endif
-                    </div>
-                    <div class="row" style="padding: 30px">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    This is Forum for <a
-                                        href="{{ route('material', ['course'=>$course, 'material'=>$material]) }}">{{$material->material_name}}</a>
-                                    Material
-                                </div>
-                                <div class="card-body">
-                                    <p><b>{{ $forum->title }}</b></p>
-                                    <p>
-                                        {{ $forum->body }}
-                                    </p>
-                                    <hr />
-                                    <h4>Display Comments</h4>
-                                    @include('user.partials._comment_replies', ['comment' => $forum->comment, 'ID_forum' =>
-                                    $forum->ID_forum])
-                                    <hr />
-                                    <h4>Add comment</h4>
-                                    <form method="post" action="{{ route('user.addForumComment') }}">
-                                        @csrf
-                                        <div class="form-group">
-                                            <input type="text" name="comment_body" class="form-control" />
-                                            <input type="hidden" name="post_id" value="{{ $forum->ID_forum }}" />
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="submit" class="btn btn-dark" value="Add Comment" />
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @else
-                <div class="container justify-content-center">
-                    <h3 class="alert alert-danger" style="margin: 40px; ">
-                        <center>You dont have access you need to pay first :( <i class="fa fa-ban" aria-hidden="true"></i></center>
-                    </h3>
+                @elseif ($message = Session::get('success'))
+                <div class="alert alert-success">
+                    <p>{{ $message }}</p>
                 </div>
                 @endif
-            @endif
+            </div>
+            <div class="row" style="padding: 30px">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            This is Forum for <a
+                                href="{{ route('material', ['course'=>$course, 'material'=>$material]) }}">{{$material->material_name}}</a>
+                            Material
+                        </div>
+                        <div class="card-body">
+                            <p><b>{{ $forum->title }}</b></p>
+                            <p>
+                                {{ $forum->body }}
+                            </p>
+                            <hr />
+                            <h4>Display Comments</h4>
+                            @include('user.partials._comment_replies', ['comment' => $forum->comment, 'ID_forum' =>
+                            $forum->ID_forum])
+                            <hr />
+                            <h4>Add comment</h4>
+                            <form method="post" action="{{ route('user.addForumComment') }}">
+                                @csrf
+                                <div class="form-group">
+                                    <input type="text" name="comment_body" class="form-control" />
+                                    <input type="hidden" name="post_id" value="{{ $forum->ID_forum }}" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-dark" value="Add Comment" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @elseif($enrollment->status == 0)
+        @if ($material->order == 1)
+        <div class="container">
+            <div>
+                @if ($message = Session::get('fail'))
+                <div class="alert alert-warning">
+                    <p>{{ $message }}</p>
+                </div>
+                @elseif ($message = Session::get('success'))
+                <div class="alert alert-success">
+                    <p>{{ $message }}</p>
+                </div>
+                @endif
+            </div>
+            <div class="row" style="padding: 30px">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            This is Forum for <a
+                                href="{{ route('material', ['course'=>$course, 'material'=>$material]) }}">{{$material->material_name}}</a>
+                            Material
+                        </div>
+                        <div class="card-body">
+                            <p><b>{{ $forum->title }}</b></p>
+                            <p>
+                                {{ $forum->body }}
+                            </p>
+                            <hr />
+                            <h4>Display Comments</h4>
+                            @include('user.partials._comment_replies', ['comment' => $forum->comment, 'ID_forum' =>
+                            $forum->ID_forum])
+                            <hr />
+                            <h4>Add comment</h4>
+                            <form method="post" action="{{ route('user.addForumComment') }}">
+                                @csrf
+                                <div class="form-group">
+                                    <input type="text" name="comment_body" class="form-control" />
+                                    <input type="hidden" name="post_id" value="{{ $forum->ID_forum }}" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-dark" value="Add Comment" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @else
+        <div class="container justify-content-center">
+            <h3 class="alert alert-danger" style="margin: 40px; ">
+                <center>You dont have access you need to pay first :( <i class="fa fa-ban" aria-hidden="true"></i>
+                </center>
+            </h3>
+        </div>
+        @endif
+        @endif
         @else
         <div class="container justify-content-center">
             <h3 class="alert alert-info" style="margin: 40px; ">
-                <center>You dont have access you need to enroll first :( <i class="fa fa-ban" aria-hidden="true"></i></center>
+                <center>You dont have access you need to enroll first :( <i class="fa fa-ban" aria-hidden="true"></i>
+                </center>
             </h3>
         </div>
         @endif

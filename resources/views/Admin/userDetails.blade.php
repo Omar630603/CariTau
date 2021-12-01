@@ -56,8 +56,8 @@
                 action="{{ route('userAdmin.updateImage', $user) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();" type="file"
-                    name="image">
+                <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();"
+                    type="file" name="image">
                 <input type="submit" style="display: none;" name="upload" id="upload">
             </form>
         </div>
@@ -235,12 +235,12 @@
                     class="btn btn-info">Restore
                     Default</button>
             </form>
-            <form method="post" style="display: none; margin-top: 10px" 
+            <form method="post" style="display: none; margin-top: 10px"
                 action="{{ route('userAdmin.updateImage', $user) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();" type="file"
-                    name="image">
+                <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();"
+                    type="file" name="image">
                 <input type="submit" style="display: none;" name="upload" id="upload">
             </form>
         </div>
@@ -337,12 +337,12 @@
                     class="btn btn-info">Restore
                     Default</button>
             </form>
-            <form method="post" style="display: none; margin-top: 10px" 
+            <form method="post" style="display: none; margin-top: 10px"
                 action="{{ route('userAdmin.updateImage', $user) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();" type="file"
-                    name="image">
+                <input id="imageInput" style="border: none" onchange="document.getElementById('upload').click();"
+                    type="file" name="image">
                 <input type="submit" style="display: none;" name="upload" id="upload">
             </form>
         </div>
